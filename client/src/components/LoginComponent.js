@@ -7,6 +7,7 @@ import CheckButton from "react-validation/build/button";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { loginAction } from "../actions/auth";
+import alertify from "alertifyjs";
 
 const required = (value) => {
   if (!value) {
@@ -65,7 +66,8 @@ class Login extends Component {
           history.push("/profile");
           window.location.reload();
         })
-        .catch(() => {
+        .catch((err) => {
+          alertify.error(err.response.data || err.message);
           this.setState({
             loading: false,
           });

@@ -3,15 +3,15 @@ import { connect } from "react-redux";
 import { Router, Switch, Route, Link } from "react-router-dom";
 
 import "jquery/dist/jquery";
-import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
 import "./App.css";
 import Login from "./components/LoginComponent";
 import Register from "./components/RegisterComponent";
 import Home from "./components/HomeComponent";
 import Profile from "./components/ProfileComponent";
-import BoardUser from "./components/BoardUserComponent";
 import Post from "./components/PostComponent";
+import Error from "./components/ErrorComponent";
 
 import { logoutAction } from "./actions/auth";
 import { clearMessage } from "./actions/messages";
@@ -158,8 +158,9 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <ProtectedRoute exact path="/profile" component={Profile} />
-              <Route path="/user" component={BoardUser} />
               <ProtectedRoute path="/posts" component={Post} />
+              <Route path="*" component={Error} />
+
             </Switch>
           </div>
         </div>

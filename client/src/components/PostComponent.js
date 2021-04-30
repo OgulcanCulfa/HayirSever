@@ -5,12 +5,11 @@ import {
   getCommentAction,
   createCommentAction,
 } from "../actions/commentActions";
-import { clearMessage } from "../actions/messages";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import alertify from "alertifyjs";
 import moment from "moment";
-import 'moment/locale/tr';
+import "moment/locale/tr";
 
 class PostComponent extends Component {
   constructor() {
@@ -26,7 +25,16 @@ class PostComponent extends Component {
     e.preventDefault();
     const data = new FormData(e.target);
     const plainFormData = Object.fromEntries(data.entries());
-    this.props.actions.createPost(plainFormData);
+    this.props.actions
+      .createPost(plainFormData)
+      .then((res) => {
+        this.props.actions.getPosts();
+        alertify.success(res.data);
+      })
+      .catch((err) => {
+        this.props.actions.getPosts();
+        alertify.error(err.response.data);
+      });
     document.getElementById("postForm").reset();
   }
 
@@ -36,7 +44,14 @@ class PostComponent extends Component {
       const data = new FormData(e.target);
       data.append("postId", postId);
       const plainFormData = Object.fromEntries(data.entries());
-      this.props.actions.createComment(plainFormData);
+      this.props.actions
+        .createComment(plainFormData)
+        .then((res) => {
+          alertify.success(res.data);
+        })
+        .catch((err) => {
+          alertify.error(err.response.data);
+        });
       document.getElementById("commentForm").reset();
     };
   }
@@ -50,10 +65,6 @@ class PostComponent extends Component {
           </div>
         </div>
       );
-    this.props.postMsg && alertify.error(this.props.postMsg);
-    this.props.commentMsg && alertify.error(this.props.commentMsg);
-    this.props.commentSuccessMsg &&
-      alertify.success(this.props.commentSuccessMsg);
     return (
       <div>
         <section className="hero">
@@ -98,7 +109,7 @@ class PostComponent extends Component {
               this.props.postData.map((val) => (
                 <div key={val.postId} className="col-md-12">
                   <div className="cardbox shadow-lg bg-white">
-                    <div className="cardbox-heading">
+                    <div className="p-3">
                       <div className="media m-0 d-md-flex align-items-center">
                         <div className="d-flex mr-3">
                           <Link to="#">
@@ -127,19 +138,19 @@ class PostComponent extends Component {
                         {this.props.user.userId === val.postUserId && (
                           <button
                             type="button"
-                            class="close"
+                            className="close p-3"
                             aria-label="Close"
                           >
-                            <i class="fa fa-trash p-3"></i>
+                            <i className="fa fa-trash"></i>
                           </button>
                         )}
                       </div>
                     </div>
 
                     <div className="row">
-                      <div className="col-md-12 d-flex align-items-center w-100">
+                      <div className="col-md-12 d-flex align-items-center w-100 p-3">
                         <div className="text-break p-3">
-                          <p id="postText" class="mb-0">
+                          <p id="postText" className="mb-0">
                             {val.postText}
                           </p>
                         </div>
@@ -185,7 +196,7 @@ class PostComponent extends Component {
                             <div className="col-md-12 mb-3 search">
                               <div className="my-1">
                                 <div className="d-md-flex flex-row">
-                                  <div className="col-md-auto d-flex align-items-center text-left mb-3 mb-md-0">
+                                  <div className="d-flex m-3 align-items-center text-left">
                                     <span className="comment-avatar mt-1 ">
                                       <Link to="#">
                                         <img
@@ -201,7 +212,7 @@ class PostComponent extends Component {
                                       </p>
                                     </div>
                                   </div>
-                                  <div className="col-md-8 d-md-flex align-items-center justify-content-left">
+                                  <div className="d-md-flex mr-auto m-3 align-items-center justify-content-left">
                                     <div className="text-break">
                                       <p id="area" className="mb-0">
                                         {c.text}
@@ -209,17 +220,23 @@ class PostComponent extends Component {
                                     </div>
                                   </div>
                                   {this.props.user.userId === c.userId && (
-                                    <div className="col-md-auto d-flex align-items-center justify-content-left">
+                                    <div className="d-flex align-items-center m-3 justify-content-left">
                                       <button
                                         type="button"
                                         className="border-0 disable-pointer"
                                       >
-                                        <i class="fa fa-trash pointer"></i>
+                                        <i className="fa fa-trash pointer"></i>
                                       </button>
                                     </div>
                                   )}
-                                  <div className="col-md-auto d-flex align-items-center justify-content-left time p-0">
-                                    <small><span>{moment(c.createdAt).locale("tr").fromNow()}</span></small>
+                                  <div className="d-flex align-items-center m-3 justify-content-left time p-0">
+                                    <small>
+                                      <span>
+                                        {moment(c.createdAt)
+                                          .locale("tr")
+                                          .fromNow()}
+                                      </span>
+                                    </small>
                                   </div>
                                 </div>
                               </div>
@@ -227,8 +244,8 @@ class PostComponent extends Component {
                           </div>
                         ))}
                     <div className="row">
-                      <div className="col-md-12 d-md-flex my-4">
-                        <div className="col-md-auto d-flex flex-row align-items-center mb-3 mb-md-0">
+                      <div className="col-md-12 d-md-flex flex-row my-4">
+                        <div className="d-flex flex-row align-items-center m-3">
                           <span className="comment-avatar float-left mt-2">
                             <Link to="#">
                               <img
@@ -239,7 +256,7 @@ class PostComponent extends Component {
                             </Link>
                           </span>
                         </div>
-                        <div className="col-md-8 d-flex align-items-center">
+                        <div className="d-flex align-items-center m-3">
                           <form
                             id="commentForm"
                             onSubmit={this.handleCommentSubmit(val.postId)}
@@ -272,24 +289,14 @@ class PostComponent extends Component {
 }
 
 function mapStateToProps(state) {
-  const { message } = state.messageReducer;
-  const { postData, postMsg, isFetchingPosts } = state.postReducer;
-  const {
-    commentData,
-    commentMsg,
-    isFetchingComments,
-    commentSuccessMsg,
-  } = state.commentReducer;
+  const { postData, isFetchingPosts } = state.postReducer;
+  const { commentData, isFetchingComments } = state.commentReducer;
   const { user } = state.authReducer;
   return {
-    message,
     postData,
-    postMsg,
     isFetchingPosts,
     isFetchingComments,
     commentData,
-    commentMsg,
-    commentSuccessMsg,
     user,
   };
 }
@@ -301,7 +308,6 @@ function mapDispatchToProps(dispatch) {
       createPost: bindActionCreators(createPostAction, dispatch),
       getCommentsById: bindActionCreators(getCommentAction, dispatch),
       createComment: bindActionCreators(createCommentAction, dispatch),
-      clearMessage: bindActionCreators(clearMessage, dispatch),
     },
   };
 }

@@ -2,8 +2,6 @@ import {
   GET_POSTS_SUCCESS,
   GET_POSTS_PENDING,
   GET_POSTS_ERROR,
-  CREATE_POST_SUCCESS,
-  CREATE_POST_ERROR
 } from "./types";
 
 import { getPosts, createPost } from "../services/postService";
@@ -30,21 +28,16 @@ export const getPostAction = () => (dispatch) => {
 };
 
 export const createPostAction = (formData) => (dispatch) => {
-  createPost(formData)
+  return new Promise((resolve,reject) => {
+    createPost(formData)
     .then((res) => {
-      dispatch({
-        type: CREATE_POST_SUCCESS,
-        payload: res.data,
-      });
+      resolve(res);
     })
     .catch((err) => {
-      if (err) {
-        dispatch({
-          type: CREATE_POST_ERROR,
-          payload: err.response.data,
-        });
-      }
+      reject(err);
     });
+  })
+  
 };
 
 

@@ -2,29 +2,24 @@ import {
     GET_COMMENTS_BY_ID_SUCCESS,
     GET_COMMENTS_BY_ID_PENDING,
     GET_COMMENTS_BY_ID_ERROR,
-    CREATE_COMMENT_SUCCESS,
-    CREATE_COMMENT_ERROR
   } from "./types";
   
   import {  getComments, createComment  } from "../services/commentService";
   
   
   export const createCommentAction = (formData) => (dispatch) => {
-    createComment(formData)
+    return new Promise((resolve,reject) => {
+      createComment(formData)
       .then((res) => {
-        dispatch({
-          type: CREATE_COMMENT_SUCCESS,
-          payload: res.data,
-        });
+        resolve(res);
       })
       .catch((err) => {
         if (err) {
-          dispatch({
-            type: CREATE_COMMENT_ERROR,
-            payload: err.response.data,
-          });
+          reject(err);
         }
       });
+    })
+    
   };
   
   export const getCommentAction = (postId) => (dispatch) => {

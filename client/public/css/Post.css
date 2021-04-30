@@ -305,7 +305,6 @@ cursor: unset!important;
 
 .time {
   font-family: 'Rokkitt', serif;
-  font-size: 15px;
+  font-size: 15px!important;
   color: #aaa;
-  margin-right: 10px;
 }
