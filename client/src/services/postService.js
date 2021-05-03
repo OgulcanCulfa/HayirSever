@@ -14,7 +14,7 @@ export const getPosts = () => {
       return res;
     })
     .catch((err) => {
-      if (err) throw err;
+      throw err;
     });
 };
 
@@ -29,6 +29,25 @@ export const createPost = (formData) => {
       return res;
     })
     .catch((err) => {
-      if (err) throw err;
+      throw err;
+    });
+};
+
+export const deletePost = (postId) => {
+  return axios
+    .delete(API_URL + "posts", {
+      headers: {
+        token: token,
+      },
+      data: {
+        id: postId,
+      },
+    })
+    .then((res) => {
+      return res;
+    })
+
+    .catch((err) => {
+      throw err;
     });
 };

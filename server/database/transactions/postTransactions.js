@@ -1,4 +1,4 @@
-const { FadabHelper,selectAsync,insertAsync } = require("fadab-mysql-helper");
+const { FadabHelper,selectAsync,insertAsync,deleteAsync } = require("fadab-mysql-helper");
 
 class PostTransactions extends FadabHelper {
   constructor() {

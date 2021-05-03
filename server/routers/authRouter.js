@@ -27,6 +27,7 @@ router.post("/login", authValidator.login, async (req, res) => {
       Name: result.Name,
       Surname: result.Surname,
       UserTypeName: result.UserTypeName,
+      ProfilePhoto: result.profilePhoto
     };
     const token = jwt.sign(payload, req.app.get("api_key"), {
       expiresIn: "7d",

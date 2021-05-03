@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { getPostAction, createPostAction } from "../actions/postActions";
+import {
+  getPostAction,
+  createPostAction,
+  deletePostAction,
+} from "../actions/postActions";
 import {
   getCommentAction,
   createCommentAction,
+  deleteCommentAction,
 } from "../actions/commentActions";
+
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import alertify from "alertifyjs";
@@ -14,19 +20,22 @@ import "moment/locale/tr";
 class PostComponent extends Component {
   constructor() {
     super();
-    this.handlePostSubmit = this.handlePostSubmit.bind(this);
-    this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
+    this.handleCreatePost = this.handleCreatePost.bind(this);
+    this.handleCreateComment = this.handleCreateComment.bind(this);
+    this.handleDeletePost = this.handleDeletePost.bind(this);
+    this.handleDeleteComment = this.handleDeleteComment.bind(this);
   }
   componentDidMount() {
     this.props.actions.getPosts();
   }
 
-  handlePostSubmit(e) {
+  handleCreatePost(e) {
     e.preventDefault();
-    const data = new FormData(e.target);
-    const plainFormData = Object.fromEntries(data.entries());
+    const data = new FormData();
+    data.append("text", e.target[0].value);
+    data.append("postphoto", e.target[1].files[0]);
     this.props.actions
-      .createPost(plainFormData)
+      .createPost(data)
       .then((res) => {
         this.props.actions.getPosts();
         alertify.success(res.data);
@@ -38,21 +47,58 @@ class PostComponent extends Component {
     document.getElementById("postForm").reset();
   }
 
-  handleCommentSubmit(postId) {
+  handleCreateComment(postId) {
     return (e) => {
       e.preventDefault();
+
       const data = new FormData(e.target);
+
       data.append("postId", postId);
+
       const plainFormData = Object.fromEntries(data.entries());
       this.props.actions
         .createComment(plainFormData)
         .then((res) => {
           alertify.success(res.data);
+          setTimeout(() => window.location.reload(),2000)
         })
         .catch((err) => {
           alertify.error(err.response.data);
         });
       document.getElementById("commentForm").reset();
+    };
+  }
+
+  handleDeletePost(postId) {
+    return (e) => {
+      e.preventDefault();
+
+      this.props.actions
+        .deletePost(postId)
+        .then((res) => {
+          this.props.actions.getPosts();
+          alertify.success(res.data);
+        })
+        .catch((err) => {
+          alertify.error(err.response.data);
+        });
+    };
+  }
+
+  handleDeleteComment(commentId) {
+    return (e) => {
+      debugger;
+      e.preventDefault();
+
+      this.props.actions
+        .deleteComment(commentId)
+        .then((res) => {
+          alertify.success(res.data);
+          setTimeout(() => window.location.reload(),2000)
+        })
+        .catch((err) => {
+          alertify.error(err.response.data);
+        });
     };
   }
 
@@ -72,24 +118,31 @@ class PostComponent extends Component {
             <div className="col-md-12">
               <div className="cardbox shadow-lg bg-white">
                 <div className="card-body">
-                  <form id="postForm" onSubmit={this.handlePostSubmit}>
+                  <form
+                    id="postForm"
+                    encType="multipart/form-data"
+                    onSubmit={this.handleCreatePost}
+                  >
                     <div className="form-group search">
                       <div className="row ">
                         <div className="col-md-12 d-md-flex ">
                           <textarea
                             className="form-control"
+                            id="text"
                             name="text"
                             rows="3"
-                            placeholder="What are you thinking?"
+                            placeholder="İhtiyaçlarınızı yazınız"
                           ></textarea>
                         </div>
                         <div className="col-md-12 icon-border border-bottom-0 border-right-0  d-flex align-items-center mt-2">
-                          <button
+                          <input
+                            type="file"
+                            name="postphoto"
+                            accept="image/*"
                             className="border-0 disable-pointer p-3"
-                            type="submit"
                           >
-                            <i className="fa fa-camera pointer"></i>
-                          </button>
+                            {/* <i className="fa fa-camera pointer"></i> */}
+                          </input>
                           <button
                             className="border-top-0 border-bottom-0 disable-pointer p-3"
                             type="submit"
@@ -115,7 +168,7 @@ class PostComponent extends Component {
                           <Link to="#">
                             <img
                               className="img-fluid rounded-circle"
-                              src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/4.jpg"
+                              src={val.profilePhoto}
                               alt="User"
                             />
                           </Link>
@@ -128,7 +181,7 @@ class PostComponent extends Component {
 
                           <small>
                             <span>
-                              {val.district} {val.city}
+                              {val.district} / {val.city}
                             </span>
                           </small>
                           <small>
@@ -139,7 +192,7 @@ class PostComponent extends Component {
                           <button
                             type="button"
                             className="close p-3"
-                            aria-label="Close"
+                            onClick={this.handleDeletePost(val.postId)}
                           >
                             <i className="fa fa-trash"></i>
                           </button>
@@ -157,11 +210,12 @@ class PostComponent extends Component {
                       </div>
                     </div>
 
-                    <div className="cardbox-item d-flex justify-content-center my-5">
+                    <div className="cardbox-item d-flex justify-content-center my-4">
                       <img
-                        className="img-fluid"
-                        src="https://www.telegraph.co.uk/content/dam/tv/2019/05/12/TELEMMGLPICT000195851846_trans_NvBQzQNjv4BqNrzB8hrvgfJ5sESwMmBGZOCHfpH_fyW0CNqPxWGmNfw.jpeg?imwidth=450"
-                        alt="resim yok"
+                        alt=""
+                        className="img-fluid w-75"
+                        //src="https://www.telegraph.co.uk/content/dam/tv/2019/05/12/TELEMMGLPICT000195851846_trans_NvBQzQNjv4BqNrzB8hrvgfJ5sESwMmBGZOCHfpH_fyW0CNqPxWGmNfw.jpeg?imwidth=450"
+                        src={val.postPhoto}
                       />
                     </div>
                     <div className="row">
@@ -201,7 +255,7 @@ class PostComponent extends Component {
                                       <Link to="#">
                                         <img
                                           className="rounded-circle"
-                                          src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/6.jpg"
+                                          src={c.profilePhoto}
                                           alt="..."
                                         />
                                       </Link>
@@ -222,8 +276,9 @@ class PostComponent extends Component {
                                   {this.props.user.userId === c.userId && (
                                     <div className="d-flex align-items-center m-3 justify-content-left">
                                       <button
-                                        type="button"
+                                        type="submit"
                                         className="border-0 disable-pointer"
+                                        onClick={this.handleDeleteComment(c.id)}
                                       >
                                         <i className="fa fa-trash pointer"></i>
                                       </button>
@@ -244,32 +299,38 @@ class PostComponent extends Component {
                           </div>
                         ))}
                     <div className="row">
-                      <div className="col-md-12 d-md-flex flex-row my-4">
-                        <div className="d-flex flex-row align-items-center m-3">
-                          <span className="comment-avatar float-left mt-2">
-                            <Link to="#">
-                              <img
-                                className="rounded-circle"
-                                src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/6.jpg"
-                                alt="..."
-                              />
-                            </Link>
-                          </span>
-                        </div>
-                        <div className="d-flex align-items-center m-3">
+                      <div className="col-md-auto d-flex flex-row align-items-center ml-3 mr-0">
+                        <span className="comment-avatar float-left mt-2">
+                          <Link to="#">
+                            <img
+                              className="rounded-circle"
+                              src={this.props.user.ProfilePhoto}
+                              alt="..."
+                            />
+                          </Link>
+                        </span>
+                      </div>
+                      <div className="col-md-auto d-md-flex">
+                        <div className="d-md-flex align-items-center m-3">
                           <form
                             id="commentForm"
-                            onSubmit={this.handleCommentSubmit(val.postId)}
+                            
+                            onSubmit={this.handleCreateComment(val.postId)}
                           >
                             <div className="search text-break d-flex flex-row">
                               <textarea
-                                placeholder="Write a comment"
+                                placeholder="Yorum yazın"
                                 rows="1"
                                 name="text"
+                                className="w-100"
                               />
-                              <button className="px-2 border-top-0 border-bottom-0">
-                                <i className="fa fa-camera"></i>
-                              </button>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="my-auto px-2 border-top-0 border-bottom-0"
+                              >
+                                {/* <i className="fa fa-camera"></i> */}
+                              </input>
                               <button className="px-2 border-0" type="submit">
                                 <i className="fa fa-paper-plane"></i>
                               </button>
@@ -305,9 +366,11 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       getPosts: bindActionCreators(getPostAction, dispatch),
-      createPost: bindActionCreators(createPostAction, dispatch),
       getCommentsById: bindActionCreators(getCommentAction, dispatch),
+      createPost: bindActionCreators(createPostAction, dispatch),
       createComment: bindActionCreators(createCommentAction, dispatch),
+      deletePost: bindActionCreators(deletePostAction, dispatch),
+      deleteComment: bindActionCreators(deleteCommentAction, dispatch),
     },
   };
 }

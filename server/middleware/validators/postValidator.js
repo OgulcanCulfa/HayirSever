@@ -22,10 +22,13 @@ class PostValidator extends CommonValidator {
       await joi
         .object({
           text: joi.string(),
-          photo: joi.string(),
+          postphoto: joi.any(),
         })
-        .or("text","photo")
-        .messages({"object.missing":"Gönderi veya Fotoğraf verisi zorunludur."})
+        .or("text", "postphoto")
+        .messages({
+          "object.missing": "Gönderi veya Fotoğraf verisi zorunludur.",
+          "string.empty": "Metin girilmesi zorunludur.",
+        })
         .validateAsync(req.body);
       next();
     } catch (err) {
@@ -44,8 +47,9 @@ class PostValidator extends CommonValidator {
         .validateAsync(req.query);
       next();
     } catch (err) {
-      res.status(HttpStatusCodes.EXPECTATION_FAILED).send(err.message);
+      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
     }
   }
+  
 }
 module.exports = PostValidator;

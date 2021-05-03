@@ -4,6 +4,7 @@ const { validators, verifyToken,authorization } = require("../middleware");
 const commentTransactions = TransactionsFactory.creating("commentTransactions");
 const tokenControl = verifyToken.tokenControl;
 const commentValidator = validators.commentValidator;
+const commonValidator = validators.commonValidator;
 const authControl = authorization.authControl;
 const { StatusCodes } = require("http-status-codes");
 const { errorSender } = require("../utils");
@@ -58,6 +59,28 @@ router.post(
         res
           .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
           .send(err.message);
+    }
+  }
+);
+
+router.delete(
+  "/comments",
+  tokenControl,
+  authControl,
+  commonValidator.bodyId,
+  async (req, res) => {
+    try {
+      const result = await commentTransactions.deleteAsync(req.body);
+      if (!result.affectedRows)
+        throw errorSender.errorObject(
+          StatusCodes.GONE,
+          "Silmek istediğiniz yorum bulunamadı."
+        );
+      res.send("Yorum silindi.");
+    } catch (err) {
+      res
+        .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
+        .send(err.message);
     }
   }
 );

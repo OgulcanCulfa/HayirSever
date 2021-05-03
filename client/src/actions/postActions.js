@@ -1,15 +1,11 @@
-import {
-  GET_POSTS_SUCCESS,
-  GET_POSTS_PENDING,
-  GET_POSTS_ERROR,
-} from "./types";
+import { GET_POSTS_SUCCESS, GET_POSTS_PENDING, GET_POSTS_ERROR } from "./types";
 
-import { getPosts, createPost } from "../services/postService";
+import { getPosts, createPost, deletePost } from "../services/postService";
 
 export const getPostAction = () => (dispatch) => {
   dispatch({
-    type: GET_POSTS_PENDING
-  })
+    type: GET_POSTS_PENDING,
+  });
   getPosts()
     .then((res) => {
       dispatch({
@@ -28,16 +24,17 @@ export const getPostAction = () => (dispatch) => {
 };
 
 export const createPostAction = (formData) => (dispatch) => {
-  return new Promise((resolve,reject) => {
+  return new Promise((resolve, reject) => {
     createPost(formData)
-    .then((res) => {
-      resolve(res);
-    })
-    .catch((err) => {
-      reject(err);
-    });
-  })
-  
+      .then((res) => resolve(res))
+      .catch((err) => reject(err));
+  });
 };
 
-
+export const deletePostAction = (postId) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    deletePost(postId)
+      .then((res) => resolve(res))
+      .catch((err) => reject(err));
+  });
+};

@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.set("api_key", process.env.API_KEY || "secret");
-
+app.use(express.static("public"));
 app.use(serve);
 
 app.listen(PORT, () => {
