@@ -1,15 +1,15 @@
 const Roles = require("../models/roles");
 
 module.exports = {
-  user: {
+  users: {
     GET: {
-      Authorize: [Roles.Root, Roles.Administrator],
+      Authorize: [Roles.Root, Roles.Administrator,Roles.User],
     },
     DELETE: {
       Authorize: [Roles.Root, Roles.Administrator],
     },
     PUT: {
-      Authorize: [Roles.Root, Roles.Administrator],
+      Authorize: [Roles.Root, Roles.Administrator,Roles.User],
     },
     POST: {
       Authorize: [Roles.Root, Roles.Administrator],
@@ -36,7 +36,7 @@ module.exports = {
       Authorize: [Roles.Root, Roles.Administrator,Roles.User],
     },
     DELETE: {
-      Authorize: [Roles.Root, Roles.Administrator],
+      Authorize: [Roles.Root, Roles.Administrator,Roles.User],
     },
     PUT: {
       Authorize: [Roles.Root, Roles.Administrator],
@@ -47,16 +47,16 @@ module.exports = {
   },
   comments: {
     GET: {
-      Authorize: [Roles.Root, Roles.Administrator],
+      Authorize: [Roles.Root, Roles.Administrator,Roles.User],
     },
     DELETE: {
-      Authorize: [Roles.Root, Roles.Administrator],
+      Authorize: [Roles.Root, Roles.Administrator,Roles.User],
     },
     PUT: {
-      Authorize: [Roles.Root, Roles.Administrator],
+      Authorize: [Roles.Root, Roles.Administrator,Roles.User],
     },
     POST: {
-      Authorize: [Roles.Root, Roles.Administrator],
+      Authorize: [Roles.Root, Roles.Administrator,Roles.User],
     },
   },
 };

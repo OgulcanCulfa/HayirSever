@@ -1,20 +1,13 @@
-const defaultState = {
-  loggedIn: false,
-  user: {},
-};
+import {GET_USER} from "../actions/types";
 
-const userReducer = (state = defaultState, action) => {
+const initialState = {user: {}};
+
+const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SET_USER":
+    case GET_USER:
       return {
-        loggedIn: true,
-        user: { ...action.payload },
-      };
-    case "LOG_OUT":
-      localStorage.clear();
-      return {
-        loggedIn: false,
-        user: {},
+        ...state,
+        user: action.payload
       };
     default:
       return state;

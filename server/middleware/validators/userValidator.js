@@ -1,5 +1,5 @@
 const joi = require("joi");
-const HttpStatusCode = require("http-status-codes");
+const { StatusCodes } = require("http-status-codes");
 const CommonUserValidator = require("./commonValidator");
 
 class UserValidator extends CommonUserValidator {
@@ -14,7 +14,7 @@ class UserValidator extends CommonUserValidator {
         .validateAsync({ Id: parseInt(req.params.Id) });
       next();
     } catch (err) {
-      res.status(HttpStatusCode.EXPECTATION_FAILED).send(err.message);
+      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
     }
   }
 
@@ -22,22 +22,138 @@ class UserValidator extends CommonUserValidator {
     try {
       await joi
         .object({
-          Id: joi.number().required(),
-          FirstName: joi
+          id: joi.number().required(),
+          Name: joi
             .string()
-            .max(100)
-            .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı ]+$")),
-          LastName: joi
+            .min(2)
+            .max(80)
+            .pattern(new RegExp("^[ A-Za-zÇçÖöŞşÜüĞğİı]+$"))
+            .messages({
+              "string.pattern.base":
+                "İsim yalnızca büyük ya da küçük harf içerebilir.",
+              "string.max": "İsim 80 karakterden büyük olamaz.",
+              "string.min": "İsim minimum 2 karakter olmalıdır.",
+              "string.empty": "İsim boş olamaz",
+            }),
+          Surname: joi
             .string()
+            .min(2)
             .max(100)
-            .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı ]+$")),
-          EmailAddress: joi.string().max(200).email(),
-          UserTypeName: joi.string(),
+            .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı ]+$"))
+            .messages({
+              "string.pattern.base":
+                "Soyad yalnızca büyük ya da küçük harf içerebilir.",
+              "string.max": "Soyad 128 karakterden büyük olamaz.",
+              "string.min": "Soyad minimum 2 karakter olmalıdır.",
+              "string.empty": "Soyad boş olamaz",
+            }),
+          EmailAddress: joi.string().max(128).email().messages({
+            "string.email": "Lütfen geçerli bir Email Adresi giriniz.",
+            "string.max": "Email Adresi 128 karakterden büyük olamaz.",
+            "string.empty": "Email Adresi boş olamaz",
+          }),
+          mobile: joi
+            .string()
+            .allow("")
+            .max(11)
+            .pattern(new RegExp("^[0-9]+$"))
+            .messages({
+              "string.pattern.base":
+                "Telefon numarası yalnızca sayı içerebilir.",
+              "string.max": "Telefon numarası maksimum 11 karakter olmalıdır.",
+            }),
+          address: joi
+            .string()
+            .allow("")
+            .pattern(new RegExp("^[- A-Za-zÇçÖöŞşÜüĞğİı0-9.:,/()]+$"))
+            .messages({
+              "string.pattern.base":
+                "Adres yalnızca (/,.:-) karakterleri,harf ve sayı içerebilir.",
+              "string.min": "Telefon numarası minimum 10 karakter olmalıdır.",
+            }),
+          city: joi
+            .string()
+            .max(25)
+            .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı]+$"))
+            .messages({
+              "string.pattern.base": "İl yalnızca harf içerebilir.",
+              "string.max": "İl maksimum 25 karakter olmalıdır.",
+              "string.empty": "İl bilgisinin girilmesi zorunludur.",
+            }),
+          district: joi
+            .string()
+            .max(50)
+            .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı]+$"))
+            .messages({
+              "string.pattern.base": "İlçe yalnızca harf içerebilir.",
+              "string.max": "İlçe maksimum 50 karakter olmalıdır.",
+              "string.empty": "İlçe bilgisinin girilmesi zorunludur.",
+            }),
+          department: joi
+            .string()
+            .max(80)
+            .pattern(new RegExp("^[ A-Za-zÇçÖöŞşÜüĞğİı]+$"))
+            .messages({
+              "string.pattern.base": "Bölüm yalnızca harf içerebilir.",
+              "string.max": "Bölüm maksimum 80 karakter olmalıdır.",
+              "string.empty": "Bölüm bilgisinin girilmesi zorunludur.",
+            }),
+          website: joi
+            .string()
+            .allow("")
+            .max(80)
+            .pattern(new RegExp("^[A-Za-z0-9-/:.]+$"))
+            .messages({
+              "string.pattern.base":
+                "Website adresi yalnızca /, : , harf ve sayı içerebilir.",
+              "string.max": "Website adresi maksimum 80 karakter olmalıdır.",
+            }),
+          github: joi
+            .string()
+            .allow("")
+            .max(80)
+            .pattern(new RegExp("^[A-Za-z0-9-/:.]+$"))
+            .messages({
+              "string.pattern.base":
+                "Github adresi yalnızca /, : , harf ve sayı içerebilir.",
+              "string.max": "Github adresi maksimum 80 karakter olmalıdır.",
+            }),
+          twitter: joi
+            .string()
+            .allow("")
+            .max(80)
+            .pattern(new RegExp("^[A-Za-z0-9-/:.]+$"))
+            .messages({
+              "string.pattern.base":
+                "Twitter adresi yalnızca /,:  harf ve sayı içerebilir.",
+              "string.max": "Twitter adresi maksimum 80 karakter olmalıdır.",
+            }),
+          instagram: joi
+            .string()
+            .allow("")
+            .max(80)
+            .pattern(new RegExp("^[A-Za-z0-9-/:.]+$"))
+            .messages({
+              "string.pattern.base":
+                "Instagram adresi yalnızca /,:  harf ve sayı içerebilir.",
+              "string.max": "Instagram adresi maksimum 80 karakter olmalıdır.",
+            }),
+          facebook: joi
+            .string()
+            .allow("")
+            .max(80)
+            .pattern(new RegExp("^[A-Za-z0-9-/:.]+$"))
+            .messages({
+              "string.pattern.base":
+                "Facebook adresi yalnızca /,:  harf ve sayı içerebilir.",
+              "string.max": "Facebook adresi maksimum 80 karakter olmalıdır.",
+            }),
+          profilePhoto: joi.any(),
         })
         .validateAsync(req.body);
       next();
     } catch (err) {
-      res.status(HttpStatusCode.EXPECTATION_FAILED).send(err.message);
+      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
     }
   }
 
@@ -62,7 +178,7 @@ class UserValidator extends CommonUserValidator {
         .validateAsync(req.body);
       next();
     } catch (err) {
-      res.status(HttpStatusCode.EXPECTATION_FAILED).send(err.message);
+      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
     }
   }
 }

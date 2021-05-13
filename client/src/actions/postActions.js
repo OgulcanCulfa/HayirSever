@@ -1,12 +1,38 @@
 import { GET_POSTS_SUCCESS, GET_POSTS_PENDING, GET_POSTS_ERROR } from "./types";
 
-import { getPosts, createPost, deletePost } from "../services/postService";
+import {
+  getPosts,
+  createPost,
+  deletePost,
+  getPostsById,
+} from "../services/postService";
 
-export const getPostAction = () => (dispatch) => {
+export const getPostAction = (category = undefined) => (dispatch) => {
   dispatch({
     type: GET_POSTS_PENDING,
   });
-  getPosts()
+  getPosts(category)
+    .then((res) => {
+      dispatch({
+        type: GET_POSTS_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      if (err) {
+        dispatch({
+          type: GET_POSTS_ERROR,
+          payload: err.response.data,
+        });
+      }
+    });
+};
+
+export const getPostsByIdAction = (userId) => (dispatch) => {
+  dispatch({
+    type: GET_POSTS_PENDING,
+  });
+  getPostsById(userId)
     .then((res) => {
       dispatch({
         type: GET_POSTS_SUCCESS,

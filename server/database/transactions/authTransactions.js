@@ -1,4 +1,4 @@
-const { FadabHelper } = require("fadab-mysql-helper");
+const { FadabHelper,queryAsync } = require("fadab-mysql-helper");
 
 class AuthTransactions extends FadabHelper {
   constructor() {
@@ -11,6 +11,10 @@ class AuthTransactions extends FadabHelper {
       `SELECT UserTypeName FROM tblUserType WHERE UserTypeNumber<(SELECT UserTypeNumber FROM tblUserType WHERE UserTypeName=?)`,
       [UserTypeName]
     );
+  }
+
+  login(EmailAddress,Password) {
+    return queryAsync(`SELECT * FROM tbluser WHERE EmailAddress = ? AND Password = ?`,[EmailAddress,Password])
   }
 }
 

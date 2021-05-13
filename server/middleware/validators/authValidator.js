@@ -1,5 +1,5 @@
 const joi = require("joi");
-const {StatusCodes} = require("http-status-codes");
+const { StatusCodes } = require("http-status-codes");
 
 class AuthValidator {
   constructor() {}
@@ -11,12 +11,19 @@ class AuthValidator {
           EmailAddress: joi.string().email().max(128).required().messages({
             "string.email": "Lütfen geçerli bir Email Adresi giriniz.",
             "string.max": "Email Adresi 128 karakterden büyük olamaz.",
-            "string.empty":"Email Adresi boş olamaz"
-                }),
-          Password: joi.string().max(50).required().messages({
-            "string.max": "Parola 50 karakterden büyük olamaz.",
-            "string.empty":"Şifre boş olamaz."
-                }),
+            "string.empty": "Email Adresi boş olamaz",
+          }),
+          Password: joi
+            .string()
+            .min(6)
+            .max(50)
+            .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı0-9]+$"))
+            .messages({
+              "string.pattern.base":
+                "Parola yalnızca harf ve rakam içerebilir.",
+              "string.min": "Parola 6 karakterden küçük olamaz.",
+              "string.max": "Parola 50 karakterden büyük olamaz.",
+            }),
         })
         .validateAsync(req.body);
       next();
@@ -29,10 +36,47 @@ class AuthValidator {
     try {
       await joi
         .object({
-          Name: joi.string().min(3).max(80).required(),
-          Surname: joi.string().min(2).max(50).required(),
-          EmailAddress: joi.string().email().max(128).required(),
-          Password: joi.string().min(6).max(50).required(),
+          Name: joi
+            .string()
+            .min(3)
+            .max(80)
+            .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı]+$"))
+            .messages({
+              "string.pattern.base":
+                "İsim yalnızca büyük ya da küçük harf içerebilir.",
+              "string.max": "İsim 128 karakterden büyük olamaz.",
+              "string.min": "İsim minimum 3 karakter olmalıdır.",
+              "string.empty": "İsim boş olamaz",
+            }),
+          Surname: joi
+            .string()
+            .min(2)
+            .max(50)
+            .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı0-9]+$"))
+            .messages({
+              "string.pattern.base":
+                "Soyad yalnızca büyük ya da küçük harf içerebilir.",
+              "string.max": "Soyad 128 karakterden büyük olamaz.",
+              "string.min": "Soyad minimum 2 karakter olmalıdır.",
+              "string.empty": "Soyad boş olamaz",
+            }),
+          EmailAddress: joi.string().email().max(128).required().messages({
+            "string.email": "Lütfen geçerli bir Email Adresi giriniz.",
+            "string.max": "Email Adresi 128 karakterden büyük olamaz.",
+            "string.empty": "Email Adresi boş olamaz",
+          }),
+          Password: joi
+            .string()
+            .min(6)
+            .max(50)
+            .required()
+            .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı0-9]+$"))
+            .messages({
+              "string.pattern.base":
+                "Parola yalnızca harf ve rakam içerebilir.",
+              "string.min": "Parola 6 karakterden küçük olamaz.",
+              "string.max": "Parola 50 karakterden büyük olamaz.",
+            }),
         })
         .validateAsync(req.body);
       next();

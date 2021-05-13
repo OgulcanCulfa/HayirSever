@@ -10,6 +10,8 @@ app.get("/", function (req, res) {
 app.use(routers.authRouter);
 app.use(routers.postRouter);
 app.use(routers.commentRouter);
+app.use(routers.userRouter);
+app.use(routers.categoryRouter);
 app.use(routers.test);
 
 app.use((req, res, next) => {

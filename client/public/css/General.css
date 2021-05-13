@@ -1,0 +1,11 @@
+.stick {
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+    .sticky-item {
+        position: sticky!important;
+        top: 3rem;
+    }
+}

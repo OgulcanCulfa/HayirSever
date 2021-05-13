@@ -8,8 +8,6 @@ const tokenControl = verifyToken.tokenControl;
 const { StatusCodes } = require("http-status-codes");
 const { errorSender } = require("../utils");
 
-
-
 router.post("/login", authValidator.login, async (req, res) => {
   try {
     const result = await authTransactions.findOneAsync({
@@ -27,16 +25,15 @@ router.post("/login", authValidator.login, async (req, res) => {
       Name: result.Name,
       Surname: result.Surname,
       UserTypeName: result.UserTypeName,
-      ProfilePhoto: result.profilePhoto
     };
     const token = jwt.sign(payload, req.app.get("api_key"), {
       expiresIn: "7d",
     });
-    res.json({token});
-  } catch (error) {
+    res.json({ token });
+  } catch (err) {
     res
-      .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
-      .send(error.message);
+      .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
+      .send(err.message);
   }
 });
 
@@ -51,19 +48,22 @@ router.post("/register", authValidator.register, async (req, res) => {
         "Zaten sisteme kayıtlısınız."
       );
     } else {
-      const { Name,Surname,EmailAddress,Password } = req.body;
+      const { Name, Surname, EmailAddress, Password } = req.body;
       authTransactions.insertAsync({
         Name,
         Surname,
         EmailAddress,
-        Password
-      })
-      res.json({ message: "Başarılı bir şekilde kayıt oldunuz. Sisteme giriş yapabilirsiniz." });
+        Password,
+      });
+      res.json({
+        message:
+          "Başarılı bir şekilde kayıt oldunuz. Sisteme giriş yapabilirsiniz.",
+      });
     }
   } catch (error) {
     res
       .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
-      .send(error.message);
+      .send(err.message);
   }
 });
 

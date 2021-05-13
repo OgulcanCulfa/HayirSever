@@ -4,7 +4,7 @@ import { Router, Switch, Route, Link } from "react-router-dom";
 
 import "jquery/dist/jquery";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.js";
+import "bootstrap/dist/js/bootstrap.min.js";
 import "./App.css";
 import Login from "./components/LoginComponent";
 import Register from "./components/RegisterComponent";
@@ -36,12 +36,12 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const user = this.props.user;
-    if (user) {
+    const auth = this.props.auth;
+    if (auth) {
       this.setState({
-        currentUser: user,
-        isAdmin: user.UserTypeName.includes("Root"),
-        isModerator: user.UserTypeName.includes("Moderator"),
+        currentUser: auth,
+        isAdmin: auth.UserTypeName.includes("Root"),
+        isModerator: auth.UserTypeName.includes("Moderator"),
       });
     }
   }
@@ -50,7 +50,7 @@ class App extends Component {
     const { currentUser,isAdmin,isModerator } = this.state;
     return (
       <Router history={history}>
-        <div>
+        <div style={{minHeight: "1000px"}}>
           <nav className="navbar navbar-dark bg-dark">
             <button
               className="navbar-toggler"
@@ -120,7 +120,7 @@ class App extends Component {
                         Çıkış Yap
                       </Link>
                     </li>
-                    <form className="form-inline my-2 my-lg-0">
+                    {/* <form className="form-inline my-2 my-lg-0">
                       <input
                         className="form-control mr-sm-2"
                         type="search"
@@ -133,7 +133,7 @@ class App extends Component {
                       >
                         Ara
                       </button>
-                    </form> 
+                    </form>  */}
                   </>
 
                 ) : (
@@ -170,9 +170,9 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  const { user } = state.authReducer;
+  const { auth } = state.authReducer;
   return {
-    user,
+    auth,
   };
 }
 

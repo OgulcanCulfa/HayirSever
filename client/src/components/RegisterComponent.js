@@ -134,91 +134,95 @@ class Register extends Component {
     const { message } = this.props;
 
     return (
-      <div className="col-md-12 d-flex justify-content-center mt-5">
-        <div className="card card-container border-0 w-50">
-          <Form
-            onSubmit={this.handleRegister}
-            ref={(c) => {
-              this.form = c;
-            }}
-          >
-            {!this.state.successful && (
-              <div>
-                <div className="form-group">
-                  <label htmlFor="Name">Ad</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="Name"
-                    value={this.state.Name}
-                    onChange={this.onChangeName}
-                    validations={[required, name]}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="Surname">Soyad</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="Surname"
-                    value={this.state.Surname}
-                    onChange={this.onChangeSurname}
-                    validations={[required, surname]}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="email">Email Adresi</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="email"
-                    value={this.state.EmailAdress}
-                    onChange={this.onChangeEmailAdress}
-                    validations={[required, email]}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="password">Şifre</label>
-                  <Input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    value={this.state.Password}
-                    onChange={this.onChangePassword}
-                    validations={[required, password]}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <button className="btn btn-primary btn-block">Kayıt Ol</button>
-                </div>
-              </div>
-            )}
-
-            {message && (
-              <div className="form-group">
-                <div
-                  className={
-                    this.state.successful
-                      ? "alert alert-success"
-                      : "alert alert-danger"
-                  }
-                  role="alert"
-                >
-                  {message}
-                </div>
-              </div>
-            )}
-            <CheckButton
-              style={{ display: "none" }}
+      <div className="row">
+        <div className="col-md-12 d-flex justify-content-center mt-5">
+          <div className="card card-container p-4 border-0 w-75">
+            <Form
+              onSubmit={this.handleRegister}
               ref={(c) => {
-                this.checkBtn = c;
+                this.form = c;
               }}
-            />
-          </Form>
+            >
+              {!this.state.successful && (
+                <div>
+                  <div className="form-group">
+                    <label htmlFor="Name">Ad</label>
+                    <Input
+                      type="text"
+                      className="form-control"
+                      name="Name"
+                      value={this.state.Name}
+                      onChange={this.onChangeName}
+                      validations={[required, name]}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="Surname">Soyad</label>
+                    <Input
+                      type="text"
+                      className="form-control"
+                      name="Surname"
+                      value={this.state.Surname}
+                      onChange={this.onChangeSurname}
+                      validations={[required, surname]}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="email">Email Adresi</label>
+                    <Input
+                      type="text"
+                      className="form-control"
+                      name="email"
+                      value={this.state.EmailAdress}
+                      onChange={this.onChangeEmailAdress}
+                      validations={[required, email]}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="password">Şifre</label>
+                    <Input
+                      type="password"
+                      className="form-control"
+                      name="password"
+                      value={this.state.Password}
+                      onChange={this.onChangePassword}
+                      validations={[required, password]}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <button className="btn btn-primary btn-block">
+                      Kayıt Ol
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {message && (
+                <div className="form-group">
+                  <div
+                    className={
+                      this.state.successful
+                        ? "alert alert-success"
+                        : "alert alert-danger"
+                    }
+                    role="alert"
+                  >
+                    {message}
+                  </div>
+                </div>
+              )}
+              <CheckButton
+                style={{ display: "none" }}
+                ref={(c) => {
+                  this.checkBtn = c;
+                }}
+              />
+            </Form>
+          </div>
         </div>
       </div>
     );

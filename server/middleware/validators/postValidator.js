@@ -40,11 +40,23 @@ class PostValidator extends CommonValidator {
     try {
       await joi
         .object({
-          limit: joi.number(),
-          offset: joi.number(),
+          category: joi.string().allow('').max(50)
+          .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı ]+$"))
         })
-        .with("offset", "limit")
         .validateAsync(req.query);
+      next();
+    } catch (err) {
+      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
+    }
+  }
+
+  static async bodyId(req, res, next) {
+    try {
+      await joi
+        .object({
+          postUserId: joi.number().required(),
+        })
+        .validateAsync(req.body);
       next();
     } catch (err) {
       res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);

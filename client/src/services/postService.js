@@ -3,13 +3,32 @@ import axios from "axios";
 const API_URL = "http://localhost:5000/";
 const token = JSON.parse(localStorage.getItem("token"));
 
-export const getPosts = () => {
+export const getPosts = (category) => {
   return axios
-    .get(API_URL + "posts", {
+    .get(API_URL + `posts?category=${category}`, {
       headers: {
         token: token,
       },
     })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+
+export const getPostsById = (userId) => {
+  return axios
+    .post(
+      API_URL + "postsbyid",
+      { postUserId: userId },
+      {
+        headers: {
+          token: token,
+        },
+      }
+    )
     .then((res) => {
       return res;
     })

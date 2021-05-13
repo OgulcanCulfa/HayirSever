@@ -8,19 +8,34 @@ const postValidator = validators.postValidator;
 const commonValidator = validators.commonValidator;
 const { StatusCodes } = require("http-status-codes");
 const { errorSender } = require("../utils");
+const imageUploadHelper = require("../utils/imageUploadHelper");
 const multerOptions = require("../utils/postMulterOptions");
-var multer = require("multer");
-var upload = multer({ storage: multerOptions("posts") });
+const multer = require("multer");
+const upload = multer({ storage: multerOptions("posts") });
 
 router.get("/posts", tokenControl, postValidator.select, async (req, res) => {
   try {
-    const result = await postTransactions.vwSelectAsync();
-    if (!result)
-      throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
+    if (req.query.category === 'undefined') {
+      const result = await postTransactions.vwSelectAsync();
 
-    res.json(result);
+      if (!result)
+        throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
+
+      res.json(result);
+    } else {
+      const result = await postTransactions.vwSelectAsync({
+        where: { categoryName: req.query.category },
+      });
+
+      if (!result)
+        throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
+
+      res.json(result);
+    }
   } catch (err) {
-    res.status(err.status || StatusCodes.INTERNAL_SERVER_ERROR).send(err);
+    res
+      .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
+      .send(err.message);
   }
 });
 
@@ -42,30 +57,33 @@ router.post(
         if (!result.affectedRows)
           throw errorSender.errorObject(
             StatusCodes.INTERNAL_SERVER_ERROR,
-            "Yeni post eklenemedi!"
+            "Yeni post eklenemedi. Lütfen tekrar deneyiniz."
           );
         res.send("Yeni post başarıyla eklendi.");
       } else {
-        const result = await postTransactions.insertAsync(
-          Object.assign(req.body, {
-            userId: req.decode.userId,
-            postphoto:
-              req.protocol +
-              "://" +
-              req.get("host") +
-              `/images/posts/${
-                req.body.text.substr(0, 5) + req.file.originalname
-              }`,
-          })
-        );
-
-        if (!result.affectedRows)
-          throw errorSender.errorObject(
-            StatusCodes.INTERNAL_SERVER_ERROR,
-            "Yeni post eklenemedi!"
-          );
-        res.send("Yeni post başarıyla eklendi.");
+        imageUploadHelper.insert(req, res, "postphoto", postTransactions);
       }
+    } catch (err) {
+      res
+        .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
+        .send(err.message);
+    }
+  }
+);
+
+// Find one
+
+router.post(
+  "/postsbyid",
+  tokenControl,
+  postValidator.bodyId,
+  async (req, res) => {
+    try {
+      const result = await postTransactions.vwSelectAsync({ where: req.body });
+      if (!result)
+        throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
+
+      res.json(result);
     } catch (err) {
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)

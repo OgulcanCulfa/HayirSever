@@ -1,4 +1,4 @@
-.hero {
+section {
   padding: 6.25rem 0px !important;
   margin: 0px !important;
 }
@@ -94,7 +94,6 @@
   font-family: 'Rokkitt', serif;
   font-weight: 500 !important;
   font-size: 24px;
-  color: #88898a;
 }
 
 .media-body small span {
@@ -300,7 +299,6 @@
 }
 
 .icon-border {
-  color: #bbbbbb;
   border: 2px solid #f4f4f4;  
 }
 

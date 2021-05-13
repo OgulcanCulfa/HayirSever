@@ -46,16 +46,14 @@ export const loginAction = (EmailAddress, Password) => (dispatch) => {
       .then((res) => {
         dispatch({
           type: LOGIN_SUCCESS,
-          payload: { user: res },
+          payload: res
         });
         resolve(res);
       })
       .catch((err) => {
-        if (err) {
           dispatch({
             type: LOGIN_FAIL,
           });
-        }
         reject(err);
       });
   });
