@@ -3,9 +3,9 @@ import axios from "axios";
 const API_URL = "http://localhost:5000/";
 const token = JSON.parse(localStorage.getItem("token"));
 
-export const getPosts = (category) => {
+export const getPosts = (categoryId) => {
   return axios
-    .get(API_URL + `posts?category=${category}`, {
+    .get(API_URL + `posts?categoryId=${categoryId}`, {
       headers: {
         token: token,
       },

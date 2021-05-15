@@ -8,6 +8,7 @@ const postValidator = validators.postValidator;
 const commonValidator = validators.commonValidator;
 const { StatusCodes } = require("http-status-codes");
 const { errorSender } = require("../utils");
+const { parserUtils } = require("../utils");
 const imageUploadHelper = require("../utils/imageUploadHelper");
 const multerOptions = require("../utils/postMulterOptions");
 const multer = require("multer");
@@ -15,23 +16,12 @@ const upload = multer({ storage: multerOptions("posts") });
 
 router.get("/posts", tokenControl, postValidator.select, async (req, res) => {
   try {
-    if (req.query.category === 'undefined') {
-      const result = await postTransactions.vwSelectAsync();
+    const result = await postTransactions.vwSelectAsync(parserUtils(req.query));
 
-      if (!result)
-        throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
+    if (!result)
+      throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
 
-      res.json(result);
-    } else {
-      const result = await postTransactions.vwSelectAsync({
-        where: { categoryName: req.query.category },
-      });
-
-      if (!result)
-        throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
-
-      res.json(result);
-    }
+    res.json(result);
   } catch (err) {
     res
       .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
@@ -52,6 +42,7 @@ router.post(
         const result = await postTransactions.insertAsync(
           Object.assign(req.body, {
             userId: req.decode.userId,
+            categoryId: req.query.categoryId
           })
         );
         if (!result.affectedRows)
@@ -71,7 +62,6 @@ router.post(
   }
 );
 
-// Find one
 
 router.post(
   "/postsbyid",

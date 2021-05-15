@@ -9,3 +9,43 @@
         top: 3rem;
     }
 }
+
+@media (max-width: 768px) {
+    .border-md-left {
+        border-left: 0;
+    }
+    .border-md-right {
+        border-right: 0;
+    }
+    .border-md-top {
+        border-top: 0;
+    }
+    .border-md-bottom {
+        border-bottom: 0;
+    }
+    .border-md {
+        border: 0;
+    }
+}
+
+@media (min-width: 768px) {
+    .left-border {
+        border-left: 0;
+    }
+    .right-border {
+        border-right: 0;
+    }
+    .top-border {
+        border-top: 0;
+    }
+    .bottom-border {
+        border-bottom: 0;
+    }
+    .all-border {
+        border: 0;
+    }
+
+    .height {
+        height: 100%;
+    }
+}

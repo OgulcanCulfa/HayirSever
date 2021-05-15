@@ -27,6 +27,7 @@ class PostComponent extends Component {
     this.handleDeletePost = this.handleDeletePost.bind(this);
     this.handleDeleteComment = this.handleDeleteComment.bind(this);
     this.handleCategory = this.handleCategory.bind(this);
+    this.handleSum = this.handleSum.bind(this);
 
     this.state = {
       active: false,
@@ -40,14 +41,17 @@ class PostComponent extends Component {
   }
 
   handleCreatePost(e) {
+    debugger;
     e.preventDefault();
     const data = new FormData();
     data.append("text", e.target[0].value);
     data.append("postphoto", e.target[1].files[0]);
+    data.append("categoryId", parseInt(e.target[2].value));
     this.props.actions
       .createPost(data)
       .then((res) => {
         this.props.actions.getPosts();
+        this.props.actions.getCategories();
         alertify.success(res.data);
       })
       .catch((err) => {
@@ -87,6 +91,7 @@ class PostComponent extends Component {
         .deletePost(postId)
         .then((res) => {
           this.props.actions.getPosts();
+          this.props.actions.getCategories();
           alertify.success(res.data);
         })
         .catch((err) => {
@@ -111,12 +116,15 @@ class PostComponent extends Component {
     };
   }
 
-  handleCategory(category) {
+  handleCategory(categoryId) {
+    this.props.actions.getPosts(categoryId);
     return (e) => {
       e.preventDefault();
-
-      this.props.actions.getPosts(category);
     };
+  }
+
+  handleSum(key, array) {
+    return array.reduce((a, b) => a + (b[key] || 0), 0);
   }
 
   render() {
@@ -151,35 +159,53 @@ class PostComponent extends Component {
                             placeholder="İhtiyaçlarınızı yazınız"
                           ></textarea>
                         </div>
-                        <div className="col-md-12 icon-border border-bottom-0 border-right-0 d-flex align-items-center mt-2">
+                        <div className="col-md-12 icon-border bottom-border border-md-bottom border-md-right d-md-flex align-items-center mt-2">
                           <input
                             type="file"
                             name="postphoto"
                             accept="image/*"
-                            className="border-0 disable-pointer p-3"
+                            className="border-0 disable-pointer p-2"
                           >
                             {/* <i className="fa fa-camera pointer"></i> */}
                           </input>
-                          <div className="form-group mb-0 icon-border border-top-0 border-bottom-0 p-2">
-                            <label for="exampleFormControlSelect1">
+                          <div className="form-group mb-0 icon-border top-border bottom-border border-md-left border-md-right p-2">
+                            <label htmlFor="categorySelect">
                               Kategori Seçiniz:
                             </label>
                             <select
-                              class="form-control"
-                              id="exampleFormControlSelect1"
+                              className="form-control"
+                              id="categorySelect"
                             >
                               {this.props.categories &&
                                 this.props.categories.map((ct) => (
-                                  <option key={ct.id}>{ct.categoryName}</option>
+                                  <option value={ct.id} key={ct.id}>
+                                    {ct.categoryName}
+                                  </option>
                                 ))}
                             </select>
                           </div>
-                          <div className="form-group d-flex h-100 mb-0 icon-border border-top-0 border-bottom-0 border-left-0 p-3">
+                          <div className="form-group mb-0 icon-border all-border border-md p-2 d-md-flex align-items-center">
+                            <div className="form-check d-flex">
+                              <input
+                                className="form-check-input d-md-flex"
+                                //name="anonym"
+                                id="anonym"
+                                type="checkbox"
+                              />
+                              <label
+                                className="form-check-label ml-1"
+                                htmlFor="anonym"
+                              >
+                                Anonim paylaş
+                              </label>
+                            </div>
+                          </div>
+                          <div className="form-group d-md-flex mb-0 icon-border height top-border bottom-border border-md-right border-md-left border-md-bottom p-2">
                             <button
-                              className="border-0 disable-pointer"
+                              className="border-0 disable-pointer d-md-flex"
                               type="submit"
                             >
-                              <i className="fa fa-paper-plane pointer"></i>
+                              <i className="fa fa-paper-plane pointer d-md-flex"></i>
                             </button>
                           </div>
                         </div>
@@ -191,27 +217,49 @@ class PostComponent extends Component {
             </div>
           </div>
           <div className="row stick">
-            <div className="col-md-3 my-3 sticky-item
-            ">
+            <div
+              className="col-md-3 my-3 sticky-item
+            "
+            >
               <ul className="list-group">
                 <li className="list-group-item text-center">
                   <h4>Kategoriler</h4>
                 </li>
+                <li
+                  onClick={() => {
+                    this.props.actions.getPosts();
+                    this.setState({
+                      activeIndex: 10000,
+                      active: true,
+                    });
+                  }}
+                  key="10000"
+                  className={
+                    this.state.activeIndex === 10000
+                      ? "list-group-item active pointer"
+                      : "list-group-item pointer"
+                  }
+                >
+                  Hepsi
+                  <span className="badge badge-dark float-right">
+                    {this.handleSum("countOfCategories", this.props.categories)}
+                  </span>
+                </li>
                 {this.props.categories &&
-                  this.props.categories.map((ct, i) => (
+                  this.props.categories.map((ct) => (
                     <li
                       onClick={() => {
+                        this.handleCategory(ct.id);
                         this.setState({
                           activeIndex: ct.id,
                           active: true,
                         });
-                        this.handleCategory(ct.categoryName);
                       }}
                       key={ct.id}
                       className={
-                        i === this.state.activeIndex
-                          ? "list-group-item active"
-                          : "list-group-item"
+                        ct.id === this.state.activeIndex
+                          ? "list-group-item pointer active"
+                          : "list-group-item pointer"
                       }
                     >
                       {ct.categoryName}
@@ -229,7 +277,7 @@ class PostComponent extends Component {
                     <div className="p-3">
                       <div className="media m-0 d-md-flex align-items-center">
                         <div className="d-flex mr-3">
-                          <Link to="#">
+                          <Link to={"/user/" + val.postUserId}>
                             <img
                               className="img-fluid rounded-circle"
                               src={val.profilePhoto}
@@ -244,13 +292,11 @@ class PostComponent extends Component {
                           </p>
 
                           <small>
-                            <span>
-                              {val.district} / {val.city}
-                            </span>
-                          </small>
-                          {/* <br /> */}
-                          <small>
                             <span>{moment(val.postCreatedAt).fromNow()}</span>
+                          </small>
+                          <br />
+                          <small>
+                            <span>{"Kategori: " + val.categoryName}</span>
                           </small>
                         </div>
                         {(this.props.user.userId === val.postUserId ||
@@ -276,12 +322,14 @@ class PostComponent extends Component {
                       </div>
                     </div>
 
-                    {val.postPhoto === "undefined" ? (
+                    {val.postPhoto === null ? (
                       <div></div>
                     ) : (
                       <div className="cardbox-item d-flex justify-content-center my-4">
                         <img
                           alt=""
+                          width="650"
+                          height="650"
                           className="img-fluid"
                           //src="https://www.telegraph.co.uk/content/dam/tv/2019/05/12/TELEMMGLPICT000195851846_trans_NvBQzQNjv4BqNrzB8hrvgfJ5sESwMmBGZOCHfpH_fyW0CNqPxWGmNfw.jpeg?imwidth=450"
                           src={val.postPhoto}
@@ -323,7 +371,7 @@ class PostComponent extends Component {
                                 <div className="d-md-flex flex-row">
                                   <div className="d-flex m-3 align-items-center text-left">
                                     <span className="comment-avatar mt-1 ">
-                                      <Link to="#">
+                                      <Link to={"/user/" + c.userId}>
                                         <img
                                           className="rounded-circle"
                                           src={c.profilePhoto}
@@ -374,7 +422,7 @@ class PostComponent extends Component {
                     <div className="row d-flex">
                       <div className="col-md-1 align-items-center ml-3 mr-0 d-flex">
                         <span className="comment-avatar float-left mt-2">
-                          <Link to="#">
+                          <Link to={"/user/" + this.props.user.id}>
                             <img
                               className="rounded-circle d-flex"
                               src={this.props.user.profilePhoto}

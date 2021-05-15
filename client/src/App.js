@@ -11,6 +11,7 @@ import Register from "./components/RegisterComponent";
 import Home from "./components/HomeComponent";
 import Profile from "./components/ProfileComponent";
 import Post from "./components/PostComponent";
+import User from "./components/UserComponent";
 import Error from "./components/ErrorComponent";
 
 import { logoutAction } from "./actions/auth";
@@ -25,7 +26,6 @@ class App extends Component {
     super(props);
 
     this.state = {
-      isModerator: false,
       isAdmin: false,
       currentUser: undefined,
     };
@@ -41,16 +41,15 @@ class App extends Component {
       this.setState({
         currentUser: auth,
         isAdmin: auth.UserTypeName.includes("Root"),
-        isModerator: auth.UserTypeName.includes("Moderator"),
       });
     }
   }
 
   render() {
-    const { currentUser,isAdmin,isModerator } = this.state;
+    const { currentUser, isAdmin } = this.state;
     return (
       <Router history={history}>
-        <div style={{minHeight: "1000px"}}>
+        <div style={{ minHeight: "1000px" }}>
           <nav className="navbar navbar-dark bg-dark">
             <button
               className="navbar-toggler"
@@ -73,18 +72,10 @@ class App extends Component {
             <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
               <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
                 <li className="nav-item">
-                  <Link to={"/home"} className="nav-link">
+                  <Link to={"/"} className="nav-link">
                     Ana Sayfa
                   </Link>
                 </li>
-
-                {isModerator && (
-                  <li className="nav-item">
-                    <Link to={"/mod"} className="nav-link">
-                      Moderator Board
-                    </Link>
-                  </li>
-                )}
 
                 {isAdmin && (
                   <li className="nav-item">
@@ -101,16 +92,13 @@ class App extends Component {
                         {currentUser.Name}
                       </Link>
                     </li>
-                    
+
                     <li>
-                      <Link
-                        to={"/posts"}
-                        className="nav-link"
-                      >
-                        Posts
+                      <Link to={"/posts"} className="nav-link">
+                        Gönderiler
                       </Link>
                     </li>
-                    
+
                     <li>
                       <Link
                         to={"/login"}
@@ -135,7 +123,6 @@ class App extends Component {
                       </button>
                     </form>  */}
                   </>
-
                 ) : (
                   <>
                     <Link to={"/login"} className="nav-link">
@@ -154,13 +141,13 @@ class App extends Component {
 
           <div className="container my-3">
             <Switch>
-              <Route exact path={["/", "/home"]} component={Home} />
+              <Route exact path="/" component={Home} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <ProtectedRoute exact path="/profile" component={Profile} />
               <ProtectedRoute path="/posts" component={Post} />
+              <ProtectedRoute path="/user/:id" component={User} />
               <Route path="*" component={Error} />
-
             </Switch>
           </div>
         </div>

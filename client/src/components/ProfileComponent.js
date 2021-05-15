@@ -144,7 +144,10 @@ class Profile extends Component {
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label htmlFor="Surname" className="col-sm-2 col-form-label">
+                      <label
+                        htmlFor="Surname"
+                        className="col-sm-2 col-form-label"
+                      >
                         Soyad
                       </label>
                       <div className="col-sm-10">
@@ -173,7 +176,10 @@ class Profile extends Component {
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label htmlFor="mobile" className="col-sm-2 col-form-label">
+                      <label
+                        htmlFor="mobile"
+                        className="col-sm-2 col-form-label"
+                      >
                         Telefon
                       </label>
                       <div className="col-sm-10">
@@ -186,7 +192,10 @@ class Profile extends Component {
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label htmlFor="address" className="col-sm-2 col-form-label">
+                      <label
+                        htmlFor="address"
+                        className="col-sm-2 col-form-label"
+                      >
                         Adres
                       </label>
                       <div className="col-sm-10">
@@ -201,7 +210,7 @@ class Profile extends Component {
                     <div className="form-group-row text-center">
                       <button
                         type="submit"
-                       className="btn btn-outline-success mt-3"
+                        className="btn btn-outline-success mt-3"
                       >
                         Güncelle
                       </button>
@@ -237,7 +246,10 @@ class Profile extends Component {
                     className="p-3 w-75"
                   >
                     <div className="form-group row">
-                      <label htmlFor="website" className="col-sm-2 col-form-label">
+                      <label
+                        htmlFor="website"
+                        className="col-sm-2 col-form-label"
+                      >
                         Website
                       </label>
                       <div className="col-sm-10">
@@ -250,7 +262,10 @@ class Profile extends Component {
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label htmlFor="github" className="col-sm-2 col-form-label">
+                      <label
+                        htmlFor="github"
+                        className="col-sm-2 col-form-label"
+                      >
                         Github
                       </label>
                       <div className="col-sm-10">
@@ -279,7 +294,10 @@ class Profile extends Component {
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label htmlFor="instagram" className="col-sm-2 col-form-label">
+                      <label
+                        htmlFor="instagram"
+                        className="col-sm-2 col-form-label"
+                      >
                         Instagram
                       </label>
                       <div className="col-sm-10">
@@ -292,7 +310,10 @@ class Profile extends Component {
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label htmlFor="facebook" className="col-sm-2 col-form-label">
+                      <label
+                        htmlFor="facebook"
+                        className="col-sm-2 col-form-label"
+                      >
                         Facebook
                       </label>
                       <div className="col-sm-10">
@@ -307,7 +328,7 @@ class Profile extends Component {
                     <div className="form-group-row text-center">
                       <button
                         type="submit"
-                       className="btn btn-outline-success mt-3"
+                        className="btn btn-outline-success mt-3"
                       >
                         Güncelle
                       </button>
@@ -344,7 +365,10 @@ class Profile extends Component {
                     className="p-3 w-75"
                   >
                     <div className="form-group row">
-                      <label htmlFor="profilePhoto" className="col-sm-2 col-form-label">
+                      <label
+                        htmlFor="profilePhoto"
+                        className="col-sm-2 col-form-label"
+                      >
                         Profil Fotoğrafı
                       </label>
                       <div className="col-sm-10 d-flex align-items-center">
@@ -356,7 +380,10 @@ class Profile extends Component {
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label htmlFor="department" className="col-sm-2 col-form-label">
+                      <label
+                        htmlFor="department"
+                        className="col-sm-2 col-form-label"
+                      >
                         Bölüm
                       </label>
                       <div className="col-sm-10">
@@ -369,10 +396,7 @@ class Profile extends Component {
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label
-                        htmlFor="city"
-                        className="col-sm-2 col-form-label"
-                      >
+                      <label htmlFor="city" className="col-sm-2 col-form-label">
                         İl
                       </label>
                       <div className="col-sm-10">
@@ -403,7 +427,7 @@ class Profile extends Component {
                     <div className="form-group-row text-center">
                       <button
                         type="submit"
-                       className="btn btn-outline-success mt-3"
+                        className="btn btn-outline-success mt-3"
                       >
                         Güncelle
                       </button>
@@ -444,7 +468,11 @@ class Profile extends Component {
                             Yaşadığı Yer:{" "}
                           </p>
                         )}
-                        <button className="btn btn-outline-secondary" data-target="#editPhotoArea" data-toggle="modal">
+                        <button
+                          className="btn btn-outline-secondary"
+                          data-target="#editPhotoArea"
+                          data-toggle="modal"
+                        >
                           <i className="fa fa-pencil mr-2"></i>
                           Profili Düzenle
                         </button>
@@ -692,11 +720,6 @@ class Profile extends Component {
                                   {val.Name} {val.Surname}
                                 </p>
 
-                                <small>
-                                  <span>
-                                    {val.district} / {val.city}
-                                  </span>
-                                </small>
                                 <small>
                                   <span>
                                     {moment(val.postCreatedAt).fromNow()}

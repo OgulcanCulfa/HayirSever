@@ -21,6 +21,7 @@ class PostValidator extends CommonValidator {
     try {
       await joi
         .object({
+          categoryId: joi.number().required(),
           text: joi.string(),
           postphoto: joi.any(),
         })
@@ -29,7 +30,7 @@ class PostValidator extends CommonValidator {
           "object.missing": "Gönderi veya Fotoğraf verisi zorunludur.",
           "string.empty": "Metin girilmesi zorunludur.",
         })
-        .validateAsync(req.body);
+        .validateAsync(req.body,req.query);
       next();
     } catch (err) {
       res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
@@ -40,8 +41,8 @@ class PostValidator extends CommonValidator {
     try {
       await joi
         .object({
-          category: joi.string().allow('').max(50)
-          .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı ]+$"))
+          categoryId: joi.string().max(50)
+          .pattern(new RegExp("^[0-9undefined]+$"))
         })
         .validateAsync(req.query);
       next();
