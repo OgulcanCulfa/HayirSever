@@ -5,10 +5,6 @@ import { connect } from "react-redux";
 import { getUserAction } from "../actions/userActions";
 
 class User extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.actions.getUser(parseInt(this.props.match.params.id));
   }
@@ -188,6 +184,21 @@ class User extends Component {
                         </a>
                       </span>
                     </li>
+
+                    <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                      <h6 className="mb-0">
+                        <img
+                          alt=""
+                          src="https://img.icons8.com/windows/32/4a90e2/kaggle.png"
+                        />
+                        Kaggle
+                      </h6>
+                      <span className="text-secondary text-break">
+                        <a rel="noreferrer" href={user.kaggle}>
+                          {user.kaggle}
+                        </a>
+                      </span>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -230,6 +241,7 @@ class User extends Component {
                         {user.address}
                       </div>
                     </div>
+                    <hr />
                   </div>
                 </div>
               </div>

@@ -12,6 +12,7 @@ import Home from "./components/HomeComponent";
 import Profile from "./components/ProfileComponent";
 import Post from "./components/PostComponent";
 import User from "./components/UserComponent";
+import Message from "./components/MessageComponent";
 import Error from "./components/ErrorComponent";
 
 import { logoutAction } from "./actions/auth";
@@ -100,6 +101,12 @@ class App extends Component {
                     </li>
 
                     <li>
+                      <Link to={"/messages"} className="nav-link">
+                        Mesajlar
+                      </Link>
+                    </li>
+
+                    <li>
                       <Link
                         to={"/login"}
                         className="nav-link"
@@ -145,6 +152,7 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <ProtectedRoute exact path="/profile" component={Profile} />
+              <ProtectedRoute exact path="/messages" component={Message} />
               <ProtectedRoute path="/posts" component={Post} />
               <ProtectedRoute path="/user/:id" component={User} />
               <Route path="*" component={Error} />

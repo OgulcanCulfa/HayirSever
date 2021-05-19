@@ -148,6 +148,16 @@ class UserValidator extends CommonUserValidator {
                 "Facebook adresi yalnızca /,:  harf ve sayı içerebilir.",
               "string.max": "Facebook adresi maksimum 80 karakter olmalıdır.",
             }),
+          kaggle: joi
+            .string()
+            .allow("")
+            .max(80)
+            .pattern(new RegExp("^[A-Za-z0-9-/:.]+$"))
+            .messages({
+              "string.pattern.base":
+                "Facebook adresi yalnızca /,:  harf ve sayı içerebilir.",
+              "string.max": "Facebook adresi maksimum 80 karakter olmalıdır.",
+            }),
           profilePhoto: joi.any(),
         })
         .validateAsync(req.body);

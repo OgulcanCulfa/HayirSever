@@ -18,10 +18,15 @@ class Profile extends Component {
   constructor() {
     super();
 
+    this.state = {
+      toggle: false,
+    };
+
     this.handleCreateComment = this.handleCreateComment.bind(this);
     this.handleDeletePost = this.handleDeletePost.bind(this);
     this.handleDeleteComment = this.handleDeleteComment.bind(this);
     this.handleUpdateUserInfo = this.handleUpdateUserInfo.bind(this);
+    this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
@@ -36,13 +41,13 @@ class Profile extends Component {
       const data = new FormData(e.target);
 
       data.append("postId", postId);
+      data.set("photo", e.target[1].files[0]);
 
-      const plainFormData = Object.fromEntries(data.entries());
       this.props.actions
-        .createComment(plainFormData)
+        .createComment(data)
         .then((res) => {
           alertify.success(res.data);
-          setTimeout(() => window.location.reload(), 2000);
+          setTimeout(() => window.location.reload(), 1000);
         })
         .catch((err) => {
           alertify.error(err.response.data);
@@ -100,6 +105,14 @@ class Profile extends Component {
           alertify.error(err.response.data);
         });
     };
+  }
+
+  toggle() {
+    this.props.commentData
+      ? this.setState((prevState) => ({
+          toggle: !prevState.toggle,
+        }))
+      : this.setState({ toggle: false });
   }
 
   render() {
@@ -322,6 +335,22 @@ class Profile extends Component {
                           className="form-control"
                           name="facebook"
                           placeholder={user.facebook}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label
+                        htmlFor="kaggle"
+                        className="col-sm-2 col-form-label"
+                      >
+                        Kaggle
+                      </label>
+                      <div className="col-sm-10">
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="kaggle"
+                          placeholder={user.kaggle}
                         />
                       </div>
                     </div>
@@ -617,6 +646,20 @@ class Profile extends Component {
                         </a>
                       </span>
                     </li>
+                    <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                      <h6 className="mb-0">
+                        <img
+                          alt=""
+                          src="https://img.icons8.com/windows/32/4a90e2/kaggle.png"
+                        />
+                        Kaggle
+                      </h6>
+                      <span className="text-secondary text-break">
+                        <a rel="noreferrer" href={user.kaggle}>
+                          {user.kaggle}
+                        </a>
+                      </span>
+                    </li>
                     <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap mx-auto">
                       <h6 className="mb-0">
                         <button
@@ -761,10 +804,12 @@ class Profile extends Component {
                               <div className="cardbox-base border-top-0">
                                 <ul
                                   onClick={() => {
-                                    val.countOfComments > 0 &&
+                                    if (val.countOfComments > 0) {
                                       this.props.actions.getCommentsById(
                                         val.postId
                                       );
+                                      this.toggle();
+                                    }
                                   }}
                                   className="float-left comments"
                                 >
@@ -784,14 +829,14 @@ class Profile extends Component {
                               </div>
                             </div>
                           </div>
-                          {this.props.commentData &&
+                          {this.state.toggle &&
                             this.props.commentData
                               .filter((c) => c.postId === val.postId)
                               .map((c) => (
                                 <div key={c.id} className="row">
                                   <div className="col-md-12 mb-3 search">
                                     <div className="my-1">
-                                      <div className="d-md-flex flex-row">
+                                      <div className="d-md-flex flex-column">
                                         <div className="d-flex m-3 align-items-center text-left">
                                           <span className="comment-avatar mt-1 ">
                                             <Link to="#">
@@ -807,6 +852,19 @@ class Profile extends Component {
                                               {c.Name + " " + c.Surname}
                                             </p>
                                           </div>
+                                          {user.id === c.userId && (
+                                            <div className="d-flex align-items-center m-3 justify-content-left">
+                                              <button
+                                                type="submit"
+                                                className="border-0 disable-pointer"
+                                                onClick={this.handleDeleteComment(
+                                                  c.id
+                                                )}
+                                              >
+                                                <i className="fa fa-trash pointer"></i>
+                                              </button>
+                                            </div>
+                                          )}
                                         </div>
                                         <div className="d-md-flex mr-auto m-3 align-items-center justify-content-left">
                                           <div className="text-break">
@@ -815,17 +873,15 @@ class Profile extends Component {
                                             </p>
                                           </div>
                                         </div>
-                                        {user.id === c.userId && (
-                                          <div className="d-flex align-items-center m-3 justify-content-left">
-                                            <button
-                                              type="submit"
-                                              className="border-0 disable-pointer"
-                                              onClick={this.handleDeleteComment(
-                                                c.id
-                                              )}
-                                            >
-                                              <i className="fa fa-trash pointer"></i>
-                                            </button>
+                                        {c.photo === null ? (
+                                          <div></div>
+                                        ) : (
+                                          <div className="d-md-flex align-items-center justify-content-left">
+                                            <img
+                                              alt=""
+                                              className="img-fluid w-75"
+                                              src={c.photo}
+                                            ></img>
                                           </div>
                                         )}
                                         <div className="d-flex align-items-center m-3 justify-content-left time p-0">
@@ -857,6 +913,7 @@ class Profile extends Component {
                             <div className="col-md-10">
                               <div className="align-items-center m-3">
                                 <form
+                                  encType="multipart/form-data"
                                   id="commentForm"
                                   onSubmit={this.handleCreateComment(
                                     val.postId
@@ -871,6 +928,7 @@ class Profile extends Component {
                                     />
                                     <input
                                       type="file"
+                                      name="photo"
                                       accept="image/*"
                                       className="my-auto px-2 border-top-0 border-bottom-0"
                                     ></input>

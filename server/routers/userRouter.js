@@ -4,6 +4,7 @@ const { validators, verifyToken, authorization } = require("../middleware");
 const commonValidator = validators.commonValidator;
 const userValidator = validators.userValidator;
 const userTransactions = TransactionsFactory.creating("userTransactions");
+const chatTransactions = TransactionsFactory.creating("chatTransactions");
 const tokenControl = verifyToken.tokenControl;
 const authControl = authorization.authControl;
 const { StatusCodes } = require("http-status-codes");
@@ -33,6 +34,18 @@ router.get(
   }
 );
 
+router.get("/chatusers", tokenControl, authControl, async (req, res) => {
+  try {
+    const result = await chatTransactions.vwSelectAsync({
+      where: { senderId: parseInt(req.decode.userId) },
+    });
+
+    res.json(result || {});
+  } catch (err) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(err.message);
+  }
+});
+
 router.put(
   "/users",
   tokenControl,
@@ -42,7 +55,7 @@ router.put(
   async (req, res) => {
     try {
       if (req.file) {
-        imageUploadHelper(req,res,"profilePhoto",userTransactions);
+        imageUploadHelper(req, res, "profilePhoto", userTransactions);
       } else {
         const result = await userTransactions.updateAsync(req.body, {
           id: req.decode.userId,

@@ -23,7 +23,7 @@ class CommentValidator extends CommonValidator {
         .object({
           postId: joi.number().required(),
           text: joi.string(),
-          photo: joi.string()
+          photo: joi.any()
         })
         .or("text","photo")
         .messages({"object.missing":"Gönderi veya Fotoğraf verisi zorunludur."})

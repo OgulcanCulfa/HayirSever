@@ -28,8 +28,10 @@ class PostComponent extends Component {
     this.handleDeleteComment = this.handleDeleteComment.bind(this);
     this.handleCategory = this.handleCategory.bind(this);
     this.handleSum = this.handleSum.bind(this);
+    this.toggle = this.toggle.bind(this);
 
     this.state = {
+      toggle: false,
       active: false,
       activeIndex: Number,
     };
@@ -41,8 +43,8 @@ class PostComponent extends Component {
   }
 
   handleCreatePost(e) {
-    debugger;
     e.preventDefault();
+    debugger;
     const data = new FormData();
     data.append("text", e.target[0].value);
     data.append("postphoto", e.target[1].files[0]);
@@ -63,18 +65,19 @@ class PostComponent extends Component {
 
   handleCreateComment(postId) {
     return (e) => {
+      debugger;
       e.preventDefault();
 
       const data = new FormData(e.target);
 
       data.append("postId", postId);
+      data.set("photo", e.target[1].files[0]);
 
-      const plainFormData = Object.fromEntries(data.entries());
       this.props.actions
-        .createComment(plainFormData)
+        .createComment(data)
         .then((res) => {
           alertify.success(res.data);
-          setTimeout(() => window.location.reload(), 2000);
+          setTimeout(() => window.location.reload(), 1000);
         })
         .catch((err) => {
           alertify.error(err.response.data);
@@ -108,7 +111,7 @@ class PostComponent extends Component {
         .deleteComment(commentId)
         .then((res) => {
           alertify.success(res.data);
-          setTimeout(() => window.location.reload(), 2000);
+          setTimeout(() => window.location.reload(), 1000);
         })
         .catch((err) => {
           alertify.error(err.response.data);
@@ -125,6 +128,14 @@ class PostComponent extends Component {
 
   handleSum(key, array) {
     return array.reduce((a, b) => a + (b[key] || 0), 0);
+  }
+
+  toggle() {
+    this.props.commentData
+      ? this.setState((prevState) => ({
+          toggle: !prevState.toggle,
+        }))
+      : this.setState({ toggle: false });
   }
 
   render() {
@@ -155,7 +166,7 @@ class PostComponent extends Component {
                             className="form-control"
                             id="text"
                             name="text"
-                            rows="3"
+                            rows="5"
                             placeholder="İhtiyaçlarınızı yazınız"
                           ></textarea>
                         </div>
@@ -168,7 +179,7 @@ class PostComponent extends Component {
                           >
                             {/* <i className="fa fa-camera pointer"></i> */}
                           </input>
-                          <div className="form-group mb-0 icon-border top-border bottom-border border-md-left border-md-right p-2">
+                          <div className="form-group mb-0 icon-border top-border bottom-border right-border border-md-bottom border-md-left border-md-right p-2">
                             <label htmlFor="categorySelect">
                               Kategori Seçiniz:
                             </label>
@@ -183,22 +194,6 @@ class PostComponent extends Component {
                                   </option>
                                 ))}
                             </select>
-                          </div>
-                          <div className="form-group mb-0 icon-border all-border border-md p-2 d-md-flex align-items-center">
-                            <div className="form-check d-flex">
-                              <input
-                                className="form-check-input d-md-flex"
-                                //name="anonym"
-                                id="anonym"
-                                type="checkbox"
-                              />
-                              <label
-                                className="form-check-label ml-1"
-                                htmlFor="anonym"
-                              >
-                                Anonim paylaş
-                              </label>
-                            </div>
                           </div>
                           <div className="form-group d-md-flex mb-0 icon-border height top-border bottom-border border-md-right border-md-left border-md-bottom p-2">
                             <button
@@ -299,8 +294,8 @@ class PostComponent extends Component {
                             <span>{"Kategori: " + val.categoryName}</span>
                           </small>
                         </div>
-                        {(this.props.user.userId === val.postUserId ||
-                          this.props.user.UserTypeName === "Root") && (
+                        {(this.props.user.id === val.postUserId ||
+                          this.props.auth.UserTypeName === "Root") && (
                           <button
                             type="button"
                             className="close p-3"
@@ -342,8 +337,10 @@ class PostComponent extends Component {
                         <div className="cardbox-base border-top-0">
                           <ul
                             onClick={() => {
-                              val.countOfComments > 0 &&
+                              if (val.countOfComments > 0) {
                                 this.props.actions.getCommentsById(val.postId);
+                                this.toggle();
+                              }
                             }}
                             className="float-left comments"
                           >
@@ -361,14 +358,14 @@ class PostComponent extends Component {
                         </div>
                       </div>
                     </div>
-                    {this.props.commentData &&
+                    {this.state.toggle &&
                       this.props.commentData
                         .filter((c) => c.postId === val.postId)
                         .map((c) => (
                           <div key={c.id} className="row mx-0">
                             <div className="col-md-12 mb-3 search">
                               <div className="my-1">
-                                <div className="d-md-flex flex-row">
+                                <div className="d-md-flex flex-column">
                                   <div className="d-flex m-3 align-items-center text-left">
                                     <span className="comment-avatar mt-1 ">
                                       <Link to={"/user/" + c.userId}>
@@ -384,6 +381,21 @@ class PostComponent extends Component {
                                         {c.Name + " " + c.Surname}
                                       </p>
                                     </div>
+                                    {(this.props.auth.userId === c.userId ||
+                                      this.props.auth.UserTypeName ===
+                                        "Root") && (
+                                      <div className="d-flex align-items-center m-3 justify-content-left">
+                                        <button
+                                          type="submit"
+                                          className="border-0 disable-pointer"
+                                          onClick={this.handleDeleteComment(
+                                            c.id
+                                          )}
+                                        >
+                                          <i className="fa fa-trash pointer"></i>
+                                        </button>
+                                      </div>
+                                    )}
                                   </div>
                                   <div className="d-md-flex mr-auto m-3 align-items-center justify-content-left">
                                     <div className="text-break">
@@ -392,19 +404,21 @@ class PostComponent extends Component {
                                       </p>
                                     </div>
                                   </div>
-                                  {(this.props.auth.userId === c.userId ||
-                                    this.props.auth.UserTypeName ===
-                                      "Root") && (
-                                    <div className="d-flex align-items-center m-3 justify-content-left">
-                                      <button
-                                        type="submit"
-                                        className="border-0 disable-pointer"
-                                        onClick={this.handleDeleteComment(c.id)}
-                                      >
-                                        <i className="fa fa-trash pointer"></i>
-                                      </button>
+
+                                  {c.photo === null ? (
+                                    <div></div>
+                                  ) : (
+                                    <div className="d-md-flex align-items-center justify-content-left">
+                                      <img
+                                      alt=""
+                                        width="300"
+                                        height="250"
+                                        className="img-fluid"
+                                        src={c.photo}
+                                      ></img>
                                     </div>
                                   )}
+
                                   <div className="d-flex align-items-center m-3 justify-content-left time p-0">
                                     <small>
                                       <span>
@@ -434,6 +448,7 @@ class PostComponent extends Component {
                       <div className="col-md-10">
                         <div className="align-items-center m-3">
                           <form
+                            encType="multipart/form-data"
                             id="commentForm"
                             onSubmit={this.handleCreateComment(val.postId)}
                           >
@@ -446,6 +461,7 @@ class PostComponent extends Component {
                               />
                               <input
                                 type="file"
+                                name="photo"
                                 accept="image/*"
                                 className="my-auto px-2 border-top-0 border-bottom-0"
                               >

@@ -18,6 +18,20 @@ export const getUser = (id) => {
     });
 };
 
+export const getChatUser = () => {
+  return axios.get(API_URL + `chatusers`, {
+    headers: {
+      token: token,
+    }
+  })
+  .then((res) => {
+    return res;
+  })
+  .catch((err) => {
+    throw err;
+  })
+}
+
 export const updateUserInfo = (formData) => {
   return axios.put(API_URL + "users", formData, {
     headers: {

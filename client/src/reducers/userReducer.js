@@ -1,6 +1,6 @@
-import {GET_USER} from "../actions/types";
+import {GET_USER, GET_CHAT_USER} from "../actions/types";
 
-const initialState = {user: {}};
+const initialState = {user: {}, chatUser: []};
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -9,6 +9,11 @@ const userReducer = (state = initialState, action) => {
         ...state,
         user: action.payload
       };
+    case GET_CHAT_USER:
+      return {
+        ...state,
+        chatUser: action.payload
+      }
     default:
       return state;
   }

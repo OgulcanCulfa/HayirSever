@@ -2,6 +2,7 @@ import {
   GET_COMMENTS_BY_ID_SUCCESS,
   GET_COMMENTS_BY_ID_PENDING,
   GET_COMMENTS_BY_ID_ERROR,
+  CLEAR_DATA,
 } from "./types";
 
 import {
@@ -44,5 +45,11 @@ export const deleteCommentAction = (postId) => (dispatch) => {
     deleteComment(postId)
       .then((res) => resolve(res))
       .catch((err) => reject(err));
+  });
+};
+
+export const clearDataAction = (dispatch) => {
+  dispatch({
+    type: CLEAR_DATA,
   });
 };

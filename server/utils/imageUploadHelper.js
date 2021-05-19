@@ -4,9 +4,8 @@ const { StatusCodes } = require("http-status-codes");
 class ImageUploadHelper {
   constructor() {}
 
-  static async update(req, res, field, transaction) {
+  static async update(req, res, to, field, transaction) {
     try {
-      console.log(transaction);
       const result = await transaction.updateAsync(
         Object.assign(req.body, {
           id: req.decode.userId,
@@ -14,7 +13,7 @@ class ImageUploadHelper {
             req.protocol +
             "://" +
             req.get("host") +
-            `/images/users/${req.file.originalname}`,
+            `/images/${to}/${req.file.originalname}`,
         }),
         { id: req.decode.userId }
       );
@@ -22,9 +21,9 @@ class ImageUploadHelper {
       if (!result.affectedRows)
         throw errorSender.errorObject(
           StatusCodes.INTERNAL_SERVER_ERROR,
-          "Kullanıcı bilgileri güncellenemedi. Lütfen tekrar deneyiniz."
+          errMsg
         );
-      res.send("Kullanıcı bilgileri başarıyla güncellendi.");
+      res.send(successMsg);
     } catch (err) {
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
@@ -32,7 +31,7 @@ class ImageUploadHelper {
     }
   }
 
-  static async insert(req, res, field, transaction) {
+  static async insert(req, res, to, field, transaction, errMsg, successMsg) {
     try {
       const result = await transaction.insertAsync(
         Object.assign(req.body, {
@@ -41,7 +40,7 @@ class ImageUploadHelper {
             req.protocol +
             "://" +
             req.get("host") +
-            `/images/posts/${
+            `/images/${to}/${
               req.body.text.substr(0, 5) + req.file.originalname
             }`,
         })
@@ -50,9 +49,9 @@ class ImageUploadHelper {
       if (!result.affectedRows)
         throw errorSender.errorObject(
           StatusCodes.INTERNAL_SERVER_ERROR,
-          "Yeni post eklenemedi. Lütfen tekrar deneyiniz."
+          errMsg
         );
-      res.send("Yeni post başarıyla eklendi.");
+      res.send(successMsg);
     } catch (err) {
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)

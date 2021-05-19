@@ -30,7 +30,7 @@ class PostValidator extends CommonValidator {
           "object.missing": "Gönderi veya Fotoğraf verisi zorunludur.",
           "string.empty": "Metin girilmesi zorunludur.",
         })
-        .validateAsync(req.body,req.query);
+        .validateAsync(req.body);
       next();
     } catch (err) {
       res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
