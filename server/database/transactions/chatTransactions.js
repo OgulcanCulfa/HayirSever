@@ -11,9 +11,9 @@ class ChatTransactions extends FadabHelper {
     return selectAsync(this.vwName, options);
   }
 
-  getMessages(senderId) {
-    return queryAsync("SELECT * FROM vwchatwithusers WHERE senderId=? OR userId=?",[senderId,senderId])
-  }
+  // getMessages(senderId) {
+  //   return queryAsync("SELECT * FROM vwchatwithusers WHERE senderId=? OR userId=?",[senderId,senderId])
+  // }
 
   getMessagesById(senderId,receiverId) {
     return queryAsync(

@@ -36,10 +36,7 @@ router.get(
 
 router.get("/chatusers", tokenControl, authControl, async (req, res) => {
   try {
-    const result = await chatTransactions.vwSelectAsync({
-      where: { senderId: parseInt(req.decode.userId) },
-    });
-
+    const result = await userTransactions.vwSelectAsync();
     res.json(result || {});
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(err.message);

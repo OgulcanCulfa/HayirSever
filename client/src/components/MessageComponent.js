@@ -10,7 +10,7 @@ import alertify from "alertifyjs";
 class MessageComponent extends Component {
   constructor() {
     super();
-    this.socket = socketIOClient("http://localhost:5000");
+    this.socket = null;
     this.state = {
       api: "http://localhost:5000",
       messages: [],
@@ -19,14 +19,28 @@ class MessageComponent extends Component {
   }
 
   componentDidMount() {
-    this.props.actions.getChatUser();
+    this.props.actions.getChatUsers();
+    const socket = socketIOClient(this.state.api, {
+      query: {
+        userId: this.props.auth.userId,
+      },
+    });
+    this.socket = socket;
 
-    this.socket.on("getMessages", async (data) => {
-      this.props.actions.getChatUser();
+    this.socket.on("isOnline", (data) => {
+      if (!data.bool) {
+        console.log("Offline. id:", data.id);
+      } else {
+        console.log("Bağlandı. id:", data.id);
+      }
+    });
+
+    this.socket.on("getMessages", (data) => {
+      this.props.actions.getChatUsers();
       this.setState({ messages: data });
       console.log(this.state.messages);
     });
-    this.socket.on("successOrFail", async (data) => {
+    this.socket.on("successOrFail", (data) => {
       if (!data) {
         alertify.error("Mesaj gönderilemedi. Lütfen tekrar deneyiniz.");
       }
@@ -34,6 +48,10 @@ class MessageComponent extends Component {
   }
 
   getMessages = (senderId, receiverId) => {
+    this.socket.emit("joinPrivate", {
+      senderId,
+      receiverId,
+    });
     this.socket.emit("getMessages", {
       senderId,
       receiverId,
@@ -44,67 +62,66 @@ class MessageComponent extends Component {
     return (e) => {
       e.preventDefault();
       this.socket.emit("sendMessage", {
-        senderId: senderId,
-        receiverId: receiverId,
-        message: e.target[0].value,
-      });
-      this.props.actions.getChatUser();
-      this.socket.emit("getMessages", {
         senderId,
         receiverId,
+        message: e.target[0].value,
       });
+      this.props.actions.getChatUsers();
+      this.getMessages(senderId, receiverId);
+      document.getElementById("chatForm").reset();
     };
   };
 
   render() {
     return (
       <div>
-        <h3 className="text-center mt-5 mb-4">Messaging</h3>
+        <h3 className="text-center mt-5 mb-4">Mesajlaşma</h3>
         <div className="messaging">
           <div className="inbox_msg">
             <div className="inbox_people">
               <div className="headind_srch">
                 <div className="recent_heading">
-                  <h4>Recent</h4>
+                  <h4>Mesaj Yaz</h4>
                 </div>
               </div>
               <div className="inbox_chat">
                 {this.props.chatUser &&
-                  this.props.chatUser.map((cu) => (
-                    <div key={cu.id} className="chat_list pointer">
-                      <div className="chat_people d-flex align-items-center">
-                        <div className="chat_img">
-                          {" "}
-                          <img
-                            className=" w-100"
-                            src={cu.profilephoto}
-                            alt=""
-                          />{" "}
-                        </div>
-                        <div className="chat_ib">
-                          <h5
-                            onClick={async () => {
-                              await this.setState({ receiver: cu });
-                              this.getMessages(
-                                this.props.auth.userId,
-                                cu.userId
-                              );
-                            }}
-                          >
-                            {cu.Name} {cu.Surname}{" "}
-                            <span className="chat_date">
-                              {moment(cu.chatCreatedAt).fromNow()}
-                            </span>
-                          </h5>
+                  this.props.chatUser.map((cu) =>
+                    cu.id === this.props.auth.userId ? (
+                      <div></div>
+                    ) : (
+                      <div key={cu.id} className="chat_list pointer">
+                        <div className="chat_people d-flex align-items-center">
+                          <div className="chat_img">
+                            {" "}
+                            <img
+                              className=" w-100"
+                              src={cu.profilePhoto}
+                              alt=""
+                            />{" "}
+                          </div>
+                          <div className="chat_ib">
+                            <h5
+                              onClick={async () => {
+                                await this.setState({ receiver: cu });
+                                this.getMessages(this.props.auth.userId, cu.id);
+                              }}
+                            >
+                              {cu.Name} {cu.Surname}{" "}
+                            </h5>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  )}
               </div>
             </div>
             {this.state.receiver ? (
               <div className="mesgs">
                 <div className="msg_history">
+                  {this.state.messages.length === 0 && (
+                    <h3 className="text-center">Mesaj başlatın</h3>
+                  )}
                   {this.state.messages.map((m) => (
                     <div>
                       {this.props.auth.userId === m.receiverId ? (
@@ -149,9 +166,10 @@ class MessageComponent extends Component {
                 <div className="type_msg">
                   <div className="input_msg_write">
                     <form
+                      id="chatForm"
                       onSubmit={this.sendMessage(
                         this.props.auth.userId,
-                        this.state.receiver.userId
+                        this.state.receiver.id
                       )}
                     >
                       <input
@@ -193,7 +211,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: {
-      getChatUser: bindActionCreators(getChatUserAction, dispatch),
+      getChatUsers: bindActionCreators(getChatUserAction, dispatch),
     },
   };
 }

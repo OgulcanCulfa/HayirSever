@@ -27,7 +27,6 @@ class App extends Component {
     super(props);
 
     this.state = {
-      isAdmin: false,
       currentUser: undefined,
     };
 
@@ -41,13 +40,12 @@ class App extends Component {
     if (auth) {
       this.setState({
         currentUser: auth,
-        isAdmin: auth.UserTypeName.includes("Root"),
       });
     }
   }
 
   render() {
-    const { currentUser, isAdmin } = this.state;
+    const { currentUser } = this.state;
     return (
       <Router history={history}>
         <div style={{ minHeight: "1000px" }}>
@@ -78,13 +76,6 @@ class App extends Component {
                   </Link>
                 </li>
 
-                {isAdmin && (
-                  <li className="nav-item">
-                    <Link to={"/admin"} className="nav-link">
-                      Admin Paneli
-                    </Link>
-                  </li>
-                )}
 
                 {currentUser ? (
                   <>
