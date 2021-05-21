@@ -4,7 +4,7 @@ module.exports = {
   socket: (io) => {
     io.on("connection", async (socket) => {
       const id = await socket.handshake.query.userId;
-      socket.broadcast.emit("isOnline", {id, bool: true});
+      socket.broadcast.emit("isOnline", { id, bool: true });
       socket.on("joinPrivate", async ({ senderId, receiverId }) => {
         if (
           io.sockets.adapter.rooms.has(
@@ -35,7 +35,6 @@ module.exports = {
         }
       });
       socket.on("sendMessage", async ({ senderId, receiverId, message }) => {
-        //console.log(senderId.toString() + receiverId.toString());
         const result = await sendMessage(senderId, receiverId, message);
         const data = await getMessages(senderId, receiverId);
         io.to(senderId.toString() + receiverId.toString()).emit(
@@ -48,7 +47,7 @@ module.exports = {
         );
       });
       socket.on("disconnect", () => {
-        socket.broadcast.emit("isOnline", {id, bool: false});
+        socket.broadcast.emit("isOnline", { id, bool: false });
       });
     });
   },
