@@ -44,7 +44,6 @@ class PostComponent extends Component {
 
   handleCreatePost(e) {
     e.preventDefault();
-    debugger;
     const data = new FormData();
     data.append("text", e.target[0].value);
     data.append("postphoto", e.target[1].files[0]);
@@ -65,7 +64,6 @@ class PostComponent extends Component {
 
   handleCreateComment(postId) {
     return (e) => {
-      debugger;
       e.preventDefault();
 
       const data = new FormData(e.target);

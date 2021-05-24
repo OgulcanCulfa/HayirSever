@@ -98,6 +98,16 @@ class UserValidator extends CommonUserValidator {
               "string.max": "Bölüm maksimum 80 karakter olmalıdır.",
               "string.empty": "Bölüm bilgisinin girilmesi zorunludur.",
             }),
+          classNum: joi
+          .number()
+          .min(1)
+          .max(6)
+          .messages({
+            "number.base": "Sınıf değeri sadece sayı olabilir.",
+            "number.max": "Sınıf 6'dan büyük olamaz.",
+            "number.min": "Sınıf 1'den küçük olamaz.",
+            "number.empty": "Sınıf bilgisinin girilmesi zorunludur.",
+          }),
           website: joi
             .string()
             .allow("")

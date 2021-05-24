@@ -48,21 +48,14 @@ router.post("/register", authValidator.register, async (req, res) => {
         "Zaten sisteme kayıtlısınız."
       );
     } else {
-      const { Name, Surname, EmailAddress, Password } = req.body;
-      authTransactions.insertAsync({
-        Name,
-        Surname,
-        EmailAddress,
-        Password,
-      });
-      res.json({
-        message:
-          "Başarılı bir şekilde kayıt oldunuz. Sisteme giriş yapabilirsiniz.",
-      });
+      authTransactions.insertAsync(req.body);
+      res.send(
+        "Başarılı bir şekilde"
+      );
     }
-  } catch (error) {
+  } catch (err) {
     res
-      .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+      .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
       .send(err.message);
   }
 });

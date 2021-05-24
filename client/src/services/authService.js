@@ -1,11 +1,9 @@
 import axios from "axios";
-import { Redirect } from "react-router";
 import jwtDecode from "jwt-decode";
 
 const API_URL = "http://localhost:5000/";
 
 export const login = (EmailAddress, Password) => {
-
   return axios
     .post(API_URL + "login", { EmailAddress, Password })
     .then((res) => {
@@ -22,19 +20,27 @@ export const logout = () => {
   localStorage.removeItem("token");
 };
 
-export const register = (Name, Surname, EmailAddress, Password) => {
+export const register = (
+  Name,
+  Surname,
+  EmailAddress,
+  Password,
+  department,
+  classNum
+) => {
   return axios
     .post(API_URL + "register", {
       Name,
       Surname,
       EmailAddress,
       Password,
+      department,
+      classNum,
     })
     .then((res) => {
-      <Redirect to="/login"></Redirect>;
-      return res.data;
+      return res;
     })
     .catch((err) => {
-      if (err) throw err;
+      throw err;
     });
 };

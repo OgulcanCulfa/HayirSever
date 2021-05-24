@@ -48,7 +48,7 @@ class App extends Component {
     const { currentUser } = this.state;
     return (
       <Router history={history}>
-        <div style={{ minHeight: "1000px" }}>
+        <div className="page" >
           <nav className="navbar navbar-dark bg-dark">
             <button
               className="navbar-toggler"
@@ -75,7 +75,6 @@ class App extends Component {
                     Ana Sayfa
                   </Link>
                 </li>
-
 
                 {currentUser ? (
                   <>
@@ -106,20 +105,6 @@ class App extends Component {
                         Çıkış Yap
                       </Link>
                     </li>
-                    {/* <form className="form-inline my-2 my-lg-0">
-                      <input
-                        className="form-control mr-sm-2"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
-                      />
-                      <button
-                        className="btn btn-outline-success my-2 my-sm-0"
-                        type="submit"
-                      >
-                        Ara
-                      </button>
-                    </form>  */}
                   </>
                 ) : (
                   <>
@@ -137,7 +122,7 @@ class App extends Component {
             </div>
           </nav>
 
-          <div className="container my-3">
+          <div className="container content my-3">
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/login" component={Login} />
@@ -148,6 +133,28 @@ class App extends Component {
               <ProtectedRoute path="/user/:id" component={User} />
               <Route path="*" component={Error} />
             </Switch>
+          </div>
+
+          <div className="bottom p-2">
+            <div className="row">
+              <div className="col-md-12 text-center">
+                <div className="copyright">
+                  <p>
+                    Bu uygulama
+                    <a
+                      href="https://github.com/OgulcanCulfa"
+                      rel="noreferrer"
+                      target="_blank"
+                      className="transition"
+                    >
+                      Oğulcan Culfa
+                    </a>
+                    tarafından yapıldı. Tüm hakları saklıdır.
+                    <br />© <span>2021 </span>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Router>

@@ -33,6 +33,9 @@ class User extends Component {
                         <p className="text-secondary mb-1">
                           Bölüm: {user.department}
                         </p>
+                        <p className="text-secondary mb-1">
+                          Sınıf: {user.classNum}
+                        </p>
                         {user.district && user.city ? (
                           <p className="text-muted font-size-sm">
                             Yaşadığı Yer: {user.district} / {user.city}

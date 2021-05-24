@@ -152,7 +152,7 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="Name"
-                          placeholder={user.Name}
+                          defaultValue={user.Name}
                         />
                       </div>
                     </div>
@@ -168,7 +168,7 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="Surname"
-                          placeholder={user.Surname}
+                          defaultValue={user.Surname}
                         />
                       </div>
                     </div>
@@ -184,7 +184,7 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="EmailAddress"
-                          placeholder={user.EmailAddress}
+                          defaultValue={user.EmailAddress}
                         />
                       </div>
                     </div>
@@ -200,7 +200,7 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="mobile"
-                          placeholder={user.mobile}
+                          defaultValue={user.mobile}
                         />
                       </div>
                     </div>
@@ -216,7 +216,7 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="address"
-                          placeholder={user.address}
+                          defaultValue={user.address}
                         />
                       </div>
                     </div>
@@ -270,7 +270,7 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="website"
-                          placeholder={user.website}
+                          defaultValue={user.website}
                         />
                       </div>
                     </div>
@@ -286,7 +286,7 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="github"
-                          placeholder={user.github}
+                          defaultValue={user.github}
                         />
                       </div>
                     </div>
@@ -302,7 +302,7 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="twitter"
-                          placeholder={user.twitter}
+                          defaultValue={user.twitter}
                         />
                       </div>
                     </div>
@@ -318,7 +318,7 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="instagram"
-                          placeholder={user.instagram}
+                          defaultValue={user.instagram}
                         />
                       </div>
                     </div>
@@ -334,7 +334,7 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="facebook"
-                          placeholder={user.facebook}
+                          defaultValue={user.facebook}
                         />
                       </div>
                     </div>
@@ -350,7 +350,7 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="kaggle"
-                          placeholder={user.kaggle}
+                          defaultValue={user.kaggle}
                         />
                       </div>
                     </div>
@@ -420,7 +420,23 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="department"
-                          placeholder={user.department}
+                          defaultValue={user.department}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label
+                        htmlFor="class"
+                        className="col-sm-2 col-form-label"
+                      >
+                        Sınıf
+                      </label>
+                      <div className="col-sm-10">
+                        <input
+                          type="number"
+                          className="form-control"
+                          name="classNum"
+                          defaultValue={user.class}
                         />
                       </div>
                     </div>
@@ -433,7 +449,7 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="city"
-                          placeholder={user.city}
+                          defaultValue={user.city}
                         />
                       </div>
                     </div>
@@ -449,7 +465,7 @@ class Profile extends Component {
                           type="text"
                           className="form-control"
                           name="district"
-                          placeholder={user.district}
+                          defaultValue={user.district}
                         />
                       </div>
                     </div>
@@ -487,9 +503,12 @@ class Profile extends Component {
                         <p className="text-secondary mb-1">
                           Bölüm: {user.department}
                         </p>
+                        <p className="text-secondary mb-1">
+                          Sınıf: {user.classNum}
+                        </p>
                         {user.district && user.city ? (
                           <p className="text-muted font-size-sm">
-                            Yaşadığı Yer: {user.district} / {user.city}
+                            Yaşadığı Yer: {user.district + " / " + user.city}
                           </p>
                         ) : (
                           <p className="text-muted font-size-sm">
@@ -742,7 +761,7 @@ class Profile extends Component {
                   </div>
                 </div>
                 <div className="row">
-                  {this.props.postData &&
+                  {this.props.postData && (
                     this.props.postData.map((val) => (
                       <div key={val.postId} className="col-md-12">
                         <div className="card card-body mb-5">
@@ -945,7 +964,8 @@ class Profile extends Component {
                           </div>
                         </div>
                       </div>
-                    ))}
+                    ))
+                  )}
                 </div>
               </div>
             </div>

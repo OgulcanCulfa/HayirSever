@@ -6,12 +6,13 @@ import { isEmail } from "validator";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { registerAction } from "../actions/auth";
+import alertify from "alertifyjs";
 
 const required = (value) => {
   if (!value) {
     return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
+      <div className="alert alert-danger mt-2" role="alert">
+        Bu alan boş bırakılamaz.
       </div>
     );
   }
@@ -21,17 +22,17 @@ const email = (value) => {
   if (!isEmail(value)) {
     return (
       <div className="alert alert-danger" role="alert">
-        This is not a valid email.
+        Bu geçerli bir e-mail adresi değil.
       </div>
     );
   }
 };
 
 const name = (value) => {
-  if (value.length < 3 || value.length > 80) {
+  if (value.length < 2 || value.length > 80) {
     return (
-      <div className="alert alert-danger" role="alert">
-        The name must be between 3 and 80 characters.
+      <div className="alert alert-danger mt-2" role="alert">
+        Adınız 2 veya 80 harf arasında olmalıdır.
       </div>
     );
   }
@@ -40,8 +41,8 @@ const name = (value) => {
 const surname = (value) => {
   if (value.length < 3 || value.length > 50) {
     return (
-      <div className="alert alert-danger" role="alert">
-        The surname must be between 3 and 50 characters.
+      <div className="alert alert-danger mt-2" role="alert">
+        Soyadınız 3 veya 50 harf arasında olmalıdır.
       </div>
     );
   }
@@ -50,8 +51,28 @@ const surname = (value) => {
 const password = (value) => {
   if (value.length < 6 || value.length > 50) {
     return (
-      <div className="alert alert-danger" role="alert">
-        The password must be between 6 and 50 characters.
+      <div className="alert alert-danger mt-2" role="alert">
+        Şifreniz 6 veya 50 karakter arasında olmalıdır.
+      </div>
+    );
+  }
+};
+
+const department = (value) => {
+  if (value.length < 2 || value.length > 80) {
+    return (
+      <div className="alert alert-danger mt-2" role="alert">
+        Bölüm bilgisi 2 veya 50 karakter arasında olmalıdır.
+      </div>
+    );
+  }
+};
+
+const classNum = (value) => {
+  if (value < 1 || value > 6) {
+    return (
+      <div className="alert alert-danger mt-2" role="alert">
+        Sınıf 1 veya 6 arasında olabilir.
       </div>
     );
   }
@@ -65,13 +86,16 @@ class Register extends Component {
     this.onChangeSurname = this.onChangeSurname.bind(this);
     this.onChangeEmailAdress = this.onChangeEmailAdress.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
+    this.onChangeDepartment = this.onChangeDepartment.bind(this);
+    this.onChangeClassNum = this.onChangeClassNum.bind(this);
 
     this.state = {
       Name: "",
       Surname: "",
       EmailAddress: "",
       Password: "",
-      successful: false,
+      department: "",
+      classNum: null,
     };
   }
 
@@ -99,12 +123,20 @@ class Register extends Component {
     });
   }
 
+  onChangeDepartment(e) {
+    this.setState({
+      department: e.target.value,
+    });
+  }
+
+  onChangeClassNum(e) {
+    this.setState({
+      classNum: e.target.value,
+    });
+  }
+
   handleRegister(e) {
     e.preventDefault();
-
-    this.setState({
-      successful: false,
-    });
 
     this.form.validateAll();
 
@@ -114,107 +146,111 @@ class Register extends Component {
           this.state.Name,
           this.state.Surname,
           this.state.EmailAdress,
-          this.state.Password
+          this.state.Password,
+          this.state.department,
+          this.state.classNum
         )
         .then((res) => {
-          this.setState({
-            successful: true,
-          });
+          alertify.success(res.data);
+          this.props.history.push("/login");
         })
         .catch((err) => {
-          if (err) throw err;
-          this.setState({
-            successful: false,
-          });
+          alertify.error(err.response.data);
         });
     }
   }
-
+  
   render() {
-    const { message } = this.props;
-
     return (
       <div className="row">
         <div className="col-md-12 d-flex justify-content-center mt-5">
           <div className="card card-container p-4 border-0 w-75">
             <Form
+              id="registerForm"
               onSubmit={this.handleRegister}
               ref={(c) => {
                 this.form = c;
               }}
             >
-              {!this.state.successful && (
-                <div>
-                  <div className="form-group">
-                    <label htmlFor="Name">Ad</label>
-                    <Input
-                      type="text"
-                      className="form-control"
-                      name="Name"
-                      value={this.state.Name}
-                      onChange={this.onChangeName}
-                      validations={[required, name]}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="Surname">Soyad</label>
-                    <Input
-                      type="text"
-                      className="form-control"
-                      name="Surname"
-                      value={this.state.Surname}
-                      onChange={this.onChangeSurname}
-                      validations={[required, surname]}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="email">Email Adresi</label>
-                    <Input
-                      type="text"
-                      className="form-control"
-                      name="email"
-                      value={this.state.EmailAdress}
-                      onChange={this.onChangeEmailAdress}
-                      validations={[required, email]}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="password">Şifre</label>
-                    <Input
-                      type="password"
-                      className="form-control"
-                      name="password"
-                      value={this.state.Password}
-                      onChange={this.onChangePassword}
-                      validations={[required, password]}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <button className="btn btn-primary btn-block">
-                      Kayıt Ol
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {message && (
+              <div>
                 <div className="form-group">
-                  <div
-                    className={
-                      this.state.successful
-                        ? "alert alert-success"
-                        : "alert alert-danger"
-                    }
-                    role="alert"
-                  >
-                    {message}
-                  </div>
+                  <label htmlFor="Name">Ad</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="Name"
+                    value={this.state.Name}
+                    onChange={this.onChangeName}
+                    validations={[required, name]}
+                  />
                 </div>
-              )}
+
+                <div className="form-group">
+                  <label htmlFor="Surname">Soyad</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="Surname"
+                    value={this.state.Surname}
+                    onChange={this.onChangeSurname}
+                    validations={[required, surname]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="department">Bölüm</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="department"
+                    value={this.state.department}
+                    onChange={this.onChangeDepartment}
+                    validations={[required, department]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="classNum">Sınıf</label>
+                  <Input
+                    type="number"
+                    className="form-control"
+                    name="classNum"
+                    value={this.state.classNum}
+                    onChange={this.onChangeClassNum}
+                    validations={[required, classNum]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="email">Email Adresi</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="email"
+                    value={this.state.EmailAdress}
+                    onChange={this.onChangeEmailAdress}
+                    validations={[required, email]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="password">Şifre</label>
+                  <Input
+                    type="password"
+                    className="form-control"
+                    name="password"
+                    value={this.state.Password}
+                    onChange={this.onChangePassword}
+                    validations={[required, password]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <button className="btn btn-primary btn-block">
+                    Kayıt Ol
+                  </button>
+                </div>
+              </div>
               <CheckButton
                 style={{ display: "none" }}
                 ref={(c) => {
@@ -230,10 +266,7 @@ class Register extends Component {
 }
 
 function mapStateToProps(state) {
-  const { message } = state.messageReducer;
-  return {
-    message,
-  };
+  return {};
 }
 
 function mapDispatchToProps(dispatch) {

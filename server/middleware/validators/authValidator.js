@@ -38,7 +38,7 @@ class AuthValidator {
         .object({
           Name: joi
             .string()
-            .min(3)
+            .min(2)
             .max(80)
             .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı]+$"))
             .messages({
@@ -60,6 +60,21 @@ class AuthValidator {
               "string.min": "Soyad minimum 2 karakter olmalıdır.",
               "string.empty": "Soyad boş olamaz",
             }),
+          department: joi
+            .string()
+            .max(80)
+            .pattern(new RegExp("^[ A-Za-zÇçÖöŞşÜüĞğİı]+$"))
+            .messages({
+              "string.pattern.base": "Bölüm yalnızca harf içerebilir.",
+              "string.max": "Bölüm maksimum 80 karakter olmalıdır.",
+              "string.empty": "Bölüm bilgisinin girilmesi zorunludur.",
+            }),
+          classNum: joi.number().min(1).max(6).messages({
+            "number.base": "Sınıf değeri sadece sayı olabilir.",
+            "number.max": "Sınıf 6'dan büyük olamaz.",
+            "number.min": "Sınıf 1'den küçük olamaz.",
+            "number.empty": "Sınıf bilgisinin girilmesi zorunludur.",
+          }),
           EmailAddress: joi.string().email().max(128).required().messages({
             "string.email": "Lütfen geçerli bir Email Adresi giriniz.",
             "string.max": "Email Adresi 128 karakterden büyük olamaz.",

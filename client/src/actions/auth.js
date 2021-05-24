@@ -4,39 +4,28 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  SET_MESSAGE,
 } from "./types";
 
 import { login, logout, register } from "../services/authService";
 import { Redirect } from "react-router";
 
-export const registerAction = (Name, Surname, EmailAddress, Password) => (
+export const registerAction = (Name, Surname, EmailAddress, Password, department, classNum) => (
   dispatch
 ) => {
-  return register(Name, Surname, EmailAddress, Password)
+  return register(Name, Surname, EmailAddress, Password, department, classNum)
     .then((res) => {
       dispatch({
         type: REGISTER_SUCCESS,
       });
 
-      dispatch({
-        type: SET_MESSAGE,
-        payload: res.message,
-      });
-
-      return Promise.resolve();
+      return Promise.resolve(res);
     })
     .catch((err) => {
       dispatch({
         type: REGISTER_FAIL,
       });
 
-      dispatch({
-        type: SET_MESSAGE,
-        payload: err.response.data,
-      });
-
-      return Promise.reject();
+      return Promise.reject(err);
     });
 };
 
@@ -59,11 +48,11 @@ export const loginAction = (EmailAddress, Password) => (dispatch) => {
   });
 };
 
-export const logoutAction = () => (dispatch) => {
+export const logoutAction = () => async (dispatch) => {
   logout();
-  dispatch({
+  await dispatch({
     type: LOGOUT,
   });
-  <Redirect to="/login"></Redirect>;
+  await <Redirect to="/login"></Redirect>;
   window.location.reload();
 };

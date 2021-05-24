@@ -77,7 +77,7 @@ class Login extends Component {
   }
 
   render() {
-    const { isLoggedIn, message } = this.props;
+    const { isLoggedIn } = this.props;
 
     if (isLoggedIn) {
       return <Redirect to="/profile" />;
@@ -129,13 +129,6 @@ class Login extends Component {
                 </button>
               </div>
 
-              {message && (
-                <div className="form-group">
-                  <div className="alert alert-danger text-center" role="alert">
-                    {message}
-                  </div>
-                </div>
-              )}
               <CheckButton
                 style={{ display: "none" }}
                 ref={(c) => {
@@ -152,10 +145,8 @@ class Login extends Component {
 
 function mapStateToProps(state) {
   const { isLoggedIn } = state.authReducer;
-  const { message } = state.messageReducer;
   return {
     isLoggedIn,
-    message,
   };
 }
 
