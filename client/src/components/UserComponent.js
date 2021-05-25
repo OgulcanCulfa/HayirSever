@@ -12,7 +12,7 @@ class User extends Component {
   render() {
     const { user } = this.props;
     return (
-      <div>
+      <div className="container">
         <section className="profile">
           <div className="main-body">
             <div className="row text-center">

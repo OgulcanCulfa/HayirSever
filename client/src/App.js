@@ -48,7 +48,7 @@ class App extends Component {
     const { currentUser } = this.state;
     return (
       <Router history={history}>
-        <div className="page" >
+        <div className="page">
           <nav className="navbar navbar-dark bg-dark">
             <button
               className="navbar-toggler"
@@ -122,7 +122,7 @@ class App extends Component {
             </div>
           </nav>
 
-          <div className="container content my-3">
+          <div className="d-flex content my-3">
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/login" component={Login} />

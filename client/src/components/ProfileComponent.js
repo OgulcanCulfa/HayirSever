@@ -118,7 +118,7 @@ class Profile extends Component {
   render() {
     const { user } = this.props;
     return (
-      <div>
+      <div className="container">
         <div
           className="modal fade bd-example-modal-lg"
           id="editUserInfos"

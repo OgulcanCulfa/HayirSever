@@ -32,7 +32,6 @@ class PostComponent extends Component {
 
     this.state = {
       toggle: false,
-      active: false,
       activeIndex: Number,
     };
   }
@@ -139,14 +138,16 @@ class PostComponent extends Component {
   render() {
     if (this.props.isFetchingPosts)
       return (
-        <div className="d-flex mt-5">
-          <div className="spinner-border mx-auto" role="status">
-            <span className="sr-only">Loading...</span>
+        <div className="container">
+          <div className="d-flex mt-5">
+            <div className="spinner-border mx-auto" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
           </div>
         </div>
       );
     return (
-      <div>
+      <div className="container">
         <section className="hero">
           <div className="row">
             <div className="col-md-12">
@@ -223,7 +224,6 @@ class PostComponent extends Component {
                     this.props.actions.getPosts();
                     this.setState({
                       activeIndex: 10000,
-                      active: true,
                     });
                   }}
                   key="10000"
@@ -245,7 +245,6 @@ class PostComponent extends Component {
                         this.handleCategory(ct.id);
                         this.setState({
                           activeIndex: ct.id,
-                          active: true,
                         });
                       }}
                       key={ct.id}
@@ -408,7 +407,7 @@ class PostComponent extends Component {
                                   ) : (
                                     <div className="d-md-flex align-items-center justify-content-left">
                                       <img
-                                      alt=""
+                                        alt=""
                                         width="300"
                                         height="250"
                                         className="img-fluid"

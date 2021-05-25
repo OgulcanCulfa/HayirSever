@@ -84,58 +84,60 @@ class Login extends Component {
     }
 
     return (
-      <div className="row">
-        <div className="col-md-12 d-flex justify-content-center mt-5">
-          <div className="card card-container p-4 border-0 w-75">
-            <Form
-              onSubmit={this.handleLogin}
-              ref={(c) => {
-                this.form = c;
-              }}
-            >
-              <div className="form-group">
-                <label htmlFor="EmailAddress">Email Adresi</label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="EmailAddress"
-                  value={this.state.EmailAddress}
-                  onChange={this.onChangeEmailAddress}
-                  validations={[required]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="Password">Şifre</label>
-                <Input
-                  type="password"
-                  className="form-control"
-                  name="Password"
-                  value={this.state.Password}
-                  onChange={this.onChangePassword}
-                  validations={[required]}
-                />
-              </div>
-
-              <div className="form-group">
-                <button
-                  className="btn btn-primary btn-block"
-                  disabled={this.state.loading}
-                >
-                  {this.state.loading && (
-                    <span className="spinner-border spinner-border-sm"></span>
-                  )}
-                  <span>Giriş Yap</span>
-                </button>
-              </div>
-
-              <CheckButton
-                style={{ display: "none" }}
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12 d-flex justify-content-center mt-5">
+            <div className="card card-container p-4 border-0 w-75">
+              <Form
+                onSubmit={this.handleLogin}
                 ref={(c) => {
-                  this.checkBtn = c;
+                  this.form = c;
                 }}
-              />
-            </Form>
+              >
+                <div className="form-group">
+                  <label htmlFor="EmailAddress">Email Adresi</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="EmailAddress"
+                    value={this.state.EmailAddress}
+                    onChange={this.onChangeEmailAddress}
+                    validations={[required]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="Password">Şifre</label>
+                  <Input
+                    type="password"
+                    className="form-control"
+                    name="Password"
+                    value={this.state.Password}
+                    onChange={this.onChangePassword}
+                    validations={[required]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <button
+                    className="btn btn-primary btn-block"
+                    disabled={this.state.loading}
+                  >
+                    {this.state.loading && (
+                      <span className="spinner-border spinner-border-sm"></span>
+                    )}
+                    <span>Giriş Yap</span>
+                  </button>
+                </div>
+
+                <CheckButton
+                  style={{ display: "none" }}
+                  ref={(c) => {
+                    this.checkBtn = c;
+                  }}
+                />
+              </Form>
+            </div>
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ import rootReducer from "./reducers/index";
 import { BrowserRouter } from "react-router-dom";
 import 'alertifyjs/build/css/alertify.min.css';
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <Provider store={store}>

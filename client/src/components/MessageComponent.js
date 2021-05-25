@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import socketIOClient from "socket.io-client";
+import { socket } from "../utils/socketInstance";
 import moment from "moment";
 import "moment/locale/tr";
 import { getChatUserAction } from "../actions/userActions";
@@ -12,33 +12,31 @@ class MessageComponent extends Component {
     super();
     this.socket = null;
     this.state = {
-      api: "http://localhost:5000",
       messages: [],
+      online: [],
       receiver: null,
+      x: null,
+      activeIndex: Number,
     };
   }
 
   componentDidMount() {
     this.props.actions.getChatUsers();
-    const socket = socketIOClient(this.state.api, {
-      query: {
-        userId: this.props.auth.userId,
-      },
-    });
-    this.socket = socket;
 
-    this.socket.on("isOnline", (data) => {
-      if (!data.bool) {
-        console.log("Offline. id:", data.id);
-      } else {
-        console.log("Bağlandı. id:", data.id);
-      }
+    this.socket = socket(this.props.auth.userId);
+
+    this.socket.once("online", (data) => {
+      this.props.actions.getChatUsers();
+      console.log("Online. id:", data.id);
+    });
+
+    this.socket.once("disconnected", (data) => {
+      console.log("Offline. id:", data.id);
     });
 
     this.socket.on("getMessages", (data) => {
       this.props.actions.getChatUsers();
       this.setState({ messages: data });
-      console.log(this.state.messages);
     });
     this.socket.on("successOrFail", (data) => {
       if (!data) {
@@ -67,14 +65,14 @@ class MessageComponent extends Component {
         message: e.target[0].value,
       });
       this.props.actions.getChatUsers();
-      this.getMessages(senderId, receiverId);
+      this.socket.emit("getMessages",{senderId, receiverId});
       document.getElementById("chatForm").reset();
     };
   };
 
   render() {
     return (
-      <div>
+      <div className="container">
         <h3 className="text-center mt-5 mb-4">Mesajlaşma</h3>
         <div className="messaging">
           <div className="inbox_msg">
@@ -90,8 +88,21 @@ class MessageComponent extends Component {
                     cu.id === this.props.auth.userId ? (
                       <div></div>
                     ) : (
-                      <div key={cu.id} className="chat_list pointer">
-                        <div className="chat_people d-flex align-items-center">
+                      <div
+                        key={cu.id}
+                        className={
+                          cu.id === this.state.activeIndex
+                            ? "chat_list pointer bg-primary text-white"
+                            : "chat_list pointer"
+                        }
+                      >
+                        <div
+                          onClick={async () => {
+                            this.setState({ receiver: cu, activeIndex: cu.id });
+                            this.getMessages(this.props.auth.userId, cu.id);
+                          }}
+                          className="chat_people d-flex align-items-center"
+                        >
                           <div className="chat_img">
                             {" "}
                             <img
@@ -101,15 +112,22 @@ class MessageComponent extends Component {
                             />{" "}
                           </div>
                           <div className="chat_ib">
-                            <h5
-                              onClick={async () => {
-                                await this.setState({ receiver: cu });
-                                this.getMessages(this.props.auth.userId, cu.id);
-                              }}
-                            >
+                            <h5>
                               {cu.Name} {cu.Surname}{" "}
                             </h5>
                           </div>
+                          {this.state.online &&
+                            (this.state.online.includes(parseInt(cu.id)) ? (
+                              <small className="float-right d-flex align-items-center">
+                                <i className="fa fa-circle fa-xs text-success mr-2"></i>
+                                online
+                              </small>
+                            ) : (
+                              <small className="float-right d-flex align-items-center">
+                                <i className="fa fa-circle fa-xs text-secondary mr-2"></i>
+                                offline
+                              </small>
+                            ))}
                         </div>
                       </div>
                     )
