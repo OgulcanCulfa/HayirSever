@@ -2,10 +2,6 @@ const express = require("express");
 const app = express();
 const routers = require("./routers");
 
-app.get("/", function (req, res) {
-  res.send("Server is on");
-});
-
 
 app.use(routers.authRouter);
 app.use(routers.postRouter);
