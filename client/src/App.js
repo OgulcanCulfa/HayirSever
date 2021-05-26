@@ -77,26 +77,26 @@ class App extends Component {
                 {currentUser ? (
                   <>
                     <li>
-                      <Link to={"/profile"} className="nav-link">
+                      <Link to={"/profil"} className="nav-link">
                         {currentUser.Name}
                       </Link>
                     </li>
 
                     <li>
-                      <Link to={"/posts"} className="nav-link">
+                      <Link to={"/gonderiler"} className="nav-link">
                         Gönderiler
                       </Link>
                     </li>
 
                     <li>
-                      <Link to={"/messages"} className="nav-link">
+                      <Link to={"/mesajlar"} className="nav-link">
                         Mesajlar
                       </Link>
                     </li>
 
                     <li>
                       <Link
-                        to={"/login"}
+                        to={"/giris"}
                         className="nav-link"
                         onClick={() => this.props.actions.logout()}
                       >
@@ -106,11 +106,11 @@ class App extends Component {
                   </>
                 ) : (
                   <>
-                    <Link to={"/login"} className="nav-link">
+                    <Link to={"/giris"} className="nav-link">
                       Giriş Yap
                     </Link>
 
-                    <Link to={"/register"} className="nav-link">
+                    <Link to={"/kayit"} className="nav-link">
                       Kayıt Ol
                     </Link>
                   </>
@@ -123,12 +123,12 @@ class App extends Component {
           <div className="d-flex content my-3">
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={Register} />
-              <ProtectedRoute exact path="/profile" component={Profile} />
-              <ProtectedRoute exact path="/messages" component={Message} />
-              <ProtectedRoute path="/posts" component={Post} />
-              <ProtectedRoute path="/user/:id" component={User} />
+              <Route exact path="/giris" component={Login} />
+              <Route exact path="/kayit" component={Register} />
+              <ProtectedRoute exact path="/profil" component={Profile} />
+              <ProtectedRoute exact path="/mesajlar" component={Message} />
+              <ProtectedRoute path="/gonderiler" component={Post} />
+              <ProtectedRoute path="/kullanici/:id" component={User} />
               <Route path="*" component={Error} />
             </Switch>
           </div>
