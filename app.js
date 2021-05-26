@@ -24,9 +24,7 @@ require("./socket/chat").socket(io);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../client/build")));
-}
+app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.set("api_key", process.env.API_KEY || "secret");
 app.use(express.static("public"));

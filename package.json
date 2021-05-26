@@ -10,6 +10,9 @@
   },
   "author": "",
   "license": "Apache",
+  "engines": {
+    "node": "14.16.1"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
