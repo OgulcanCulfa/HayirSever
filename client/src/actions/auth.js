@@ -53,6 +53,6 @@ export const logoutAction = () => async (dispatch) => {
   await dispatch({
     type: LOGOUT,
   });
-  await <Redirect to="/login"></Redirect>;
+  await <Redirect to="/giris"></Redirect>;
   window.location.reload();
 };

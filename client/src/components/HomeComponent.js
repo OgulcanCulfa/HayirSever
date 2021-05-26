@@ -22,9 +22,9 @@ export default class Home extends Component {
                 </i>
               </div>
               <p className="mt-3 text-center">
-                <a href="/register">Buraya</a> tıklayarak kayıt olup hemen
+                <a href="/kayit">Buraya</a> tıklayarak kayıt olup hemen
                 uygulamayı kullanmaya başlayabilirsiniz. Eğer hesabınız var ise{" "}
-                <a href="/login">buradan</a> giriş yapabilirsiniz.
+                <a href="/giris">buradan</a> giriş yapabilirsiniz.
               </p>
             </div>
             <div className="col-md-4 col-12 px-2">

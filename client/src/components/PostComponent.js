@@ -269,7 +269,7 @@ class PostComponent extends Component {
                     <div className="p-3">
                       <div className="media m-0 d-md-flex align-items-center">
                         <div className="d-flex mr-3">
-                          <Link to={"/user/" + val.postUserId}>
+                          <Link to={"/kullanici/" + val.postUserId}>
                             <img
                               className="img-fluid rounded-circle"
                               src={val.profilePhoto}
@@ -365,7 +365,7 @@ class PostComponent extends Component {
                                 <div className="d-md-flex flex-column">
                                   <div className="d-flex m-3 align-items-center text-left">
                                     <span className="comment-avatar mt-1 ">
-                                      <Link to={"/user/" + c.userId}>
+                                      <Link to={"/kullanici/" + c.userId}>
                                         <img
                                           className="rounded-circle"
                                           src={c.profilePhoto}
@@ -433,7 +433,7 @@ class PostComponent extends Component {
                     <div className="row d-flex">
                       <div className="col-md-1 align-items-center ml-3 mr-0 d-flex">
                         <span className="comment-avatar float-left mt-2">
-                          <Link to={"/user/" + this.props.user.id}>
+                          <Link to={"/kullanici/" + this.props.user.id}>
                             <img
                               className="rounded-circle d-flex"
                               src={this.props.user.profilePhoto}

@@ -1,8 +1,8 @@
 import socketIOClient from "socket.io-client";
-import { localhost } from "../environments/index";
+import { heroku } from "../environments/index";
 
 export const socket = (id) => {
-  return socketIOClient(localhost, {
+  return socketIOClient(heroku, {
     transports: ['websocket'],
     upgrade: false,
     query: {
