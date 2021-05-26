@@ -1,6 +1,7 @@
 import axios from "axios";
+import { heroku } from "../environments/index";
 
-const API_URL = "http://localhost:5000/";
+const API_URL = heroku;
 
 export const getCategories = () => {
   return axios

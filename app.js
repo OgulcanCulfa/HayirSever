@@ -4,7 +4,7 @@ const app = express();
 const cors = require("cors");
 const serve = require("./serve");
 const logger = require("morgan");
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 const path = require("path");
 
 const server = require("http").createServer(app);
@@ -24,16 +24,17 @@ require("./socket/chat").socket(io);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(express.static(path.join(__dirname, "../client/build")));
-
 app.set("api_key", process.env.API_KEY || "secret");
 app.use(express.static("public"));
 app.use(serve);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/client/build/index.html"));
-});
 
-server.listen(PORT, () => {
-  console.log("Ready on http://localhost:" + PORT);
+  app.use(express.static(path.join(__dirname + "/client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "/client/build/index.html"));
+  });
+
+
+server.listen(process.env.PORT || PORT, () => {
+  console.log("Server is ready on port: " + PORT);
 });

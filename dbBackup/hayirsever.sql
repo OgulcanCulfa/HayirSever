@@ -1,8 +1,14 @@
+
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+03:00";
 
+
+
+-- Database: `hayirsever`
+--
 
 -- --------------------------------------------------------
 
@@ -43,17 +49,74 @@ CREATE TABLE IF NOT EXISTS `tblchat` (
   PRIMARY KEY (`id`),
   KEY `senderId` (`senderId`),
   KEY `receiverId` (`receiverId`)
-) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=258 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 --
 -- Dumping data for table `tblchat`
 --
 
 INSERT INTO `tblchat` (`id`, `receiverId`, `senderId`, `message`, `createdAt`) VALUES
-(173, 4, 1, 'hi', '2021-05-20 23:03:51'),
-(174, 2, 1, 'g', '2021-05-20 23:04:06'),
-(175, 1, 4, 'hi', '2021-05-20 23:05:39'),
-(176, 1, 6, 'selam', '2021-05-20 23:27:32');
+(197, 2, 1, 'ş', '2021-05-26 02:28:16'),
+(198, 2, 1, 'lll', '2021-05-26 02:28:20'),
+(199, 2, 1, 'koko', '2021-05-26 02:28:25'),
+(200, 7, 1, 'jjj', '2021-05-26 02:29:34'),
+(201, 7, 1, 'jjj', '2021-05-26 02:29:47'),
+(202, 1, 8, 'jj', '2021-05-26 02:31:27'),
+(203, 1, 8, 'jıjı', '2021-05-26 02:31:37'),
+(204, 1, 8, 'okkkk', '2021-05-26 02:31:42'),
+(205, 8, 1, 'nn', '2021-05-26 02:31:47'),
+(206, 8, 1, 'mkmk', '2021-05-26 02:33:11'),
+(207, 8, 1, 'ı', '2021-05-26 02:33:47'),
+(208, 8, 1, 'ı9ı9', '2021-05-26 02:34:00'),
+(209, 1, 8, '99', '2021-05-26 02:34:14'),
+(210, 1, 8, '9', '2021-05-26 02:34:16'),
+(211, 8, 1, 'ıı', '2021-05-26 02:34:23'),
+(212, 1, 8, 'ı9ı9', '2021-05-26 02:34:32'),
+(213, 1, 8, 'ı9ı9', '2021-05-26 02:34:43'),
+(214, 1, 8, '999', '2021-05-26 02:34:50'),
+(215, 1, 8, 'ı', '2021-05-26 02:35:10'),
+(216, 1, 8, 'ı99ı', '2021-05-26 02:35:17'),
+(217, 8, 1, 'ı9ı9', '2021-05-26 02:35:22'),
+(218, 8, 1, 'ııııı', '2021-05-26 02:35:24'),
+(219, 8, 1, 'üü', '2021-05-26 02:36:41'),
+(220, 1, 8, 'll', '2021-05-26 02:36:53'),
+(221, 1, 8, 'klklkl', '2021-05-26 02:37:01'),
+(222, 8, 1, 'llllll', '2021-05-26 02:37:07'),
+(223, 8, 1, 'll', '2021-05-26 02:37:38'),
+(224, 1, 8, 'mmm', '2021-05-26 02:40:41'),
+(225, 1, 8, 'mmmm', '2021-05-26 02:40:45'),
+(226, 8, 1, 'mmm', '2021-05-26 02:41:28'),
+(227, 8, 1, 'mjkmkmk', '2021-05-26 02:41:45'),
+(228, 1, 8, 'hi', '2021-05-26 15:31:46'),
+(229, 8, 1, 'sup', '2021-05-26 15:32:07'),
+(230, 1, 8, 'ii', '2021-05-26 15:32:13'),
+(231, 8, 1, 'ok', '2021-05-26 15:32:34'),
+(232, 2, 1, 'll', '2021-05-26 16:46:08'),
+(233, 2, 1, 'şşşş', '2021-05-26 16:46:11'),
+(234, 2, 1, '', '2021-05-26 16:46:14'),
+(235, 8, 1, 'hi', '2021-05-26 17:10:37'),
+(236, 1, 8, 'hi', '2021-05-26 17:10:46'),
+(237, 8, 1, 'sup', '2021-05-26 17:11:24'),
+(238, 1, 8, 'oo', '2021-05-26 17:11:38'),
+(239, 8, 1, 'öö', '2021-05-26 17:11:44'),
+(240, 1, 8, 'hey', '2021-05-26 17:11:59'),
+(241, 8, 1, 'hhh', '2021-05-26 17:12:12'),
+(242, 1, 8, 'llll', '2021-05-26 17:12:24'),
+(243, 1, 8, 'hi', '2021-05-26 19:34:58'),
+(244, 1, 8, 'wassup', '2021-05-26 19:35:16'),
+(245, 1, 8, 'şş', '2021-05-26 19:35:24'),
+(246, 1, 8, 'hh', '2021-05-26 19:35:28'),
+(247, 1, 8, 'ghgh', '2021-05-26 19:35:35'),
+(248, 8, 1, 'ghghghgh', '2021-05-26 19:35:44'),
+(249, 1, 8, 'ghghg', '2021-05-26 19:36:04'),
+(250, 1, 8, 'nnn', '2021-05-26 19:37:17'),
+(251, 1, 8, 'okey', '2021-05-26 19:37:37'),
+(252, 8, 1, 'uıuı', '2021-05-26 19:38:05'),
+(253, 8, 1, 'ııı', '2021-05-26 19:38:10'),
+(254, 8, 1, 'ıııııı', '2021-05-26 19:39:28'),
+(255, 1, 8, 'uuu', '2021-05-26 19:39:36'),
+(256, 1, 8, 'uıuıuı', '2021-05-26 19:39:52'),
+(257, 8, 1, 'uıuıuıuıuı', '2021-05-26 19:40:05');
 
 -- --------------------------------------------------------
 
@@ -72,18 +135,7 @@ CREATE TABLE IF NOT EXISTS `tblcomments` (
   PRIMARY KEY (`id`),
   KEY `postId` (`postId`),
   KEY `userId` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-
---
--- Dumping data for table `tblcomments`
---
-
-INSERT INTO `tblcomments` (`id`, `postId`, `userId`, `text`, `createdAt`, `photo`) VALUES
-(16, 14, 1, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', '2021-04-28 23:21:26', NULL),
-(18, 30, 1, 'hello', '2021-04-30 16:57:24', NULL),
-(25, 7, 1, 'hello', '2021-05-04 18:46:47', NULL),
-(27, 30, 8, 'Lorem Ipsum', '2021-05-06 21:15:16', NULL),
-(31, 14, 8, 'kkokoko', '2021-05-16 01:25:27', NULL);
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -102,18 +154,7 @@ CREATE TABLE IF NOT EXISTS `tblposts` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   KEY `categoryId` (`categoryId`)
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-
---
--- Dumping data for table `tblposts`
---
-
-INSERT INTO `tblposts` (`id`, `userId`, `categoryId`, `text`, `postphoto`, `createdAt`) VALUES
-(7, 6, 1, 'Selamlar', NULL, '2021-04-25 18:00:56'),
-(14, 1, 1, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', NULL, '2021-04-28 02:15:21'),
-(30, 4, 2, 'sample text', NULL, '2021-04-30 00:14:19'),
-(101, 1, 3, 'Hard truth...', 'http://localhost:5000/images/posts/Hard hardtruryh.jpg', '2021-05-17 10:41:30'),
-(102, 1, 4, 'Helpful', 'http://localhost:5000/images/posts/Helpftumblr_f0a18f5aa10cfc040bd974ce2dd02680_ddb6756b_1280.jpg', '2021-05-17 10:42:00');
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -134,32 +175,35 @@ CREATE TABLE IF NOT EXISTS `tbluser` (
   `city` varchar(25) COLLATE utf8mb4_bin NOT NULL,
   `district` varchar(50) COLLATE utf8mb4_bin NOT NULL,
   `department` varchar(80) COLLATE utf8mb4_bin NOT NULL,
+  `classNum` int(1) DEFAULT NULL,
   `website` varchar(80) COLLATE utf8mb4_bin NOT NULL,
   `github` varchar(80) COLLATE utf8mb4_bin NOT NULL,
   `twitter` varchar(80) COLLATE utf8mb4_bin NOT NULL,
   `instagram` varchar(80) COLLATE utf8mb4_bin NOT NULL,
   `facebook` varchar(80) COLLATE utf8mb4_bin NOT NULL,
   `kaggle` varchar(80) COLLATE utf8mb4_bin DEFAULT NULL,
+  `isOnline` tinyint(1) NOT NULL DEFAULT '0',
   `UserTypeName` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT 'User',
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `UserTypeName` (`UserTypeName`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 --
 -- Dumping data for table `tbluser`
 --
 
-INSERT INTO `tbluser` (`id`, `Name`, `Surname`, `EmailAddress`, `Password`, `profilePhoto`, `mobile`, `address`, `city`, `district`, `department`, `website`, `github`, `twitter`, `instagram`, `facebook`, `kaggle`, `UserTypeName`, `createdAt`) VALUES
-(1, 'Ogulcan', 'Culfa', 'ogulcanculfa@gmail.com', '123456789', 'http://localhost:5000/images/users/me.jpg', '', 'Adnan Kahveci Mah. Yavuz Sultan Selim Bulvarı Göktürk-1 Apt. Kat:5 Daire:28', 'İstanbul', 'Beylikdüzü', 'YBS', 'https://www.ogulcanculfa.com', 'https://github.com/OgulcanCulfa', '', '', '', '', 'Root', '2021-04-19 00:00:00'),
-(2, 'Mesut', 'Güneri', 'mesutkomser@gmail.com', '123456789', 'http://localhost:5000/images/users/Empty-Profile-Testimonials.jpg	', '', '', 'İstanbul', 'Beyoğlu', '', '', '', '', '', '', NULL, 'User', '0000-00-00 00:00:00'),
-(4, 'Stannis', 'Baratheon', 'kingstannis@gmail.com', '123456789', 'http://localhost:5000/images/users/Stannis-Baratheon-Profile_(3).png	', '', '', 'Westeros', 'Dragonstone', '', '', '', '', '', '', NULL, 'User', '0000-00-00 00:00:00'),
-(5, 'Robert', 'Baratheon', 'kingrobert@gmail.com', '123456789', 'http://localhost:5000/images/users/Empty-Profile-Testimonials.jpg	', '', '', '', '', '', '', '', '', '', '', NULL, 'User', '0000-00-00 00:00:00'),
-(6, 'Haktan', 'Yücesoy', 'haktanyucesoy@gmail.com', '123456789', 'http://localhost:5000/images/users/hacktin.jpg	', '', 'Somewhere', 'Balıkesir', 'Ayvalık', 'YBS', '', 'https://github.com/KadirHaktan', '', '', '', '', 'User', '0000-00-00 00:00:00'),
-(7, 'Tywin', 'Lannister', 'tywinlannister@gmail.com', '123456789', 'http://localhost:5000/images/users/Empty-Profile-Testimonials.jpg	', '', '', '', '', '', '', '', '', '', '', NULL, 'User', '0000-00-00 00:00:00'),
-(8, 'Aynur', 'Katırcıoğlu', 'aynrkatircioglu@gmail.com', '123456789', 'http://localhost:5000/images/users/aynr.jpg		', '', 'Hatayda bi yer.', 'Hatay', 'İskenderun', 'Bilgisayar Mühendisliği', '', 'https://github.com/aynrkatircioglu', '', '', '', 'https://www.kaggle.com/aynrkatircioglu', 'User', '0000-00-00 00:00:00'),
-(9, 'Zeynep', 'İşbay', 'zeynepisbay@gmail.com', '123456789', 'http://localhost:5000/images/users/Empty-Profile-Testimonials.jpg	', '', '', 'İstanbul', 'Üsküdar', '', '', '', '', '', '', NULL, 'User', '0000-00-00 00:00:00'),
-(10, 'Sefa', 'Öztürkmen', 'sefaozturkmen@gmail.com', '123456789', 'http://localhost:5000/images/users/sefa.jpg', '', '', '', '', '', '', '', '', '', '', NULL, 'User', '2021-05-08 22:38:39');
+INSERT INTO `tbluser` (`id`, `Name`, `Surname`, `EmailAddress`, `Password`, `profilePhoto`, `mobile`, `address`, `city`, `district`, `department`, `classNum`, `website`, `github`, `twitter`, `instagram`, `facebook`, `kaggle`, `isOnline`, `UserTypeName`, `createdAt`) VALUES
+(1, 'Ogulcan', 'Culfa', 'ogulcanculfa@gmail.com', '123456789', 'http://localhost:5000/images/users/me.jpg', '', 'Adnan Kahveci Mah. Yavuz Sultan Selim Bulvarı Göktürk-1 Apt. Kat:5 Daire:28', 'İstanbul', 'Beylikdüzü', 'YBS', 4, 'https://www.ogulcanculfa.com', 'https://github.com/OgulcanCulfa', '', '', '', '', 0, 'Root', '2021-04-19 00:00:00'),
+(2, 'Mesut', 'Güneri', 'mesutkomser@gmail.com', '123456789', 'http://localhost:5000/images/users/Empty-Profile-Testimonials.jpg	', '', '', 'İstanbul', 'Beyoğlu', '', NULL, '', '', '', '', '', NULL, 0, 'User', '0000-00-00 00:00:00'),
+(4, 'Stannis', 'Baratheon', 'kingstannis@gmail.com', '123456789', 'http://localhost:5000/images/users/Stannis-Baratheon-Profile_(3).png	', '', '', 'Westeros', 'Dragonstone', '', NULL, '', '', '', '', '', NULL, 0, 'User', '0000-00-00 00:00:00'),
+(5, 'Robert', 'Baratheon', 'kingrobert@gmail.com', '123456789', 'http://localhost:5000/images/users/Empty-Profile-Testimonials.jpg	', '', '', '', '', '', NULL, '', '', '', '', '', NULL, 0, 'User', '0000-00-00 00:00:00'),
+(6, 'Haktan', 'Yücesoy', 'haktanyucesoy@gmail.com', '123456789', 'http://localhost:5000/images/users/hacktin.jpg	', '', 'Somewhere', 'Balıkesir', 'Ayvalık', 'YBS', NULL, '', 'https://github.com/KadirHaktan', '', '', '', '', 0, 'User', '0000-00-00 00:00:00'),
+(7, 'Tywin', 'Lannister', 'tywinlannister@gmail.com', '123456789', 'http://localhost:5000/images/users/Empty-Profile-Testimonials.jpg	', '', '', '', '', '', NULL, '', '', '', '', '', NULL, 0, 'User', '0000-00-00 00:00:00'),
+(8, 'Aynur', 'Katırcıoğlu', 'aynrkatircioglu@gmail.com', '123456789', 'http://localhost:5000/images/users/aynr.jpg		', '', 'Hatayda bi yer.', 'Hatay', 'İskenderun', 'Bilgisayar Mühendisliği', NULL, '', 'https://github.com/aynrkatircioglu', '', '', '', 'https://www.kaggle.com/aynrkatircioglu', 0, 'User', '0000-00-00 00:00:00'),
+(9, 'Zeynep', 'İşbay', 'zeynepisbay@gmail.com', '123456789', 'http://localhost:5000/images/users/Empty-Profile-Testimonials.jpg	', '', '', 'İstanbul', 'Üsküdar', '', NULL, '', '', '', '', '', NULL, 0, 'User', '0000-00-00 00:00:00'),
+(10, 'Sefa', 'Öztürkmen', 'sefaozturkmen@gmail.com', '123456789', 'http://localhost:5000/images/users/sefa.jpg', '', '', '', '', '', NULL, '', '', '', '', '', NULL, 0, 'User', '2021-05-08 22:38:39'),
+(33, 'Mehmet', 'Yılmaz', 'myilmaz@gmail.com', '44444444444', 'http://localhost:5000/images/users/Empty-Profile-Testimonials.jpg', '', '', '', '', 'YBS', 4, '', '', '', '', '', NULL, 0, 'User', '2021-05-24 22:30:41');
 
 -- --------------------------------------------------------
 
@@ -269,6 +313,7 @@ CREATE TABLE IF NOT EXISTS `vwusersforchat` (
 ,`Name` varchar(80)
 ,`Surname` varchar(50)
 ,`profilePhoto` varchar(150)
+,`isOnline` tinyint(1)
 );
 
 -- --------------------------------------------------------
@@ -278,7 +323,7 @@ CREATE TABLE IF NOT EXISTS `vwusersforchat` (
 --
 DROP TABLE IF EXISTS `vwcategorieswithcounts`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vwcategorieswithcounts`  AS  select `tblcategory`.`id` AS `id`,`tblcategory`.`categoryName` AS `categoryName`,count(0) AS `countOfCategories` from (`tblcategory` left join `tblposts` on((`tblcategory`.`id` = `tblposts`.`categoryId`))) group by `tblcategory`.`id` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vwcategorieswithcounts`  AS  select `tblcategory`.`id` AS `id`,`tblcategory`.`categoryName` AS `categoryName`,count(`tblposts`.`id`) AS `countOfCategories` from (`tblcategory` left join `tblposts` on((`tblcategory`.`id` = `tblposts`.`categoryId`))) group by `tblcategory`.`id` ;
 
 -- --------------------------------------------------------
 
@@ -314,7 +359,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vwusersforchat`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vwusersforchat`  AS  select `tbluser`.`id` AS `id`,`tbluser`.`Name` AS `Name`,`tbluser`.`Surname` AS `Surname`,`tbluser`.`profilePhoto` AS `profilePhoto` from `tbluser` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vwusersforchat`  AS  select `tbluser`.`id` AS `id`,`tbluser`.`Name` AS `Name`,`tbluser`.`Surname` AS `Surname`,`tbluser`.`profilePhoto` AS `profilePhoto`,`tbluser`.`isOnline` AS `isOnline` from `tbluser` order by `tbluser`.`isOnline` desc ;
 
 --
 -- Constraints for dumped tables
