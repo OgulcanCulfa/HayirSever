@@ -1,5 +1,6 @@
 const TransactionsFactory = require("../database/transactionFactory");
 const chatTransactions = TransactionsFactory.creating("chatTransactions");
+const userTransactions = TransactionsFactory.creating("userTransactions");
 
 module.exports = {
   getMessages: async (senderId, receiverId) => {
@@ -19,4 +20,20 @@ module.exports = {
       return true;
     }
   },
+  updateOnlineStatus: async (id) => {
+    const result = await userTransactions.updateAsync({isOnline: 1},{id: id});
+    if (!result.affectedRows) {
+      return false;
+    } else {
+      return true;
+    }
+  },
+  updateOfflineStatus: async (id) => {
+    const result = await userTransactions.updateAsync({isOnline: 0},{id: id});
+    if (!result.affectedRows) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 };

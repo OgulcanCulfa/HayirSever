@@ -26,12 +26,17 @@ class MessageComponent extends Component {
     this.socket = socket(this.props.auth.userId);
 
     this.socket.once("online", (data) => {
-      this.props.actions.getChatUsers();
-      console.log("Online. id:", data.id);
+      if (!data.result) {
+        alertify.error("Mesajlaşmaya bağlanamadınız. Lütfen tekrar deneyin.");
+      } else {
+        this.props.actions.getChatUsers();
+        console.log("Online. id:", data.id);
+      }
     });
 
-    this.socket.once("disconnected", (data) => {
-      console.log("Offline. id:", data.id);
+    this.socket.once("getChatUser", () => {
+      console.log("triggered");
+      this.props.actions.getChatUsers();
     });
 
     this.socket.on("getMessages", (data) => {
@@ -43,6 +48,10 @@ class MessageComponent extends Component {
         alertify.error("Mesaj gönderilemedi. Lütfen tekrar deneyiniz.");
       }
     });
+  }
+
+  componentWillUnmount() {
+    this.socket.disconnect();
   }
 
   getMessages = (senderId, receiverId) => {
@@ -59,14 +68,19 @@ class MessageComponent extends Component {
   sendMessage = (senderId, receiverId) => {
     return (e) => {
       e.preventDefault();
-      this.socket.emit("sendMessage", {
-        senderId,
-        receiverId,
-        message: e.target[0].value,
-      });
-      this.props.actions.getChatUsers();
-      this.socket.emit("getMessages",{senderId, receiverId});
-      document.getElementById("chatForm").reset();
+      const message = e.target[0].value;
+      if (message.length === 0) {
+        alertify.error("Boş mesaj gönderemezsiniz");
+      } else {
+        this.socket.emit("sendMessage", {
+          senderId,
+          receiverId,
+          message: message,
+        });
+        this.props.actions.getChatUsers();
+        this.socket.emit("getMessages", { senderId, receiverId });
+        document.getElementById("chatForm").reset();
+      }
     };
   };
 
@@ -116,18 +130,17 @@ class MessageComponent extends Component {
                               {cu.Name} {cu.Surname}{" "}
                             </h5>
                           </div>
-                          {this.state.online &&
-                            (this.state.online.includes(parseInt(cu.id)) ? (
-                              <small className="float-right d-flex align-items-center">
-                                <i className="fa fa-circle fa-xs text-success mr-2"></i>
-                                online
-                              </small>
-                            ) : (
-                              <small className="float-right d-flex align-items-center">
-                                <i className="fa fa-circle fa-xs text-secondary mr-2"></i>
-                                offline
-                              </small>
-                            ))}
+                          {cu.isOnline ? (
+                            <small className="float-right d-flex align-items-center">
+                              <i className="fa fa-circle fa-xs text-success mr-2"></i>
+                              online
+                            </small>
+                          ) : (
+                            <small className="float-right d-flex align-items-center">
+                              <i className="fa fa-circle fa-xs text-secondary mr-2"></i>
+                              offline
+                            </small>
+                          )}
                         </div>
                       </div>
                     )

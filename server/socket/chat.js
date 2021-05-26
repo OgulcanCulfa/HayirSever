@@ -1,13 +1,21 @@
-const { getMessages, sendMessage } = require("./transactions");
+const {
+  getMessages,
+  sendMessage,
+  updateOnlineStatus,
+  updateOfflineStatus,
+} = require("./transactions");
+
 
 module.exports = {
   socket: (io) => {
     io.on("connection", async (socket) => {
       const id = await socket.handshake.query.userId;
-      await socket.broadcast.emit("online", { id, bool: true });
+      console.log(io.sockets.sockets.size);
+      const result = await updateOnlineStatus(id);
+      await socket.broadcast.emit("online", { id, result });
       socket.on("joinPrivate", async ({ senderId, receiverId }) => {
         if (
-          io.sockets.adapter.rooms.has(
+          await io.sockets.adapter.rooms.has(
             receiverId.toString() + senderId.toString()
           )
         ) {
@@ -19,7 +27,7 @@ module.exports = {
       socket.on("getMessages", async ({ senderId, receiverId }) => {
         const data = await getMessages(senderId, receiverId);
         if (
-          io.sockets.adapter.rooms.has(
+          await io.sockets.adapter.rooms.has(
             receiverId.toString() + senderId.toString()
           )
         ) {
@@ -46,8 +54,10 @@ module.exports = {
           data
         );
       });
-      socket.on("disconnect", () => {
-        socket.broadcast.emit("disconnected", { id, bool: false });
+      socket.once("disconnect", async () => {
+        console.log("triggered");
+        await updateOfflineStatus(id);
+        socket.broadcast.emit("getChatUser");
       });
     });
   },

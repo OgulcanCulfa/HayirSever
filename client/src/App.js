@@ -17,7 +17,6 @@ import Error from "./components/ErrorComponent";
 
 import { logoutAction } from "./actions/auth";
 import { clearMessage } from "./actions/messages";
-
 import { history } from "./utils/history";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import { bindActionCreators } from "redux";
@@ -25,7 +24,6 @@ import { bindActionCreators } from "redux";
 class App extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       currentUser: undefined,
     };
