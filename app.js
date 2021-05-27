@@ -34,7 +34,7 @@ app.use(serve);
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname + "/client/build/index.html"), (err) => {
       if (err) {
-        res.status.send(err.stack);
+        res.status(500).send(err.stack);
       }
     });
   });
