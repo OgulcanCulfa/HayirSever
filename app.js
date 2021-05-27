@@ -26,9 +26,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.set("api_key", process.env.API_KEY || "secret");
 app.use(express.static("public"));
-app.use(express.static(path.join(__dirname + "/client/build")));
-app.use(serve);
 
+app.use(serve);
+app.use(express.static(path.join(__dirname + "/client/build")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
