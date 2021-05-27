@@ -1,3 +1,7 @@
+body{
+    overflow-x: hidden;
+}
+
 .stick {
     justify-content: space-around;
     align-items: flex-start;

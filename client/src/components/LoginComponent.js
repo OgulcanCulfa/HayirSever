@@ -60,7 +60,7 @@ class Login extends Component {
       this.props.actions
         .login(this.state.EmailAddress, this.state.Password)
         .then(() => {
-          history.push("/profile");
+          history.push("/profil");
           window.location.reload();
         })
         .catch((err) => {

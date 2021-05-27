@@ -152,7 +152,7 @@ class Register extends Component {
         )
         .then((res) => {
           alertify.success(res.data);
-          this.props.history.push("/login");
+          this.props.history.push("/giris");
         })
         .catch((err) => {
           alertify.error(err.response.data);

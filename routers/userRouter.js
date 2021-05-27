@@ -4,13 +4,13 @@ const { validators, verifyToken, authorization } = require("../middleware");
 const commonValidator = validators.commonValidator;
 const userValidator = validators.userValidator;
 const userTransactions = TransactionsFactory.creating("userTransactions");
-const chatTransactions = TransactionsFactory.creating("chatTransactions");
 const tokenControl = verifyToken.tokenControl;
 const authControl = authorization.authControl;
 const { StatusCodes } = require("http-status-codes");
 const { errorSender } = require("../utils");
 const imageUploadHelper = require("../utils/imageUploadHelper");
 const multerOptions = require("../utils/userMulterOptions");
+const messages = require("../messages/messages");
 var multer = require("multer");
 var upload = multer({ storage: multerOptions });
 
@@ -29,7 +29,7 @@ router.get(
       }
       res.json(result || {});
     } catch (err) {
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(err.message);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(messages.serverError);
     }
   }
 );
@@ -39,7 +39,7 @@ router.get("/chatusers", tokenControl, authControl, async (req, res) => {
     const result = await userTransactions.vwSelectAsync();
     res.json(result || {});
   } catch (err) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(err.message);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(messages.serverError);
   }
 });
 
@@ -52,7 +52,7 @@ router.put(
   async (req, res) => {
     try {
       if (req.file) {
-        imageUploadHelper(req, res, "profilePhoto", userTransactions);
+        imageUploadHelper.update(req, res, "users", "profilePhoto", userTransactions);
       } else {
         const result = await userTransactions.updateAsync(req.body, {
           id: req.decode.userId,
@@ -60,14 +60,14 @@ router.put(
         if (!result.affectedRows)
           throw errorSender.errorObject(
             StatusCodes.INTERNAL_SERVER_ERROR,
-            "Kullanıcı bilgileri güncellenemedi. Lütfen tekrar deneyiniz."
+            messages.userInfoUpdateError
           );
-        res.send("Kullanıcı bilgileri başarıyla güncellendi.");
+        res.send(messages.userInfoUpdateSuccess);
       }
     } catch (err) {
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(err.message);
+        .send(messages.serverError);
     }
   }
 );

@@ -1,8 +1,7 @@
 const { errorSender } = require("./errorSender");
 const { StatusCodes } = require("http-status-codes");
-
+const messages = require("../messages/messages");
 class ImageUploadHelper {
-  constructor() {}
 
   static async update(req, res, to, field, transaction) {
     try {
@@ -23,11 +22,11 @@ class ImageUploadHelper {
           StatusCodes.INTERNAL_SERVER_ERROR,
           errMsg
         );
-      res.send(successMsg);
+      res.send(messages.userInfoUpdateSuccess);
     } catch (err) {
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(err.message);
+        .send(messages.serverError);
     }
   }
 

@@ -10,7 +10,6 @@ module.exports = {
   socket: (io) => {
     io.on("connection", async (socket) => {
       const id = await socket.handshake.query.userId;
-      console.log(io.sockets.sockets.size);
       const result = await updateOnlineStatus(id);
       await socket.broadcast.emit("online", { id, result });
       socket.on("joinPrivate", async ({ senderId, receiverId }) => {
@@ -55,7 +54,6 @@ module.exports = {
         );
       });
       socket.once("disconnect", async () => {
-        console.log("triggered");
         await updateOfflineStatus(id);
         socket.broadcast.emit("getChatUser");
       });

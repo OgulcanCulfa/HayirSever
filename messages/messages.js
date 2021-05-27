@@ -6,6 +6,7 @@ const messages = {
   userInfoUpdateError:
     "Kullanıcı bilgileri güncellenemedi. Lütfen tekrar deneyiniz.",
   userInfoUpdateSuccess: "Kullanıcı bilgileri başarıyla güncellendi.",
+  serverError: "Sunucu hatası oluştu. Lütfen tekrar deneyiniz."
 };
 
 module.exports = messages
