@@ -16,7 +16,6 @@ import Message from "./components/MessageComponent";
 import Error from "./components/ErrorComponent";
 
 import { logoutAction } from "./actions/auth";
-import { clearMessage } from "./actions/messages";
 import { history } from "./utils/history";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import { bindActionCreators } from "redux";
@@ -171,7 +170,6 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       logout: bindActionCreators(logoutAction, dispatch),
-      clearMessage: bindActionCreators(clearMessage, dispatch),
     },
   };
 }
