@@ -46,12 +46,12 @@ class CommonValidator {
   }
 
   static async image(req, res, next) {
-    if (req.file || req.body.text) {
+    if (req.file || req.body.text.length > 0) {
       next();
     } else {
       res
         .status(StatusCodes.EXPECTATION_FAILED)
-        .send("Fotoğraf yüklerken sorun oluştu. Lütfen tekrar deneyiiz.");
+        .send("Gönderi veya Fotoğraf verisinin eklenmesi zorunludur.");
     }
   }
 }

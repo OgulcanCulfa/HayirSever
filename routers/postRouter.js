@@ -26,7 +26,7 @@ router.get("/posts", tokenControl, postValidator.select, async (req, res) => {
   } catch (err) {
     res
       .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-      .send(err.message);
+      .send(messages.serverError);
   }
 });
 
@@ -66,7 +66,7 @@ router.post(
     } catch (err) {
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(err.message);
+        .send(messages.serverError);
     }
   }
 );
@@ -85,7 +85,7 @@ router.post(
     } catch (err) {
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(err.message);
+        .send(messages.serverError);
     }
   }
 );
@@ -113,7 +113,7 @@ router.delete(
     } catch (err) {
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(err.message);
+        .send(messages.serverError);
     }
   }
 );

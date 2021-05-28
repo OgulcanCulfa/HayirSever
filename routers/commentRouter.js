@@ -22,10 +22,10 @@ router.get("/comments", tokenControl, async (req, res) => {
       throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
     }
     res.json(result);
-  } catch (error) {
+  } catch (err) {
     res
-      .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
-      .send(error.message);
+      .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
+      .send(messages.serverError);
   }
 });
 
@@ -38,10 +38,10 @@ router.get("/comments/:postId", tokenControl, async (req, res) => {
       throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
     }
     res.json(result);
-  } catch (error) {
+  } catch (err) {
     res
-      .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
-      .send(error.message);
+      .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
+      .send(messages.serverError);
   }
 });
 
@@ -78,7 +78,7 @@ router.post(
     } catch (err) {
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(err.message);
+        .send(messages.serverError);
     }
   }
 );
@@ -113,7 +113,7 @@ router.delete(
     } catch (err) {
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(err.message);
+        .send(messages.serverError);
     }
   }
 );

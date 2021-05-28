@@ -22,11 +22,10 @@ class CommentValidator extends CommonValidator {
       await joi
         .object({
           postId: joi.number().required(),
-          text: joi.string(),
+          text: joi.string().allow(''),
           photo: joi.any()
         })
-        .or("text","photo")
-        .messages({"object.missing":"Gönderi veya Fotoğraf verisi zorunludur."})
+        .messages({"object.missing":"Gönderi veya Fotoğraf verisinin eklenmesi zorunludur."})
         .validateAsync(req.body);
       next();
     } catch (err) {

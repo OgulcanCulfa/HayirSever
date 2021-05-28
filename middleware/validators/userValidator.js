@@ -55,12 +55,14 @@ class UserValidator extends CommonUserValidator {
           mobile: joi
             .string()
             .allow("")
+            .min(10)
             .max(11)
             .pattern(new RegExp("^[0-9]+$"))
             .messages({
               "string.pattern.base":
                 "Telefon numarası yalnızca sayı içerebilir.",
               "string.max": "Telefon numarası maksimum 11 karakter olmalıdır.",
+              "string.min": "Telefon numarası minimum 10 karakter olmalıdır."
             }),
           address: joi
             .string()

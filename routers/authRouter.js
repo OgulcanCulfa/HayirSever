@@ -7,6 +7,7 @@ const authValidator = validators.authValidator;
 const tokenControl = verifyToken.tokenControl;
 const { StatusCodes } = require("http-status-codes");
 const { errorSender } = require("../utils");
+const messages = require("../messages/messages");
 
 router.post("/login", authValidator.login, async (req, res) => {
   try {
@@ -33,7 +34,7 @@ router.post("/login", authValidator.login, async (req, res) => {
   } catch (err) {
     res
       .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-      .send(err.message);
+      .send(messages.serverError);
   }
 });
 
@@ -56,7 +57,7 @@ router.post("/register", authValidator.register, async (req, res) => {
   } catch (err) {
     res
       .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-      .send(err.message);
+      .send(messages.serverError);
   }
 });
 
@@ -78,10 +79,10 @@ router.delete(
           "Wrong password !"
         );
       res.json("Your account has been deleted.");
-    } catch (error) {
+    } catch (err) {
       res
-        .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(error.message);
+        .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
+        .send(messages.serverError);
     }
   }
 );
@@ -103,10 +104,10 @@ router.put(
           "Wrong password !"
         );
       res.json("Your account information has been successfully edited.");
-    } catch (error) {
+    } catch (err) {
       res
-        .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(error.message);
+        .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
+        .send(messages.serverError);
     }
   }
 );
@@ -130,10 +131,10 @@ router.put(
           "Wrong password !"
         );
       res.json("Your password has been changed.");
-    } catch (error) {
+    } catch (err) {
       res
-        .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(error.message);
+        .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
+        .send(messages.serverError);
     }
   }
 );
@@ -155,10 +156,10 @@ router.post(
         );
 
       res.json("Password is correct.");
-    } catch (error) {
+    } catch (err) {
       res
-        .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(error.message);
+        .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
+        .send(messages.serverError);
     }
   }
 );
