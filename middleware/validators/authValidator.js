@@ -4,6 +4,7 @@ const { StatusCodes } = require("http-status-codes");
 class AuthValidator {
   constructor() {}
 
+  
   static async login(req, res, next) {
     try {
       await joi
