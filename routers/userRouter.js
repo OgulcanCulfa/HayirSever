@@ -48,11 +48,18 @@ router.put(
   tokenControl,
   authControl,
   upload.single("profilePhoto"),
+  userValidator.checkPass,
   userValidator.update,
   async (req, res) => {
     try {
       if (req.file) {
-        imageUploadHelper.update(req, res, "users", "profilePhoto", userTransactions);
+        imageUploadHelper.update(
+          req,
+          res,
+          "users",
+          "profilePhoto",
+          userTransactions
+        );
       } else {
         const result = await userTransactions.updateAsync(req.body, {
           id: req.decode.userId,

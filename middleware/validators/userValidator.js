@@ -52,6 +52,18 @@ class UserValidator extends CommonUserValidator {
             "string.max": "Email Adresi 128 karakterden büyük olamaz.",
             "string.empty": "Email Adresi boş olamaz",
           }),
+          Password: joi
+            .string()
+            .min(6)
+            .max(50)
+            .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı0-9]+$"))
+            .messages({
+              "string.pattern.base":
+                "Parola yalnızca harf ve rakam içerebilir.",
+              "string.min": "Parola 6 karakterden küçük olamaz.",
+              "string.empty": "Parola 6 karakterden küçük olamaz.",
+              "string.max": "Parola 50 karakterden büyük olamaz.",
+            }),
           mobile: joi
             .string()
             .allow("")
@@ -62,7 +74,7 @@ class UserValidator extends CommonUserValidator {
               "string.pattern.base":
                 "Telefon numarası yalnızca sayı içerebilir.",
               "string.max": "Telefon numarası maksimum 11 karakter olmalıdır.",
-              "string.min": "Telefon numarası minimum 10 karakter olmalıdır."
+              "string.min": "Telefon numarası minimum 10 karakter olmalıdır.",
             }),
           address: joi
             .string()
@@ -100,11 +112,7 @@ class UserValidator extends CommonUserValidator {
               "string.max": "Bölüm maksimum 80 karakter olmalıdır.",
               "string.empty": "Bölüm bilgisinin girilmesi zorunludur.",
             }),
-          classNum: joi
-          .number()
-          .min(1)
-          .max(6)
-          .messages({
+          classNum: joi.number().min(1).max(6).messages({
             "number.base": "Sınıf değeri sadece sayı olabilir.",
             "number.max": "Sınıf 6'dan büyük olamaz.",
             "number.min": "Sınıf 1'den küçük olamaz.",
@@ -176,6 +184,16 @@ class UserValidator extends CommonUserValidator {
       next();
     } catch (err) {
       res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
+    }
+  }
+
+  static async checkPass(req, res, next) {
+    const { Password } = await req.body;
+    if (Password.length === 0) {
+      delete req.body.Password;
+      next();
+    } else {
+      next();
     }
   }
 

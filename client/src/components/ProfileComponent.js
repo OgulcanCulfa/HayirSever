@@ -190,6 +190,21 @@ class Profile extends Component {
                     </div>
                     <div className="form-group row">
                       <label
+                        htmlFor="Password"
+                        className="col-sm-2 col-form-label"
+                      >
+                        Şifre
+                      </label>
+                      <div className="col-sm-10">
+                        <input
+                          type="password"
+                          className="form-control"
+                          name="Password"
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label
                         htmlFor="mobile"
                         className="col-sm-2 col-form-label"
                       >
@@ -436,7 +451,7 @@ class Profile extends Component {
                           type="number"
                           className="form-control"
                           name="classNum"
-                          defaultValue={user.class}
+                          defaultValue={user.classNum}
                         />
                       </div>
                     </div>

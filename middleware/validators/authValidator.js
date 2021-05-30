@@ -23,6 +23,7 @@ class AuthValidator {
               "string.pattern.base":
                 "Parola yalnızca harf ve rakam içerebilir.",
               "string.min": "Parola 6 karakterden küçük olamaz.",
+              "string.empty": "Parola boş olamaz.",
               "string.max": "Parola 50 karakterden büyük olamaz.",
             }),
         })
