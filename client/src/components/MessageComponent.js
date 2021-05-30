@@ -30,12 +30,10 @@ class MessageComponent extends Component {
         alertify.error("Mesajlaşmaya bağlanamadınız. Lütfen tekrar deneyin.");
       } else {
         this.props.actions.getChatUsers();
-        console.log("Online. id:", data.id);
       }
     });
 
     this.socket.once("getChatUser", () => {
-      console.log("triggered");
       this.props.actions.getChatUsers();
     });
 
@@ -87,67 +85,76 @@ class MessageComponent extends Component {
   render() {
     return (
       <div className="container">
-        <h3 className="text-center mt-5 mb-4">Mesajlaşma</h3>
-        <div className="messaging">
-          <div className="inbox_msg">
-            <div className="inbox_people">
-              <div className="headind_srch">
-                <div className="recent_heading">
-                  <h4>Mesaj Yaz</h4>
+        <div className="row">
+          <div className="col-12">
+            <h3 className="text-center mt-5 mb-4">Mesajlaşma</h3>
+          </div>
+          <div className="col-md-4 col-12">
+            <div className="messaging">
+              <div className="inbox_msg">
+                <div className="inbox_people">
+                  <div className="headind_srch">
+                    <div className="recent_heading">
+                      <h4>Mesaj Yaz</h4>
+                    </div>
+                  </div>
+                  <div className="inbox_chat">
+                    {this.props.chatUser &&
+                      this.props.chatUser.map((cu) =>
+                        cu.id === this.props.auth.userId ? (
+                          <div></div>
+                        ) : (
+                          <div
+                            key={cu.id}
+                            className={
+                              cu.id === this.state.activeIndex
+                                ? "chat_list pointer bg-primary text-white"
+                                : "chat_list pointer"
+                            }
+                          >
+                            <div
+                              onClick={async () => {
+                                this.setState({
+                                  receiver: cu,
+                                  activeIndex: cu.id,
+                                });
+                                this.getMessages(this.props.auth.userId, cu.id);
+                              }}
+                              className="chat_people d-flex align-items-center"
+                            >
+                              <div className="chat_img">
+                                {" "}
+                                <img
+                                  className=" w-100"
+                                  src={cu.profilePhoto}
+                                  alt=""
+                                />{" "}
+                              </div>
+                              <div className="chat_ib">
+                                <h5>
+                                  {cu.Name} {cu.Surname}{" "}
+                                </h5>
+                              </div>
+                              {cu.isOnline ? (
+                                <small className="float-right d-flex align-items-center">
+                                  <i className="fa fa-circle fa-xs text-success mr-2"></i>
+                                </small>
+                              ) : (
+                                <small className="float-right d-flex align-items-center">
+                                  <i className="fa fa-circle fa-xs text-secondary mr-2"></i>
+                                </small>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      )}
+                  </div>{" "}
                 </div>
-              </div>
-              <div className="inbox_chat">
-                {this.props.chatUser &&
-                  this.props.chatUser.map((cu) =>
-                    cu.id === this.props.auth.userId ? (
-                      <div></div>
-                    ) : (
-                      <div
-                        key={cu.id}
-                        className={
-                          cu.id === this.state.activeIndex
-                            ? "chat_list pointer bg-primary text-white"
-                            : "chat_list pointer"
-                        }
-                      >
-                        <div
-                          onClick={async () => {
-                            this.setState({ receiver: cu, activeIndex: cu.id });
-                            this.getMessages(this.props.auth.userId, cu.id);
-                          }}
-                          className="chat_people d-flex align-items-center"
-                        >
-                          <div className="chat_img">
-                            {" "}
-                            <img
-                              className=" w-100"
-                              src={cu.profilePhoto}
-                              alt=""
-                            />{" "}
-                          </div>
-                          <div className="chat_ib">
-                            <h5>
-                              {cu.Name} {cu.Surname}{" "}
-                            </h5>
-                          </div>
-                          {cu.isOnline ? (
-                            <small className="float-right d-flex align-items-center">
-                              <i className="fa fa-circle fa-xs text-success mr-2"></i>
-                              online
-                            </small>
-                          ) : (
-                            <small className="float-right d-flex align-items-center">
-                              <i className="fa fa-circle fa-xs text-secondary mr-2"></i>
-                              offline
-                            </small>
-                          )}
-                        </div>
-                      </div>
-                    )
-                  )}
-              </div>
-            </div>
-            {this.state.receiver ? (
+              </div>{" "}
+            </div>{" "}
+          </div>
+          {this.state.receiver ? (
+            <div className="col-md-8 col-12">
               <div className="mesgs">
                 <div className="msg_history">
                   {this.state.messages.length === 0 && (
@@ -219,10 +226,10 @@ class MessageComponent extends Component {
                   </div>
                 </div>
               </div>
-            ) : (
-              <div></div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div></div>
+          )}{" "}
         </div>
       </div>
     );
