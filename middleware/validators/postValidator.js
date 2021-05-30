@@ -41,8 +41,11 @@ class PostValidator extends CommonValidator {
     try {
       await joi
         .object({
-          categoryId: joi.string().max(50)
-          .pattern(new RegExp("^[0-9undefined]+$"))
+          categoryId: joi
+            .string()
+            .max(50)
+            .pattern(new RegExp("^[0-9undefined]+$")),
+          offset: joi.number(),
         })
         .validateAsync(req.query);
       next();
@@ -63,6 +66,5 @@ class PostValidator extends CommonValidator {
       res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
     }
   }
-  
 }
 module.exports = PostValidator;

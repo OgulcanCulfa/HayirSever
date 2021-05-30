@@ -1,12 +1,12 @@
 import axios from "axios";
-import { heroku } from "../environments/index";
+import { localhost } from "../environments/index";
 
-const API_URL = heroku;
+const API_URL = localhost;
 const token = JSON.parse(localStorage.getItem("token"));
 
-export const getPosts = (categoryId) => {
+export const getPosts = (categoryId, offset) => {
   return axios
-    .get(API_URL + `posts?categoryId=${categoryId}`, {
+    .get(API_URL + `posts?categoryId=${categoryId}&offset=${parseInt(offset)}`, {
       headers: {
         token: token,
       },

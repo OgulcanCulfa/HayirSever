@@ -28,16 +28,19 @@ class PostComponent extends Component {
     this.handleDeleteComment = this.handleDeleteComment.bind(this);
     this.handleCategory = this.handleCategory.bind(this);
     this.handleSum = this.handleSum.bind(this);
+    this.nextPage = this.nextPage.bind(this);
+    this.previousPage = this.previousPage.bind(this);
     this.toggle = this.toggle.bind(this);
 
     this.state = {
       toggle: false,
       activeIndex: Number,
+      offset: 1,
     };
   }
   componentDidMount() {
     this.props.actions.getUser(parseInt(this.props.auth.userId));
-    this.props.actions.getPosts();
+    this.props.actions.getPosts(undefined, this.state.offset);
     this.props.actions.getCategories();
   }
 
@@ -50,12 +53,12 @@ class PostComponent extends Component {
     this.props.actions
       .createPost(data)
       .then((res) => {
-        this.props.actions.getPosts();
+        this.props.actions.getPosts(undefined, this.state.offset);
         this.props.actions.getCategories();
         alertify.success(res.data);
       })
       .catch((err) => {
-        this.props.actions.getPosts();
+        this.props.actions.getPosts(undefined, this.state.offset);
         alertify.error(err.response.data);
       });
     document.getElementById("postForm").reset();
@@ -90,7 +93,7 @@ class PostComponent extends Component {
       this.props.actions
         .deletePost(postId)
         .then((res) => {
-          this.props.actions.getPosts();
+          this.props.actions.getPosts(undefined, this.state.offset);
           this.props.actions.getCategories();
           alertify.success(res.data);
         })
@@ -117,7 +120,7 @@ class PostComponent extends Component {
   }
 
   handleCategory(categoryId) {
-    this.props.actions.getPosts(categoryId);
+    this.props.actions.getPosts(categoryId, this.state.offset);
     return (e) => {
       e.preventDefault();
     };
@@ -125,6 +128,28 @@ class PostComponent extends Component {
 
   handleSum(key, array) {
     return array.reduce((a, b) => a + (b[key] || 0), 0);
+  }
+
+  nextPage() {
+    this.setState(
+      {
+        offset: this.state.offset + 1,
+      },
+      () => {
+        this.props.actions.getPosts(undefined, this.state.offset);
+      }
+    );
+  }
+
+  previousPage() {
+    this.setState(
+      {
+        offset: this.state.offset - 1,
+      },
+      () => {
+        this.props.actions.getPosts(undefined, this.state.offset);
+      }
+    );
   }
 
   toggle() {
@@ -221,10 +246,11 @@ class PostComponent extends Component {
                 </li>
                 <li
                   onClick={() => {
-                    this.props.actions.getPosts();
                     this.setState({
                       activeIndex: 10000,
+                      offset: 1,
                     });
+                    this.props.actions.getPosts(undefined, this.state.offset);
                   }}
                   key="10000"
                   className={
@@ -242,10 +268,11 @@ class PostComponent extends Component {
                   this.props.categories.map((ct) => (
                     <li
                       onClick={() => {
-                        this.handleCategory(ct.id);
                         this.setState({
                           activeIndex: ct.id,
+                          offset: 1,
                         });
+                        this.handleCategory(ct.id);
                       }}
                       key={ct.id}
                       className={
@@ -461,9 +488,7 @@ class PostComponent extends Component {
                                 name="photo"
                                 accept="image/*"
                                 className="my-auto px-2 border-top-0 border-bottom-0"
-                              >
-                                {/* <i className="fa fa-camera"></i> */}
-                              </input>
+                              ></input>
                               <button className="px-2 border-0" type="submit">
                                 <i className="fa fa-paper-plane"></i>
                               </button>
@@ -474,6 +499,58 @@ class PostComponent extends Component {
                     </div>
                   </div>
                 ))}
+              {this.props.postData ? (
+                this.props.postData.length > 0 && (
+                  <nav aria-label="...">
+                    <ul className="pagination justify-content-center mt-5">
+                      <li
+                        className={
+                          this.state.offset === 1
+                            ? "page-item disabled"
+                            : "page-item "
+                        }
+                      >
+                        <a
+                          onClick={() => this.previousPage()}
+                          className="page-link pointer"
+                          tabIndex="-1"
+                        >
+                          Önceki Sayfa
+                        </a>
+                      </li>
+                      <li className="page-item">
+                        <a className="page-link">{this.state.offset}</a>
+                      </li>
+
+                      <li
+                        class={
+                          this.state.offset ===
+                          Math.floor(
+                            (this.handleSum(
+                              "countOfCategories",
+                              this.props.categories
+                            ) +
+                              5 -
+                              1) /
+                              5
+                          )
+                            ? "page-item disabled"
+                            : "page-item"
+                        }
+                      >
+                        <a
+                          onClick={() => this.nextPage()}
+                          className="page-link pointer"
+                        >
+                          Sonraki Sayfa
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                )
+              ) : (
+                <div></div>
+              )}
             </div>
           </div>
         </section>

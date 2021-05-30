@@ -29,16 +29,14 @@ app.use(express.static("public"));
 
 app.use(serve);
 
-// if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname + "/client/build")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname + "/client/build/index.html"), (err) => {
-      if (err) {
-        res.status(500).send(err.stack);
-      }
-    });
+app.use(express.static(path.join(__dirname + "/client/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"), (err) => {
+    if (err) {
+      res.status(500).send(err.stack);
+    }
   });
-//}
+});
 
 server.listen(process.env.PORT || PORT, () => {
   console.log("Server is ready on port: " + PORT);

@@ -15,20 +15,27 @@ const multer = require("multer");
 const upload = multer({ storage: multerOptions("posts") });
 const messages = require("../messages/messages");
 
-router.get("/posts", tokenControl, postValidator.select, async (req, res) => {
-  try {
-    const result = await postTransactions.vwSelectAsync(parserUtils(req.query));
+router.get(
+  "/posts",
+  tokenControl,
+  postValidator.select,
+  async (req, res) => {
+    try {
+      const result = await postTransactions.vwSelectAsync(
+        parserUtils(req.query)
+      );
 
-    if (!result)
-      throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
+      if (!result)
+        throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
 
-    res.json(result);
-  } catch (err) {
-    res
-      .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-      .send(messages.serverError);
+      res.json(result);
+    } catch (err) {
+      res
+        .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
+        .send(err.stack);
+    }
   }
-});
+);
 
 router.post(
   "/posts",
@@ -97,11 +104,18 @@ router.delete(
   commonValidator.bodyId,
   async (req, res) => {
     try {
-      const photoPath = await postTransactions.selectAsync(parserUtils(req.body));
+      const photoPath = await postTransactions.selectAsync(
+        parserUtils(req.body)
+      );
 
       if (photoPath[0].postphoto) {
-         fs.unlink(
-           photoPath[0].postphoto.replace(req.protocol + "://" + req.get("host"),`${process.cwd()}/public`),(cb) => {})
+        fs.unlink(
+          photoPath[0].postphoto.replace(
+            req.protocol + "://" + req.get("host"),
+            `${process.cwd()}/public`
+          ),
+          (cb) => {}
+        );
       }
       const result = await postTransactions.deleteAsync(req.body);
       if (!result.affectedRows)

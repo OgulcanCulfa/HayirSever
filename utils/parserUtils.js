@@ -1,10 +1,16 @@
 module.exports = (object) => {
-  let newObject = { where: {} };
+  let newObject = { where: {}, limit: 5 };
   for (const [key, value] of Object.entries(object)) {
-    if (key === "limit" || key === "offset") newObject[key] = parseInt(value);
-    if (key === "categoryId" && value === "undefined") return true
-    else
-     newObject.where[key] = value;
+    if (key === "offset") {
+      const skip = (parseInt(value) - 1) * 5;
+      newObject[key] = parseInt(skip);
+    }
+    if (key === "categoryId" && value > 0) {
+      newObject.where[key] = parseInt(value);
+    }
+    if (key === "categoryId" && value === "undefined") {
+      true;
+    }
   }
   return newObject;
 };

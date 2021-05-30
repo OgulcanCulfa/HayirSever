@@ -7,11 +7,11 @@ import {
   getPostsById,
 } from "../services/postService";
 
-export const getPostAction = (categoryId) => (dispatch) => {
+export const getPostAction = (categoryId, offset) => (dispatch) => {
   dispatch({
     type: GET_POSTS_PENDING,
   });
-  getPosts(categoryId)
+  getPosts(categoryId, offset)
     .then((res) => {
       dispatch({
         type: GET_POSTS_SUCCESS,
