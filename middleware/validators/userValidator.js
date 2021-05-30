@@ -189,8 +189,11 @@ class UserValidator extends CommonUserValidator {
 
   static async checkPass(req, res, next) {
     const { Password } = await req.body;
-    if (Password.length === 0) {
-      delete req.body.Password;
+    if (Password) {
+      if (Password.length === 0) {
+        delete req.body.Password;
+        next();
+      }
       next();
     } else {
       next();
