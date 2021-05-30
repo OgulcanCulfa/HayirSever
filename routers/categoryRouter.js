@@ -1,6 +1,5 @@
 const router = require("express")();
 const { StatusCodes } = require("http-status-codes");
-const { errorSender } = require("../utils");
 const TransactionsFactory = require("../database/transactionFactory");
 const categoryTransactions = TransactionsFactory.creating("categoryTransactions");
 
