@@ -1,12 +1,3 @@
-import React, { Component } from "react";
-import { socket } from "../utils/socketInstance";
-import moment from "moment";
-import "moment/locale/tr";
-import { getChatUserAction } from "../actions/userActions";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import alertify from "alertifyjs";
-
 class MessageComponent extends Component {
   constructor() {
     super();
@@ -19,21 +10,20 @@ class MessageComponent extends Component {
       activeIndex: Number,
     };
   }
-
   componentDidMount() {
     this.props.actions.getChatUsers();
-
     this.socket = socket(this.props.auth.userId);
-
     this.socket.once("online", (data) => {
       if (!data.result) {
         alertify.error("Mesajlaşmaya bağlanamadınız. Lütfen tekrar deneyin.");
       } else {
         this.props.actions.getChatUsers();
+        console.log("Online. id:", data.id);
       }
     });
 
     this.socket.once("getChatUser", () => {
+      console.log("triggered");
       this.props.actions.getChatUsers();
     });
 
@@ -47,11 +37,9 @@ class MessageComponent extends Component {
       }
     });
   }
-
   componentWillUnmount() {
     this.socket.disconnect();
   }
-
   getMessages = (senderId, receiverId) => {
     this.socket.emit("joinPrivate", {
       senderId,
@@ -62,7 +50,6 @@ class MessageComponent extends Component {
       receiverId,
     });
   };
-
   sendMessage = (senderId, receiverId) => {
     return (e) => {
       e.preventDefault();
@@ -81,80 +68,68 @@ class MessageComponent extends Component {
       }
     };
   };
-
   render() {
     return (
       <div className="container">
-        <div className="row">
-          <div className="col-12">
-            <h3 className="text-center mt-5 mb-4">Mesajlaşma</h3>
-          </div>
-          <div className="col-md-4 col-12">
-            <div className="messaging">
-              <div className="inbox_msg">
-                <div className="inbox_people">
-                  <div className="headind_srch">
-                    <div className="recent_heading">
-                      <h4>Mesaj Yaz</h4>
-                    </div>
-                  </div>
-                  <div className="inbox_chat">
-                    {this.props.chatUser &&
-                      this.props.chatUser.map((cu) =>
-                        cu.id === this.props.auth.userId ? (
-                          <div></div>
-                        ) : (
-                          <div
-                            key={cu.id}
-                            className={
-                              cu.id === this.state.activeIndex
-                                ? "chat_list pointer bg-primary text-white"
-                                : "chat_list pointer"
-                            }
-                          >
-                            <div
-                              onClick={async () => {
-                                this.setState({
-                                  receiver: cu,
-                                  activeIndex: cu.id,
-                                });
-                                this.getMessages(this.props.auth.userId, cu.id);
-                              }}
-                              className="chat_people d-flex align-items-center"
-                            >
-                              <div className="chat_img">
-                                {" "}
-                                <img
-                                  className=" w-100"
-                                  src={cu.profilePhoto}
-                                  alt=""
-                                />{" "}
-                              </div>
-                              <div className="chat_ib">
-                                <h5>
-                                  {cu.Name} {cu.Surname}{" "}
-                                </h5>
-                              </div>
-                              {cu.isOnline ? (
-                                <small className="float-right d-flex align-items-center">
-                                  <i className="fa fa-circle fa-xs text-success mr-2"></i>
-                                </small>
-                              ) : (
-                                <small className="float-right d-flex align-items-center">
-                                  <i className="fa fa-circle fa-xs text-secondary mr-2"></i>
-                                </small>
-                              )}
-                            </div>
-                          </div>
-                        )
-                      )}
-                  </div>{" "}
+        <h3 className="text-center mt-5 mb-4">Mesajlaşma</h3>
+        <div className="messaging">
+          <div className="inbox_msg">
+            <div className="inbox_people">
+              <div className="headind_srch">
+                <div className="recent_heading">
+                  <h4>Mesaj Yaz</h4>
                 </div>
-              </div>{" "}
-            </div>{" "}
-          </div>
-          {this.state.receiver ? (
-            <div className="col-md-8 col-12">
+              </div>
+              <div className="inbox_chat">
+                {this.props.chatUser &&
+                  this.props.chatUser.map((cu) =>
+                    cu.id === this.props.auth.userId ? (
+                      <div></div>
+                    ) : (
+                      <div
+                        key={cu.id}
+                        className={
+                          cu.id === this.state.activeIndex
+                            ? "chat_list pointer bg-primary text-white"
+                            : "chat_list pointer"
+                        }
+                      >
+                        <div
+                          onClick={async () => {
+                            this.setState({ receiver: cu, activeIndex: cu.id });
+                            this.getMessages(this.props.auth.userId, cu.id);
+                          }}
+                          className="chat_people d-flex align-items-center"
+                        >
+                          <div className="chat_img">
+                            {" "}
+                            <img
+                              className=" w-100"
+                              src={cu.profilePhoto}
+                              alt=""
+                            />{" "}
+                          </div>
+                          <div className="chat_ib">
+                            <h5>
+                              {cu.Name} {cu.Surname}{" "}
+                            </h5>
+                          </div>
+                          {cu.isOnline ? (
+                            <small className="float-right d-flex align-items-center">
+                              <i className="fa fa-circle fa-xs text-success mr-2"></i>
+                            </small>
+                          ) : (
+                            <small className="float-right d-flex align-items-center">
+                              <i className="fa fa-circle fa-xs text-secondary mr-2"></i>
+                            </small>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  )}
+              </div>
+            </div>
+            {this.state.receiver ? (
               <div className="mesgs">
                 <div className="msg_history">
                   {this.state.messages.length === 0 && (
@@ -226,16 +201,15 @@ class MessageComponent extends Component {
                   </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div></div>
-          )}{" "}
+            ) : (
+              <div></div>
+            )}
+          </div>
         </div>
       </div>
     );
   }
 }
-
 function mapStateToProps(state) {
   const { auth } = state.authReducer;
   const { user, chatUser } = state.userReducer;
@@ -245,7 +219,6 @@ function mapStateToProps(state) {
     chatUser,
   };
 }
-
 function mapDispatchToProps(dispatch) {
   return {
     actions: {
@@ -253,5 +226,4 @@ function mapDispatchToProps(dispatch) {
     },
   };
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(MessageComponent);
