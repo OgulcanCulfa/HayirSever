@@ -1,3 +1,12 @@
+import React, { Component } from "react";
+import { socket } from "../utils/socketInstance";
+import moment from "moment";
+import "moment/locale/tr";
+import { getChatUserAction } from "../actions/userActions";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import alertify from "alertifyjs";
+
 class MessageComponent extends Component {
   constructor() {
     super();
@@ -18,12 +27,10 @@ class MessageComponent extends Component {
         alertify.error("Mesajlaşmaya bağlanamadınız. Lütfen tekrar deneyin.");
       } else {
         this.props.actions.getChatUsers();
-        console.log("Online. id:", data.id);
       }
     });
 
     this.socket.once("getChatUser", () => {
-      console.log("triggered");
       this.props.actions.getChatUsers();
     });
 
