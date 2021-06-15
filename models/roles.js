@@ -1,5 +1,5 @@
 module.exports = {
     Root: 'Root',
-    Moderator: 'Developer',
+    Moderator: 'Moderator',
     User: 'User'
 };

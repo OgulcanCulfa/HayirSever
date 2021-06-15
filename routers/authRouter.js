@@ -45,7 +45,7 @@ router.post("/register", authValidator.register, async (req, res) => {
       res.status(StatusCodes.CONFLICT).send("Zaten sisteme kayıtlısınız.");
     } else {
       authTransactions.insertAsync(req.body);
-      res.send("Başarılı bir şekilde");
+      res.send("Başarılı bir şekilde kaydınız gerçekleşti. Giriş yapabilirsiniz.");
     }
   } catch (err) {
     res
