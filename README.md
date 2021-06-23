@@ -40,6 +40,7 @@ Hayirsever uses a number of open source projects to work properly:
 | /register | POST | Name, Surname, EmailAddress,  Password, department, classNum | Register operation |
 
 <br>
+
 ### category
 
 | Route         | HTTP Method | Request Body   | Description  |
@@ -47,6 +48,7 @@ Hayirsever uses a number of open source projects to work properly:
 | /login   | GET          | - | Get all categories
 
 <br>
+
 ### comment
 
 | Route         | HTTP Method | Request Body   | Description  |
@@ -57,6 +59,7 @@ Hayirsever uses a number of open source projects to work properly:
 |/comments  | DELETE          | text, photo | Delete a comment by id (You must be comment owner or Root user)
 
 <br>
+
 ### post
 
 | Route         | HTTP Method | Request Body   | Description  |
@@ -67,6 +70,7 @@ Hayirsever uses a number of open source projects to work properly:
 |/posts | DELETE          | postUserId | Delete a post by id (You must be post owner or Root user)
 
 <br>
+
 ### user
 
 | Route         | HTTP Method | Request Body   | Description  |
@@ -79,6 +83,7 @@ Hayirsever uses a number of open source projects to work properly:
 <br>
 <hr>
 <br>
+
 ## Known issues
 
 * All pages are responsive but Chat page.
