@@ -36,8 +36,8 @@ Hayirsever uses a number of open source projects to work properly:
 
 | Route | HTTP Method | Request Body   | Description  |
 | :-------------: | :-------------: | :-----: | | :-------------: |
-| /login   | POST | EmailAddress,Password | Login operation |
-| /register   | POST | Name, Surname, EmailAddress,  Password, department, classNum | Register operation |
+| /login | POST | EmailAddress,Password | Login operation |
+| /register | POST | Name, Surname, EmailAddress,  Password, department, classNum | Register operation |
 
 <br>
 ### category
