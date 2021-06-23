@@ -45,8 +45,8 @@ Hayirsever uses a number of open source projects to work properly:
 ### category
 
 | Route         | HTTP Method | Request Body   | Description  |
-| :-------------: |:-------------:| :-----:| |:-------------:|
-| /login   | GET          | - | Get all categories
+| :-------------: | :-------------: | :-----: | :-------------: |
+| /login   | GET          | - | Get all categories |
 
 <br>
 
