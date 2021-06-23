@@ -34,6 +34,7 @@ Hayirsever uses a number of open source projects to work properly:
 
 ### auth
 
+
 | Route | HTTP Method | Request Body   | Description  |
 | :-------------: | :-------------: | :-----: | | :-------------: |
 | /login | POST | EmailAddress,Password | Login operation |
