@@ -1,10 +1,10 @@
 const joi = require("joi");
 const { StatusCodes } = require("http-status-codes");
+const messages = require("../../messages/messages");
 
 class AuthValidator {
   constructor() {}
 
-  
   static async login(req, res, next) {
     try {
       await joi
@@ -30,7 +30,7 @@ class AuthValidator {
         .validateAsync(req.body);
       next();
     } catch (err) {
-      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
+      res.status(StatusCodes.EXPECTATION_FAILED).send(messages.serverError);
     }
   }
 
@@ -98,71 +98,7 @@ class AuthValidator {
         .validateAsync(req.body);
       next();
     } catch (err) {
-      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
-    }
-  }
-
-  static async delete(req, res, next) {
-    try {
-      await joi
-        .object({
-          Password: joi.string().max(50).required(),
-        })
-        .validateAsync(req.body);
-      next();
-    } catch (err) {
-      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
-    }
-  }
-
-  static async update(req, res, next) {
-    try {
-      await joi
-        .object({
-          Name: joi
-            .string()
-            .min(3)
-            .max(100)
-            .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı ]+$")),
-          Surname: joi
-            .string()
-            .min(2)
-            .max(100)
-            .pattern(new RegExp("^[A-Za-zÇçÖöŞşÜüĞğİı ]+$")),
-          Password: joi.string().max(50).required(),
-          EmailAddress: joi.string().max(128).required(),
-        })
-        .validateAsync(req.body);
-      next();
-    } catch (err) {
-      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
-    }
-  }
-
-  static async changePassword(req, res, next) {
-    try {
-      await joi
-        .object({
-          Password: joi.string().min(6).max(99).required(),
-          NewPassword: joi.string().min(6).max(99).required(),
-        })
-        .validateAsync(req.body);
-      next();
-    } catch (err) {
-      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
-    }
-  }
-
-  static async passwordControl(req, res, next) {
-    try {
-      await joi
-        .object({
-          Password: joi.string().max(99).required(),
-        })
-        .validateAsync(req.body);
-      next();
-    } catch (err) {
-      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
+      res.status(StatusCodes.EXPECTATION_FAILED).send(messages.serverError);
     }
   }
 }

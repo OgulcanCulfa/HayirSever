@@ -7,6 +7,7 @@ const tokenControl = verifyToken.tokenControl;
 const commentValidator = validators.commentValidator;
 const commonValidator = validators.commonValidator;
 const authControl = authorization.authControl;
+const idControl = authorization.idControl;
 const { StatusCodes } = require("http-status-codes");
 const { errorSender, parserUtils } = require("../utils");
 const imageUploadHelper = require("../utils/imageUploadHelper");
@@ -19,7 +20,7 @@ router.get("/comments", tokenControl, async (req, res) => {
   try {
     const result = await commentTransactions.vwSelectAsync();
     if (!result) {
-      throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
+      throw errorSender.errorObject(StatusCodes.NOT_FOUND, "Veri yok!");
     }
     res.json(result);
   } catch (err) {
@@ -35,7 +36,7 @@ router.get("/comments/:postId", tokenControl, async (req, res) => {
       where: req.params,
     });
     if (!result) {
-      throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
+      throw errorSender.errorObject(StatusCodes.NOT_FOUND, "Veri yok!");
     }
     res.json(result);
   } catch (err) {

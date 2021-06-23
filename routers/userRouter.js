@@ -6,6 +6,7 @@ const userValidator = validators.userValidator;
 const userTransactions = TransactionsFactory.creating("userTransactions");
 const tokenControl = verifyToken.tokenControl;
 const authControl = authorization.authControl;
+const idControl = authorization.idControl;
 const { StatusCodes } = require("http-status-codes");
 const { errorSender } = require("../utils");
 const imageUploadHelper = require("../utils/imageUploadHelper");
@@ -48,6 +49,7 @@ router.put(
   tokenControl,
   authControl,
   upload.single("profilePhoto"),
+  idControl,
   userValidator.checkPass,
   userValidator.update,
   async (req, res) => {

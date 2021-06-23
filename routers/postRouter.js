@@ -26,13 +26,13 @@ router.get(
       );
 
       if (!result)
-        throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
+        throw errorSender.errorObject(StatusCodes.NOT_FOUND, "Veri yok!");
 
       res.json(result);
     } catch (err) {
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(err.stack);
+        .send(messages.serverError);
     }
   }
 );

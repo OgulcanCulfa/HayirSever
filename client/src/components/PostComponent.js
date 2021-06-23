@@ -191,7 +191,7 @@ class PostComponent extends Component {
                             id="text"
                             name="text"
                             rows="5"
-                            placeholder="İhtiyaçlarınızı yazınız"
+                            placeholder="İhtiyaç veya yardım detaylarınızı yazınız."
                           ></textarea>
                         </div>
                         <div className="col-md-12 icon-border bottom-border border-md-bottom border-md-right d-md-flex align-items-center mt-2">
@@ -201,7 +201,6 @@ class PostComponent extends Component {
                             accept="image/*"
                             className="border-0 disable-pointer p-2"
                           >
-                            {/* <i className="fa fa-camera pointer"></i> */}
                           </input>
                           <div className="form-group mb-0 icon-border top-border bottom-border right-border border-md-bottom border-md-left border-md-right p-2">
                             <label htmlFor="categorySelect">
@@ -350,7 +349,6 @@ class PostComponent extends Component {
                           width="650"
                           height="650"
                           className="img-fluid"
-                          //src="https://www.telegraph.co.uk/content/dam/tv/2019/05/12/TELEMMGLPICT000195851846_trans_NvBQzQNjv4BqNrzB8hrvgfJ5sESwMmBGZOCHfpH_fyW0CNqPxWGmNfw.jpeg?imwidth=450"
                           src={val.postPhoto}
                         />
                       </div>
