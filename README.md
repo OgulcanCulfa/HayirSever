@@ -8,7 +8,7 @@ Hayirsever is a social media platform especially made for students so they are a
 
 ## Features
 
-- Share posts and comments only plain text or text and photo.
+- Share posts through only plain text or text and photo.
 - Comment on other users posts through text or text and photo.
 - Edit profile
 - Check out other users profile
