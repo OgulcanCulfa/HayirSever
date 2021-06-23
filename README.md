@@ -34,10 +34,10 @@ Hayirsever uses a number of open source projects to work properly:
 
 ### auth
 
-| Route         | HTTP Method | Request Body   | Description  |
-| :-------------: |:-------------:| :-----:| |:-------------:|
-| /login   | POST          | EmailAddress,Password | Login operation
-| /register   | POST          | Name, Surname, EmailAddress,  Password, department, classNum | Register operation
+| Route | HTTP Method | Request Body   | Description  |
+| :-------------: | :-------------: | :-----: | | :-------------: |
+| /login   | POST | EmailAddress,Password | Login operation |
+| /register   | POST | Name, Surname, EmailAddress,  Password, department, classNum | Register operation |
 
 <br>
 ### category
