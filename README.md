@@ -53,29 +53,29 @@ Hayirsever uses a number of open source projects to work properly:
 ### comment
 
 | Route         | HTTP Method | Request Body   | Description  |
-| :-------------: |:-------------:| :-----:| |:-------------:|
-| /comments/:postId   | GET          | - | Get all comments
-| /comments/:postId   | GET          | - | Get comments by Post id
-|/comments  | POST          | text, photo | Create a comment includes only text or text and photo
-|/comments  | DELETE          | text, photo | Delete a comment by id (You must be comment owner or Root user)
+| :-------------: | :-------------: | :-----: | :-------------: |
+| /comments/:postId   | GET          | - | Get all comments |
+| /comments/:postId   | GET          | - | Get comments by Post id |
+|/comments  | POST          | text, photo | Create a comment includes only text or text and photo |
+|/comments  | DELETE          | text, photo | Delete a comment by id (You must be comment owner or Root user) |
 
 <br>
 
 ### post
 
 | Route         | HTTP Method | Request Body   | Description  |
-| :-------------: |:-------------:| :-----:| |:-------------:|
-| /posts/?categoryId&offset   | GET          | - | Get all posts paginated by categoryId (if categoryId not given, it will return all posts paginated)
-|/posts   | POST          | postUserId | Get all posts by user
-|/posts  | POST          | categoryId, text, photo | Create a post includes only text or text and photo
-|/posts | DELETE          | postUserId | Delete a post by id (You must be post owner or Root user)
+| :-------------: | :-------------: | :-----: | :-------------: |
+| /posts/?categoryId&offset   | GET          | - | Get all posts paginated by categoryId (if categoryId not given, it will return all posts paginated) |
+| /posts   | POST          | postUserId | Get all posts by user |
+| /posts  | POST          | categoryId, text, photo | Create a post includes only text or text and photo |
+| /posts | DELETE          | postUserId | Delete a post by id (You must be post owner or Root user) |
 
 <br>
 
 ### user
 
 | Route         | HTTP Method | Request Body   | Description  |
-| :-------------: |:-------------:| :-----:| |:-------------:|
+| :-------------: |:-------------:| :-----: |:-------------:|
 | /users/:id   | GET          | - | Get a user by id)
 |/chatusers   | GET          | - | Get all users for display users on chat screen
 |/users  | PUT          | Name, Surname, EmailAddress, Password, mobile, address, city, district, department, classNum, website, github, twitter, instagram, facebook, kaggle, profilePhoto (none is required) | Update user information (You must be the user that you want to update or Root user)
