@@ -1,5 +1,5 @@
-#Hayirsever
-#####App is live on: [https://hayirsever.herokuapp.com/](https://hayirsever.herokuapp.com/)
+# Hayirsever
+##### App is live on: [https://hayirsever.herokuapp.com/](https://hayirsever.herokuapp.com/)
 
 
 Hayirsever is a social media platform especially made for students so they are able to help each other through sharing their needs or help other students. This is a single page web application.
@@ -57,7 +57,7 @@ Hayirsever uses a number of open source projects to work properly:
 |/comments  | DELETE          | text, photo | Delete a comment by id (You must be comment owner or Root user)
 
 <br>
-###post
+### post
 
 | Route         | HTTP Method | Request Body   | Description  |
 | :-------------: |:-------------:| :-----:| |:-------------:|
@@ -67,7 +67,7 @@ Hayirsever uses a number of open source projects to work properly:
 |/posts | DELETE          | postUserId | Delete a post by id (You must be post owner or Root user)
 
 <br>
-###user
+### user
 
 | Route         | HTTP Method | Request Body   | Description  |
 | :-------------: |:-------------:| :-----:| |:-------------:|
