@@ -87,6 +87,7 @@ Hayirsever uses a number of open source projects to work properly:
 
 ## Known issues
 
+* Supports only Turkish language. English support will come soon
 * All pages are responsive but Chat page.
 * There is no admin panel right now. I need some time for it.
 * This app deployed on Heroku, which is good for demonstrate demo apps but not for completed apps. I will deploy this app on more suitable platform soon.
