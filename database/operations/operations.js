@@ -18,7 +18,7 @@ const operations = {
   update: (table, where, updateObj) => {
     return connection.update(table, where, updateObj);
   },
-  delete: (table, where) => {
+  deleteRecord: (table, where) => {
     return connection.delete(table, where);
   },
   customQuery: (query, values) => {
