@@ -53,7 +53,7 @@ class ImageUploadHelper {
     } catch (err) {
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(messages.serverError);
+        .send(err.stack);
     }
   }
 }
