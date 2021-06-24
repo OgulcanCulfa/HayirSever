@@ -1,4 +1,4 @@
-const { selectAll, deleteRecord, insert } = require("../operations/operations");
+const { selectAll, deleteRecord, insert, customQuery } = require("../operations/operations");
 
 class PostTransactions {
   constructor() {
@@ -7,7 +7,7 @@ class PostTransactions {
   }
 
   paginatedSelect(selectObj) {
-    return operations.customQuery(
+    return customQuery(
       `SELECT * FROM ${this.view} ${
         selectObj.categoryId && "WHERE categoryId=" + selectObj.categoryId
       } LIMIT ${selectObj.limit} OFFSET ${selectObj.offset}`
