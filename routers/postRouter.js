@@ -66,7 +66,7 @@ router.post(
         );
       }
     } catch (err) {
-      console.log(err);
+      console.log(err.stack);
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
         .send(messages.serverError);
