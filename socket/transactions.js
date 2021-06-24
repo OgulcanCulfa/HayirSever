@@ -3,7 +3,6 @@ const UserTransactions = require("../database/transactions/userTransactions");
 const chatTransactions = new ChatTransactions();
 const userTransactions = new UserTransactions();
 
-
 module.exports = {
   getMessages: async (senderId, receiverId) => {
     const data = await chatTransactions.getMessagesById(senderId, receiverId);
@@ -23,7 +22,7 @@ module.exports = {
     }
   },
   updateOnlineStatus: async (id) => {
-    const result = await userTransactions.update({id: id},{isOnline: 1});
+    const result = await userTransactions.update({ id: id }, { isOnline: 1 });
     if (!result.affectedRows) {
       return false;
     } else {
@@ -31,11 +30,11 @@ module.exports = {
     }
   },
   updateOfflineStatus: async (id) => {
-    const result = await userTransactions.update({id: id},{isOnline: 0});
+    const result = await userTransactions.update({ id: id }, { isOnline: 0 });
     if (!result.affectedRows) {
       return false;
     } else {
       return true;
     }
-  }
+  },
 };

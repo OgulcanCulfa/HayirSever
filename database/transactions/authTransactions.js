@@ -1,18 +1,17 @@
-const operations = require('../operations/operations');
+const { findOne, insert } = require("../operations/operations");
 
 class AuthTransactions {
-    constructor() {
-        this.table = "tbluser"
-    }
+  constructor() {
+    this.table = "tbluser";
+  }
 
-    findOne(selectObj) {
-        return operations.findOne(this.table, selectObj)
-    }
+  findOne(selectObj) {
+    return findOne(this.table, selectObj);
+  }
 
-    insert(insertObj) {
-        return operations.insert(this.table, insertObj);
-    }
-
+  insert(insertObj) {
+    return insert(this.table, insertObj);
+  }
 }
 
 module.exports = AuthTransactions;

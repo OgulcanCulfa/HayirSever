@@ -1,8 +1,9 @@
-const operations = require("../operations/operations");
+const { selectAll, deleteRecord, insert } = require("../operations/operations");
 
 class PostTransactions {
   constructor() {
-    (this.table = "tblposts"), (this.view = "vwpostswithusers");
+    this.table = "tblposts";
+    this.view = "vwpostswithusers";
   }
 
   paginatedSelect(selectObj) {
@@ -14,14 +15,14 @@ class PostTransactions {
   }
 
   vwSelect(selectObj) {
-    return operations.selectAll(this.view, selectObj);
+    return selectAll(this.view, selectObj);
   }
   delete(deleteObj) {
-    return operations.delete(this.table, deleteObj);
+    return deleteRecord(this.table, deleteObj);
   }
 
   insert(insertObj) {
-    return operations.insert(this.table, insertObj);
+    return insert(this.table, insertObj);
   }
 }
 
