@@ -6,7 +6,7 @@ module.exports = (object) => {
       newObject[key] = parseInt(skip);
     }
     if (key === "categoryId" && value > 0) {
-      newObject.where[key] = parseInt(value);
+      newObject[key] = parseInt(value);
     }
     if (key === "categoryId" && value === "undefined") {
       true;

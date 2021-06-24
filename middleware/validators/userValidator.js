@@ -1,7 +1,6 @@
 const joi = require("joi");
 const { StatusCodes } = require("http-status-codes");
 const CommonUserValidator = require("./commonValidator");
-const messages = require("../../messages/messages");
 
 class UserValidator extends CommonUserValidator {
   constructor() {}
@@ -15,7 +14,7 @@ class UserValidator extends CommonUserValidator {
         .validateAsync({ Id: parseInt(req.params.Id) });
       next();
     } catch (err) {
-      res.status(StatusCodes.EXPECTATION_FAILED).send(messages.serverError);
+      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
     }
   }
 
@@ -184,7 +183,7 @@ class UserValidator extends CommonUserValidator {
         .validateAsync(req.body);
       next();
     } catch (err) {
-      res.status(StatusCodes.EXPECTATION_FAILED).send(messages.serverError);
+      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
     }
   }
 
@@ -219,7 +218,7 @@ class UserValidator extends CommonUserValidator {
         .validateAsync(req.body);
       next();
     } catch (err) {
-      res.status(StatusCodes.EXPECTATION_FAILED).send(messages.serverError);
+      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
     }
   }
 }

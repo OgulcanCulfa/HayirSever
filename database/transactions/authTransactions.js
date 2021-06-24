@@ -1,21 +1,18 @@
-const { FadabHelper,queryAsync } = require("fadab-mysql-helper");
+const operations = require('../operations/operations');
 
-class AuthTransactions extends FadabHelper {
-  constructor() {
-    super();
-    this.baseTable = "tbluser"
-  }
+class AuthTransactions {
+    constructor() {
+        this.table = "tbluser"
+    }
 
-  additiveUserTypesAsync(UserTypeName) {
-    return queryAsync(
-      `SELECT UserTypeName FROM tblUserType WHERE UserTypeNumber<(SELECT UserTypeNumber FROM tblUserType WHERE UserTypeName=?)`,
-      [UserTypeName]
-    );
-  }
+    findOne(selectObj) {
+        return operations.findOne(this.table, selectObj)
+    }
 
-  login(EmailAddress,Password) {
-    return queryAsync(`SELECT * FROM tbluser WHERE EmailAddress = ? AND Password = ?`,[EmailAddress,Password])
-  }
+    insert(insertObj) {
+        return operations.insert(this.table, insertObj);
+    }
+
 }
 
 module.exports = AuthTransactions;

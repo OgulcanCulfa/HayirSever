@@ -1,14 +1,27 @@
-const { FadabHelper,selectAsync } = require("fadab-mysql-helper");
+const operations = require("../operations/operations");
 
-class PostTransactions extends FadabHelper {
+class PostTransactions {
   constructor() {
-    super();
-    this.baseTable = "tblposts";
-    this.vwName = "vwpostswithusers";
+    (this.table = "tblposts"), (this.view = "vwpostswithusers");
   }
 
-  vwSelectAsync(options) {
-    return selectAsync(this.vwName, options);
+  paginatedSelect(selectObj) {
+    return operations.customQuery(
+      `SELECT * FROM ${this.view} ${
+        selectObj.categoryId && "WHERE categoryId=" + selectObj.categoryId
+      } LIMIT ${selectObj.limit} OFFSET ${selectObj.offset}`
+    );
+  }
+
+  vwSelect(selectObj) {
+    return operations.selectAll(this.view, selectObj);
+  }
+  delete(deleteObj) {
+    return operations.delete(this.table, deleteObj);
+  }
+
+  insert(insertObj) {
+    return operations.insert(this.table, insertObj);
   }
 }
 

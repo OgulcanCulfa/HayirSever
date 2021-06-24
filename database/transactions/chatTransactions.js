@@ -1,23 +1,32 @@
-const { FadabHelper, selectAsync, queryAsync } = require("fadab-mysql-helper");
+const {
+  selectAll,
+  update,
+  customQuery,
+  insert,
+} = require("../operations/operations");
 
-class ChatTransactions extends FadabHelper {
+class ChatTransactions {
   constructor() {
-    super();
-    this.baseTable = "tblchat";
-    this.vwName = "vwchatwithusers";
+    this.table = "tblchat";
+    this.view = "vwchatwithusers";
   }
 
-  vwSelectAsync(options) {
-    return selectAsync(this.vwName, options);
+  vwSelect(selectObj) {
+    return selectAll(this.view, selectObj);
   }
 
-  // getMessages(senderId) {
-  //   return queryAsync("SELECT * FROM vwchatwithusers WHERE senderId=? OR userId=?",[senderId,senderId])
-  // }
+  insert(insertObj) {
+    return insert(this.table, insertObj);
+  }
 
-  getMessagesById(senderId,receiverId) {
-    return queryAsync(
-      "(SELECT * FROM tblchat WHERE senderId=? AND receiverId=?) UNION (SELECT * FROM tblchat WHERE receiverId=? AND senderId=?) ORDER BY createdAt",[senderId,receiverId,senderId,receiverId]
+  update(where, updateObj) {
+    return update(this.table, where, updateObj);
+  }
+
+  getMessagesById(senderId, receiverId) {
+    return customQuery(
+      "(SELECT * FROM tblchat WHERE senderId=? AND receiverId=?) UNION (SELECT * FROM tblchat WHERE receiverId=? AND senderId=?) ORDER BY createdAt",
+      [senderId, receiverId, senderId, receiverId]
     );
   }
 }

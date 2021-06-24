@@ -1,17 +1,17 @@
 const router = require("express")();
 const jwt = require("jsonwebtoken");
-const TransactionsFactory = require("../database/transactionFactory");
 const { validators } = require("../middleware");
-const authTransactions = TransactionsFactory.creating("authTransactions");
 const authValidator = validators.authValidator;
 const { StatusCodes } = require("http-status-codes");
 const messages = require("../messages/messages");
+const AuthTransactions = require("../database/transactions/authTransactions");
+const authTransactions = new AuthTransactions;
 
 router.post("/login", authValidator.login, async (req, res) => {
   try {
-    const result = await authTransactions.findOneAsync({
-      EmailAddress: req.body.EmailAddress,
-      Password: req.body.Password,
+    const result = await authTransactions.findOne({
+        EmailAddress: req.body.EmailAddress,
+        Password: req.body.Password
     });
     if (!result) {
       res
@@ -38,13 +38,13 @@ router.post("/login", authValidator.login, async (req, res) => {
 
 router.post("/register", authValidator.register, async (req, res) => {
   try {
-    const result = await authTransactions.findOneAsync({
+    const result = await authTransactions.findOne({
       EmailAddress: req.body.EmailAddress,
     });
     if (result) {
       res.status(StatusCodes.CONFLICT).send("Zaten sisteme kayıtlısınız.");
     } else {
-      authTransactions.insertAsync(req.body);
+      authTransactions.insert(req.body);
       res.send("Başarılı bir şekilde kaydınız gerçekleşti. Giriş yapabilirsiniz.");
     }
   } catch (err) {

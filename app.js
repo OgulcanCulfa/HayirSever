@@ -1,9 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const cors = require("cors");
+//const cors = require("cors");
 const serve = require("./serve");
-const logger = require("morgan");
+//const logger = require("morgan");
 const PORT = 5000;
 const path = require("path");
 
@@ -18,7 +18,6 @@ const io = require("socket.io")(
 require("./socket/chat").socket(io);
 
 //app.use(cors());
-
 //app.use(logger("dev"));
 
 app.use(express.json());

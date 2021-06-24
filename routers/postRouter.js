@@ -1,8 +1,6 @@
 const fs = require("fs");
 const router = require("express")();
-const TransactionsFactory = require("../database/transactionFactory");
 const { validators, verifyToken, authorization } = require("../middleware");
-const postTransactions = TransactionsFactory.creating("postTransactions");
 const tokenControl = verifyToken.tokenControl;
 const authControl = authorization.authControl;
 const postValidator = validators.postValidator;
@@ -14,28 +12,25 @@ const multerOptions = require("../utils/postMulterOptions");
 const multer = require("multer");
 const upload = multer({ storage: multerOptions("posts") });
 const messages = require("../messages/messages");
+const PostTransactions = require("../database/transactions/postTransactions");
+const postTransactions = new PostTransactions();
 
-router.get(
-  "/posts",
-  tokenControl,
-  postValidator.select,
-  async (req, res) => {
-    try {
-      const result = await postTransactions.vwSelectAsync(
-        parserUtils(req.query)
-      );
+router.get("/posts", tokenControl, postValidator.select, async (req, res) => {
+  try {
+    const result = await postTransactions.paginatedSelect(
+      parserUtils(req.query)
+    );
 
-      if (!result)
-        throw errorSender.errorObject(StatusCodes.NOT_FOUND, "Veri yok!");
+    if (!result)
+      throw errorSender.errorObject(StatusCodes.NOT_FOUND, "Veri yok!");
 
-      res.json(result);
-    } catch (err) {
-      res
-        .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
-        .send(messages.serverError);
-    }
+    res.json(result);
+  } catch (err) {
+    res
+      .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
+      .send(messages.serverError);
   }
-);
+});
 
 router.post(
   "/posts",
@@ -47,7 +42,7 @@ router.post(
   async (req, res) => {
     try {
       if (!req.file) {
-        const result = await postTransactions.insertAsync(
+        const result = await postTransactions.insert(
           Object.assign(req.body, {
             postphoto: null,
             userId: req.decode.userId,
@@ -84,9 +79,9 @@ router.post(
   postValidator.bodyId,
   async (req, res) => {
     try {
-      const result = await postTransactions.vwSelectAsync({ where: req.body });
+      const result = await postTransactions.vwSelect(req.body);
       if (!result)
-        throw errorSender.errorObject(StatusCodes.NOT_FOUND, "No data!");
+        throw errorSender.errorObject(StatusCodes.NOT_FOUND, "Veri yok.");
 
       res.json(result);
     } catch (err) {
@@ -104,11 +99,8 @@ router.delete(
   commonValidator.bodyId,
   async (req, res) => {
     try {
-      const photoPath = await postTransactions.selectAsync(
-        parserUtils(req.body)
-      );
-
-      if (photoPath[0].postphoto) {
+      const photoPath = await postTransactions.vwSelect(req.body);
+      if (photoPath.postphoto) {
         fs.unlink(
           photoPath[0].postphoto.replace(
             req.protocol + "://" + req.get("host"),
@@ -117,7 +109,7 @@ router.delete(
           (cb) => {}
         );
       }
-      const result = await postTransactions.deleteAsync(req.body);
+      const result = await postTransactions.delete(req.body);
       if (!result.affectedRows)
         throw errorSender.errorObject(
           StatusCodes.GONE,

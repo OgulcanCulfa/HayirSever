@@ -2,10 +2,10 @@ const { errorSender } = require("./errorSender");
 const { StatusCodes } = require("http-status-codes");
 const messages = require("../messages/messages");
 class ImageUploadHelper {
-
   static async update(req, res, to, field, transaction) {
     try {
-      const result = await transaction.updateAsync(
+      const result = await transaction.update(
+        { id: req.decode.userId },
         Object.assign(req.body, {
           id: req.decode.userId,
           [field]:
@@ -13,8 +13,7 @@ class ImageUploadHelper {
             "://" +
             req.get("host") +
             `/images/${to}/${req.file.originalname}`,
-        }),
-        { id: req.decode.userId }
+        })
       );
 
       if (!result.affectedRows)
@@ -32,7 +31,7 @@ class ImageUploadHelper {
 
   static async insert(req, res, to, field, transaction, errMsg, successMsg) {
     try {
-      const result = await transaction.insertAsync(
+      const result = await transaction.insert(
         Object.assign(req.body, {
           userId: req.decode.userId,
           [field]:

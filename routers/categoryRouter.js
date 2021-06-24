@@ -1,11 +1,11 @@
 const router = require("express")();
 const { StatusCodes } = require("http-status-codes");
-const TransactionsFactory = require("../database/transactionFactory");
-const categoryTransactions = TransactionsFactory.creating("categoryTransactions");
+const CategoryTransactions = require('../database/transactions/categoryTransactions');
+const categoryTransactions = new CategoryTransactions();
 
 router.get("/category",async (req,res) => {
     try {
-        const result = await categoryTransactions.vwSelectAsync()
+        const result = await categoryTransactions.vwSelect();
         res.json(result);
     } catch(err) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Kategoriler yüklenemedi.");

@@ -1,6 +1,5 @@
 const joi = require("joi");
 const { StatusCodes } = require("http-status-codes");
-const messages = require("../../messages/messages");
 
 class AuthValidator {
   constructor() {}
@@ -30,7 +29,7 @@ class AuthValidator {
         .validateAsync(req.body);
       next();
     } catch (err) {
-      res.status(StatusCodes.EXPECTATION_FAILED).send(messages.serverError);
+      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
     }
   }
 
@@ -98,7 +97,7 @@ class AuthValidator {
         .validateAsync(req.body);
       next();
     } catch (err) {
-      res.status(StatusCodes.EXPECTATION_FAILED).send(messages.serverError);
+      res.status(StatusCodes.EXPECTATION_FAILED).send(err.message);
     }
   }
 }

@@ -1,15 +1,23 @@
-const { FadabHelper,selectAsync } = require("fadab-mysql-helper");
+const operations = require('../operations/operations');
 
-class UserTransactions extends FadabHelper{
-  constructor() {
-    super();
-    this.baseTable = "tbluser";
-    this.vwName = "vwusersforchat";
-  }
+class UserTransactions {
+    constructor() {
+        this.table = "tbluser",
+        this.view = "vwusersforchat";
+    }
 
-  vwSelectAsync(options) {
-    return selectAsync(this.vwName);
-  }
+    findOne(selectObj) {
+        return operations.findOne(this.table, selectObj);
+    }
+
+    vwSelect() {
+        return operations.selectAll(this.view);
+    }
+
+    update(where, updateObj) {
+        return operations.update(this.table, where, updateObj);
+    }
 }
 
 module.exports = UserTransactions;
+

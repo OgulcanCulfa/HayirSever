@@ -1,8 +1,6 @@
 const fs = require("fs");
 const router = require("express")();
-const TransactionsFactory = require("../database/transactionFactory");
 const { validators, verifyToken, authorization } = require("../middleware");
-const commentTransactions = TransactionsFactory.creating("commentTransactions");
 const tokenControl = verifyToken.tokenControl;
 const commentValidator = validators.commentValidator;
 const commonValidator = validators.commonValidator;
@@ -15,10 +13,12 @@ const multerOptions = require("../utils/postMulterOptions");
 const multer = require("multer");
 const upload = multer({ storage: multerOptions("comments") });
 const messages = require("../messages/messages");
+const CommentTransactions = require("../database/transactions/commentTransactions");
+const commentTransactions = new CommentTransactions
 
 router.get("/comments", tokenControl, async (req, res) => {
   try {
-    const result = await commentTransactions.vwSelectAsync();
+    const result = await commentTransactions.vwSelect();
     if (!result) {
       throw errorSender.errorObject(StatusCodes.NOT_FOUND, "Veri yok!");
     }
@@ -32,7 +32,7 @@ router.get("/comments", tokenControl, async (req, res) => {
 
 router.get("/comments/:postId", tokenControl, async (req, res) => {
   try {
-    const result = await commentTransactions.vwSelectAsync({
+    const result = await commentTransactions.vwSelect({
       where: req.params,
     });
     if (!result) {
@@ -56,7 +56,7 @@ router.post(
   async (req, res) => {
     try {
       if (!req.file) {
-        const result = await commentTransactions.insertAsync(
+        const result = await commentTransactions.insert(
           Object.assign(req.body, { userId: req.decode.userId, photo: null })
         );
         if (!result.affectedRows)
@@ -91,20 +91,20 @@ router.delete(
   commonValidator.bodyId,
   async (req, res) => {
     try {
-      const photoPath = await commentTransactions.selectAsync(
-        parserUtils(req.body)
+      const photoPath = await commentTransactions.select(
+        req.body
       );
 
-      if (photoPath[0].photo) {
+      if (photoPath.photo) {
         fs.unlink(
-          photoPath[0].photo.replace(
+          photoPath.photo.replace(
             req.protocol + "://" + req.get("host"),
             `${process.cwd()}/public`
           ),
           (cb) => {}
         );
       }
-      const result = await commentTransactions.deleteAsync(req.body);
+      const result = await commentTransactions.delete(req.body);
       if (!result.affectedRows)
         throw errorSender.errorObject(
           StatusCodes.GONE,
