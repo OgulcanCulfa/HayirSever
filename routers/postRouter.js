@@ -102,7 +102,7 @@ router.delete(
       const photoPath = await postTransactions.vwSelect(req.body);
       if (photoPath.postphoto) {
         fs.unlink(
-          photoPath[0].postphoto.replace(
+          photoPath.postphoto.replace(
             req.protocol + "://" + req.get("host"),
             `${process.cwd()}/public`
           ),
