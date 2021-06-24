@@ -51,7 +51,6 @@ class ImageUploadHelper {
         );
       res.send(successMsg);
     } catch (err) {
-      console.log(err.stack);
       res
         .status(err.status || StatusCodes.INTERNAL_SERVER_ERROR)
         .send(messages.serverError);
