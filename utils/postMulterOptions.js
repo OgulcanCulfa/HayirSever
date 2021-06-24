@@ -8,7 +8,7 @@ module.exports = (location) => {
     cb(null,path.join(__dirname,`../public/images/${location}`));
   },
   filename: function (req, file, cb) {
-    cb(null,req.body.text.substr(0,5) + file.originalname);
+    cb(null,file.originalname);
   },
 });
 return image
